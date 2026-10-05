@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://yvo36p6ei8vy"]
+
+[ext_resource type="Script" uid="uid://dg63gg8e5dicm" path="res://scripts/game_start.gd" id="1_ym6pf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3jwdi"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.44705883, 0.44705883, 0.44705883, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ym6pf"]
+
+[node name="gameStart" type="Control" unique_id=1508359667 node_paths=PackedStringArray("qBox", "pInput", "eBox", "gBox")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ym6pf")
+qBox = NodePath("MarginContainer/Panel/MarginContainer/VBoxContainer/questionBox")
+pInput = NodePath("MarginContainer/Panel/MarginContainer/VBoxContainer/playerInput")
+eBox = NodePath("MarginContainer/Panel/MarginContainer/VBoxContainer/errorBox")
+gBox = NodePath("MarginContainer/Panel/MarginContainer/VBoxContainer/guidance")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=366649530]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="Panel" type="Panel" parent="MarginContainer" unique_id=453341430]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3jwdi")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Panel" unique_id=1639693436]
+custom_minimum_size = Vector2(700, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = -150.0
+offset_right = 350.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel/MarginContainer" unique_id=153450927]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="questionBox" type="RichTextLabel" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=586205562]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ym6pf")
+text = "Test"
+horizontal_alignment = 1
+
+[node name="errorBox" type="RichTextLabel" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1352883772]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+theme_override_colors/default_color = Color(1, 0, 0, 1)
+
+[node name="playerInput" type="TextEdit" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1914783779]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+placeholder_text = "Press Space to Submit Answer"
+context_menu_enabled = false
+emoji_menu_enabled = false
+virtual_keyboard_enabled = false
+
+[node name="guidance" type="RichTextLabel" parent="MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=371604650]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 25

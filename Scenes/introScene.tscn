@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://3mauy78ikgcb"]
+
+[ext_resource type="Script" uid="uid://q8775xjg8ps4" path="res://scripts/intro_scene.gd" id="1_prosp"]
+[ext_resource type="FontFile" uid="uid://bxxval5b4noyo" path="res://Born2bSportyV2.ttf" id="1_qq6bv"]
+[ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="3_prosp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y564o"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.446777, 0.4467771, 0.44677675, 1)
+
+[node name="introSceneHandler" type="Node2D" unique_id=2130028514 node_paths=PackedStringArray("introNarration")]
+script = ExtResource("1_prosp")
+introNarration = NodePath("MarginContainer/Panel/dialogueArea/dialogue")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1186004568]
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="Panel" type="Panel" parent="MarginContainer" unique_id=5134834]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_y564o")
+
+[node name="dialogueArea" type="MarginContainer" parent="MarginContainer/Panel" unique_id=1601027377]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 325.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 20
+
+[node name="dialogue" type="RichTextLabel" parent="MarginContainer/Panel/dialogueArea" unique_id=1760249946]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("1_qq6bv")
+theme_override_font_sizes/normal_font_size = 30
+fit_content = true
+scroll_active = false
+visible_characters_behavior = 1
+
+[node name="player" parent="MarginContainer" unique_id=135934462 instance=ExtResource("3_prosp")]
+layout_mode = 2
+
+[connection signal="cBON" from="." to="." method="_on_c_bon"]

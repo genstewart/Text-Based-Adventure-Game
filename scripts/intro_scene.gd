@@ -1,0 +1,142 @@
+extends Node2D
+
+@export var introNarration : RichTextLabel
+@export var trans : Tween.TransitionType
+@onready var tween = create_tween()
+
+@onready var player = get_node("MarginContainer/player")
+@onready var continueButton = player.get_node("view/playerArea/continueButton")
+@onready var playerArea = player.get_node("view/playerArea")
+@onready var playerInfo = player.get_node("view/playerArea/playerInfo")
+
+var introText1 = ""
+var introText2 = ""
+var introText3 = ""
+var introText4 = ""
+var introText5 = ""
+var introText6 = ""
+
+var atb1 = ""
+var atb2 = ""
+var atb3 = ""
+var atb4 = ""
+var atb5 = ""
+
+var introOver = false
+var canSkip = false
+signal cBON
+
+var restCount = 0
+
+func _ready() -> void:
+	player.option3.hide()
+	player.option4.hide()
+	player.option5.hide()
+	loadDialogue()
+	continueButton.disabled = true
+	playerHide()
+	introNarration.visible_characters = 0
+	playintrotext()
+
+func playerHide():
+	playerInfo.hide()
+	playerArea.hide()
+
+func playintrotext():
+	tween = create_tween()
+	introNarration.text = introText1 + introText2 + SaveState.bossName + " the " + SaveState.bossSlain + "'s " + introText3 + SaveState.bossSlain + introText4 + introText5 + introText6
+	tween.set_trans(Tween.TRANS_LINEAR)
+	tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
+
+func playATBtext():
+	tween.kill()
+	introNarration.text = atb1 + SaveState.bossSlain + atb2 + SaveState.friendThree + " and " + SaveState.friendTwo + atb3 + SaveState.bossSlain + atb4
+	tween = create_tween()
+	tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
+
+func _process(delta: float) -> void:
+	if introOver == false and introNarration.visible_characters == len(introText1):
+		tween.pause()
+		await wait(.9)
+		tween.play()
+	if introOver == false and introNarration.visible_characters == len(introText1 + introText2 + SaveState.bossName + " the " + SaveState.bossSlain + "'s" + "head from above, sliding your sword straight between its eyes.."):
+		tween.pause()
+		await wait(0.7)
+		tween.play()
+	if introOver == false and introNarration.visible_characters == len(introText1 + introText2 + SaveState.bossName + " the " + SaveState.bossSlain + "'s " + introText3 + SaveState.bossSlain + introText4 + introText5):
+		tween.pause()
+		await wait(0.7)
+		tween.play()
+	if introNarration.visible_characters == len(introNarration.text) and introOver == false:
+		playerArea.show()
+		continueButton.show()
+		emit_signal("cBON")
+	if continueButton.button_pressed == true or Input.is_action_just_pressed("nextDialogue"):
+		if introNarration.visible_characters == len(introNarration.text) and introOver == false:
+			continue_button()
+		elif introNarration.visible_characters < len(introNarration.text) and introOver == true:
+			dialogueSkip()
+	
+	if introNarration.visible_characters == len(introNarration.text) and introOver == true:
+		playerInfo.show()
+		continueButton.hide()
+		continueButton.disabled = true
+		if player.option1.button_pressed == true or Input.is_action_just_pressed("1"):
+			get_tree().change_scene_to_file("res://Scenes/the_gates.tscn")
+		if player.option2.button_pressed == true or Input.is_action_just_pressed("2") and restCount < 3:
+			player.option2.disabled = true
+			restButton()
+			print(restCount)
+
+func continue_button():
+	continueButton.hide()
+	introOver = true
+	introNarration.visible_characters = 0
+	playATBtext()
+
+func restButton():
+	restCount += 1
+	introNarration.visible_characters = 0
+	if restCount == 1:
+		introNarration.text = "You spend some time digging two graves to bury the bodies of your lost friends. \n\nAfter, you rest by the fire and feel a sense of longing. You defeated the dragon, \n\nbut at what cost?"
+		tween = create_tween()
+		tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
+		player.option2.disabled = false
+		SaveState.playerJoy += 1
+	elif restCount == 3:
+		introNarration.text = "After a day of resting, you feel its time to begin the journey home."
+		tween = create_tween()
+		tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
+		player.option2.disabled = true
+	elif restCount > 1 and restCount < 3:
+		introNarration.text = "You rest by the fire and feel a sense of longing. You defeated the dragon, \n\nbut at what cost?"
+		tween = create_tween()
+		tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
+		player.option2.disabled = false
+		SaveState.playerJoy += 1
+
+
+func dialogueSkip():
+		print("skip")
+		tween.kill()
+		introNarration.visible_characters = len(introNarration.text)
+
+func _on_c_bon() -> void:
+	continueButton.disabled = false
+
+func wait(seconds: float):
+	await get_tree().create_timer(seconds).timeout
+
+func loadDialogue():
+	introText1 = DialogueLoader.line["introScript"][0]["intro1"]
+	introText2 = DialogueLoader.line["introScript"][0]["intro2"]
+	introText3 = DialogueLoader.line["introScript"][0]["intro3"]
+	introText4 = DialogueLoader.line["introScript"][0]["intro4"]
+	introText5 = DialogueLoader.line["introScript"][0]["intro5"]
+	introText6 = DialogueLoader.line["introScript"][0]["intro6"]
+	
+	atb1 = DialogueLoader.line["introScript"][1]["atb1"]
+	atb2 = DialogueLoader.line["introScript"][1]["atb2"]
+	atb3 = DialogueLoader.line["introScript"][1]["atb3"]
+	atb4 = DialogueLoader.line["introScript"][1]["atb4"]
+	atb5 = DialogueLoader.line["introScript"][1]["atb5"]

@@ -1,0 +1,22 @@
+{
+	"introScript": [
+		{
+		"intro1": "It was just a moment ago.",
+		"intro2": "\n\nYou ran and leapt from the top of a pointed rock and struck ", 
+		"intro3": "head from above, sliding your sword straight between its eyes.\n\nThe ",
+		"intro4": " let out one final screech and fell to the ground.",
+		"intro5": "\n\nYour quest is over.",
+		"intro6": " Now your journey home begins."
+		},
+		{
+		"atb1": "Looking around, you see the remanants of the battle that ended moments ago. \nYou stand in The Valley, surrounded in the corpses of both the ",
+		"atb2": "'s army and the combined armies of the Elves, Dwarves, and Humans. Blood still oozes from the fresh corpses. \n\nTo your left are the corpses of your faithful companions; ",
+		"atb3": ", who were slain defending you from the horde of Goblins and Orcs. There are no survivors. \nOff in the east, you see the gates to The Valley: where you sieged to enter the ", 
+		"atb4": "'s domain. \n\nYou are a long way from home.",
+		"atb5": "",
+		},
+	],
+	"gatesScript": [
+		
+	],
+}

@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bgxkmlwf3r0et"]
+
+[ext_resource type="Script" uid="uid://gukak7i0emxs" path="res://scripts/npc.gd" id="1_acqhf"]
+
+[node name="scavengers" type="Control" unique_id=1913397892]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_acqhf")

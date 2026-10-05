@@ -1,0 +1,271 @@
+[gd_scene format=3 uid="uid://bpv6mj4vwpsp6"]
+
+[ext_resource type="Script" uid="uid://bavxrkbcp4y5s" path="res://scripts/player.gd" id="1_fkybt"]
+[ext_resource type="FontFile" uid="uid://bxxval5b4noyo" path="res://Born2bSportyV2.ttf" id="1_vgqql"]
+[ext_resource type="Texture2D" uid="uid://b4mwvqqyg4ji5" path="res://Sprites/healthBar3.png" id="2_fkybt"]
+[ext_resource type="Texture2D" uid="uid://7ec6ln7kyae4" path="res://Sprites/healthBar2.png" id="3_x3wgy"]
+[ext_resource type="Texture2D" uid="uid://cjbp72ibh57gt" path="res://Sprites/healthBar1.png" id="4_3smsa"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jrqb4"]
+bg_color = Color(0.07284262, 0.072842635, 0.072842576, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ixp3"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prosp"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+
+[sub_resource type="InputEventAction" id="InputEventAction_2ixp3"]
+action = &"nextDialogue"
+
+[sub_resource type="Shortcut" id="Shortcut_prosp"]
+events = [SubResource("InputEventAction_2ixp3")]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2pnq3"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_otxxp"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_sioq2"]
+load_path = "res://.godot/imported/healthPotion.png-2cb8bda79a1e61cdf37c9e2e629c7142.ctex"
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qmd0d"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3qdye"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qd6eu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2pnq3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_otxxp"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_fkybt"]
+action = &"1"
+
+[sub_resource type="Shortcut" id="Shortcut_x3wgy"]
+events = [SubResource("InputEventAction_fkybt")]
+
+[node name="player" type="Control" unique_id=135934462 node_paths=PackedStringArray("continueB", "nameTag", "healthBar", "potionButton", "Status", "optContainer", "option1", "option2", "option3", "option4", "option5", "iContainer", "instructText", "playerInput") groups=["player"]]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_fkybt")
+continueB = NodePath("view/playerArea/continueButton")
+nameTag = NodePath("view/playerArea/playerInfo/playerStats/playerName")
+healthBar = NodePath("view/playerArea/playerInfo/playerStats/healthBar")
+potionButton = NodePath("view/playerArea/playerInfo/playerStats/healthPotion")
+Status = NodePath("view/playerArea/playerInfo/playerStats/playerStatus")
+optContainer = NodePath("view/playerArea/playerInfo/optionsContainer")
+option1 = NodePath("view/playerArea/playerInfo/optionsContainer/option1")
+option2 = NodePath("view/playerArea/playerInfo/optionsContainer/option2")
+option3 = NodePath("view/playerArea/playerInfo/optionsContainer/option3")
+option4 = NodePath("view/playerArea/playerInfo/optionsContainer/option4")
+option5 = NodePath("view/playerArea/playerInfo/optionsContainer/option5")
+iContainer = NodePath("view/playerArea/playerInfo/inputContainer")
+instructText = NodePath("view/playerArea/playerInfo/inputContainer/playerInstruct")
+playerInput = NodePath("view/playerArea/playerInfo/inputContainer/playerAction")
+
+[node name="view" type="MarginContainer" parent="." unique_id=1630542472]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="playerArea" type="MarginContainer" parent="view" unique_id=1287666644]
+custom_minimum_size = Vector2(1152, 312)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 30
+
+[node name="Panel" type="Panel" parent="view/playerArea" unique_id=286235314]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jrqb4")
+
+[node name="continueButton" type="Button" parent="view/playerArea" unique_id=826936625 groups=["player"]]
+visible = false
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("1_vgqql")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_2ixp3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_prosp")
+shortcut = SubResource("Shortcut_prosp")
+shortcut_feedback = false
+text = "Press Space to Continue"
+
+[node name="playerInfo" type="MarginContainer" parent="view/playerArea" unique_id=1458042091]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="playerStats" type="VBoxContainer" parent="view/playerArea/playerInfo" unique_id=850186024 groups=["player"]]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 14
+
+[node name="playerName" type="Label" parent="view/playerArea/playerInfo/playerStats" unique_id=303910545]
+texture_filter = 1
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("1_vgqql")
+theme_override_font_sizes/font_size = 40
+text = "Name"
+
+[node name="healthBar" type="TextureProgressBar" parent="view/playerArea/playerInfo/playerStats" unique_id=1606945706]
+texture_filter = 1
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 4
+value = 50.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_fkybt")
+texture_over = ExtResource("3_x3wgy")
+texture_progress = ExtResource("4_3smsa")
+
+[node name="healthPotion" type="Button" parent="view/playerArea/playerInfo/playerStats" unique_id=1038074993]
+texture_filter = 1
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_vgqql")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_2pnq3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_otxxp")
+text = "5"
+icon = SubResource("CompressedTexture2D_sioq2")
+alignment = 0
+expand_icon = true
+
+[node name="playerStatus" type="RichTextLabel" parent="view/playerArea/playerInfo/playerStats" unique_id=2069221531]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.72742903, 0.07724287, 9.62615e-08, 1)
+theme_override_fonts/normal_font = ExtResource("1_vgqql")
+theme_override_font_sizes/normal_font_size = 40
+text = "Exhausted"
+fit_content = true
+
+[node name="inputContainer" type="VBoxContainer" parent="view/playerArea/playerInfo" unique_id=1680476474]
+visible = false
+custom_minimum_size = Vector2(750, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/separation = 8
+
+[node name="playerInstruct" type="RichTextLabel" parent="view/playerArea/playerInfo/inputContainer" unique_id=1782275707]
+texture_filter = 1
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "What will you do?"
+
+[node name="playerAction" type="TextEdit" parent="view/playerArea/playerInfo/inputContainer" unique_id=1717662494]
+texture_filter = 1
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+focus_mode = 1
+theme_override_font_sizes/font_size = 30
+placeholder_text = "Press Space to Submit"
+
+[node name="optionsContainer" type="VBoxContainer" parent="view/playerArea/playerInfo" unique_id=329609427 groups=["player"]]
+custom_minimum_size = Vector2(750, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/separation = 14
+
+[node name="option1" type="Button" parent="view/playerArea/playerInfo/optionsContainer" unique_id=576113024]
+texture_filter = 1
+layout_mode = 2
+size_flags_vertical = 0
+focus_mode = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_vgqql")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qmd0d")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3qdye")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_qd6eu")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_2pnq3")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_otxxp")
+shortcut = SubResource("Shortcut_x3wgy")
+text = "(1) Travel to the Gates for the Valley of Doom"
+alignment = 0
+autowrap_mode = 3
+
+[node name="option2" type="Button" parent="view/playerArea/playerInfo/optionsContainer" unique_id=671994565]
+texture_filter = 1
+layout_mode = 2
+size_flags_vertical = 0
+focus_mode = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_vgqql")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qmd0d")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3qdye")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_qd6eu")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_2pnq3")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_otxxp")
+text = "(2) Make a campfire and rest"
+alignment = 0
+autowrap_mode = 3
+
+[node name="option3" type="Button" parent="view/playerArea/playerInfo/optionsContainer" unique_id=2036181706]
+texture_filter = 1
+layout_mode = 2
+size_flags_vertical = 0
+focus_mode = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_vgqql")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qmd0d")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3qdye")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_qd6eu")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_2pnq3")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_otxxp")
+text = "(3)"
+alignment = 0
+autowrap_mode = 3
+
+[node name="option4" type="Button" parent="view/playerArea/playerInfo/optionsContainer" unique_id=476275903]
+texture_filter = 1
+layout_mode = 2
+size_flags_vertical = 0
+focus_mode = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_vgqql")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qmd0d")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3qdye")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_qd6eu")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_2pnq3")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_otxxp")
+text = "(4)"
+alignment = 0
+autowrap_mode = 3
+
+[node name="option5" type="Button" parent="view/playerArea/playerInfo/optionsContainer" unique_id=38523789]
+texture_filter = 1
+layout_mode = 2
+size_flags_vertical = 0
+focus_mode = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_vgqql")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qmd0d")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3qdye")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_qd6eu")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_2pnq3")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_otxxp")
+text = "(5)"
+alignment = 0
+autowrap_mode = 3
+
+[connection signal="pressed" from="view/playerArea/playerInfo/playerStats/healthPotion" to="." method="_on_health_potion_pressed"]
+[connection signal="text_changed" from="view/playerArea/playerInfo/inputContainer/playerAction" to="." method="_on_player_action_text_changed"]

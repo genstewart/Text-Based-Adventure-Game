@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://dc48b8wbv6vqi"]
+
+[ext_resource type="FontFile" uid="uid://bxxval5b4noyo" path="res://Born2bSportyV2.ttf" id="1_ayieh"]
+[ext_resource type="Script" uid="uid://dgtvjkxgvdwao" path="res://scripts/npc_scene.gd" id="1_gnhme"]
+[ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="2_qqtv6"]
+[ext_resource type="PackedScene" uid="uid://bgxkmlwf3r0et" path="res://Scenes/npc.tscn" id="4_kohbg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qqtv6"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.44705883, 0.44705883, 0.44705883, 1)
+
+[node name="npcScene" type="Node2D" unique_id=1855492083 node_paths=PackedStringArray("textBox", "npc")]
+script = ExtResource("1_gnhme")
+textBox = NodePath("dialogueScreen/Panel/dialogueArea/dialogue")
+npc = NodePath("dialogueScreen/scavengers")
+
+[node name="dialogueScreen" type="MarginContainer" parent="." unique_id=640003557]
+custom_minimum_size = Vector2(1152, 648)
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="Panel" type="Panel" parent="dialogueScreen" unique_id=1273146044]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qqtv6")
+
+[node name="dialogueArea" type="MarginContainer" parent="dialogueScreen/Panel" unique_id=696512942]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 325.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 20
+
+[node name="dialogue" type="RichTextLabel" parent="dialogueScreen/Panel/dialogueArea" unique_id=220556302]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("1_ayieh")
+theme_override_font_sizes/normal_font_size = 30
+fit_content = true
+scroll_active = false
+visible_characters_behavior = 1
+
+[node name="player" parent="dialogueScreen" unique_id=135934462 instance=ExtResource("2_qqtv6")]
+layout_mode = 2
+
+[node name="scavengers" parent="dialogueScreen" unique_id=1913397892 node_paths=PackedStringArray("npcScene") instance=ExtResource("4_kohbg")]
+layout_mode = 2
+npcScene = NodePath("../..")
+npcName = "Scavenger"
+groupName = "Scavengers"
+hPool = [-160, 60, 60, 60, 60]
+npcDamage = 25
