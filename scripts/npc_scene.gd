@@ -12,18 +12,28 @@ extends Node2D
 
 @export var npc : Control
 
+@export var returnScene = ""
+
 var playerTurn = true
 var playerCombat = false
+var interactDone = false
 
 func _ready() -> void:
-	player.disableButtons()
+	player.Buttons(false)
+	player.inputCon(true)
 	player.iContainer.show()
-	player.grab_focus()
 
 func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("nextDialogue") and interactDone == true and textBox.visible_ratio == 1.0:
+		print("nextScene")
+		loadNextScene()
+	if npc.hPool.size() == 1:
+		playerTurn = true
+		playerCombat = false
+		playText(npc.deathText)
+		interactDone = true
 	if Input.is_action_just_pressed("nextDialogue") and textBox.visible_ratio < 1.0:
 		skipDialogue()
-		#turnChange(1)
 	elif Input.is_action_just_pressed("nextDialogue") and playerCombat and not playerTurn and textBox.visible_ratio == 1.0:
 		npc.dealDamage()
 		playerTurn = true
@@ -32,6 +42,10 @@ func _process(delta: float) -> void:
 		if SaveState.prevInput.begins_with("stab") or SaveState.prevInput.begins_with("slash"):
 			playerCombat = true
 			playerTurn = false
+	if not playerTurn:
+		player.instructText.text = "[color=red]Not your turn[/color]"
+	if playerTurn:
+		player.instructText.text = "[color=white]What will you do?[/color]"
 
 func playText(nextText : String):
 	if tween:
@@ -41,17 +55,8 @@ func playText(nextText : String):
 	tween = create_tween()
 	tween.tween_property(textBox, "visible_characters", len(textBox.text), len(textBox.text) * SaveState.textspeed)
 
-func turnChange(change : float):
-	if change == 1:
-		player.iContainer.show()
-		continueButton.hide()
-		continueButton.disabled = true
-		playerInput.grab_focus()
-	elif change == 0:
-		player.iContainer.hide()
-		continueButton.show()
-		continueButton.disabled = false
-		playerTurn = false
+func loadNextScene():
+	get_tree().change_scene_to_file(returnScene)
 
 func skipDialogue():
 	continueButton.disabled = true

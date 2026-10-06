@@ -40,19 +40,36 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("heal") or potionButton.button_pressed == true:
 		healPlayer()
 
-func disableButtons():
-	optContainer.hide()
-	option1.disabled = true
-	option2.disabled = true
-	option3.disabled = true
-	option4.disabled = true
-	option5.disabled = true
+func Buttons(state : bool):
+	if not state:
+		optContainer.hide()
+		optContainer.MOUSE_FILTER_IGNORE
+		option1.disabled = true
+		option2.disabled = true
+		option3.disabled = true
+		option4.disabled = true
+		option5.disabled = true
+	elif state:
+		optContainer.show()
+		optContainer.MOUSE_FILTER_PASS
+		option1.disabled = false
+		option2.disabled = false
+		option3.disabled = false
+		option4.disabled = false
+		option5.disabled = false
+
+func inputCon(state : bool):
+	if not state:
+		iContainer.hide()
+		playerInput.MOUSE_FILTER_IGNORE
+	elif state:
+		iContainer.show()
+		playerInput.MOUSE_FILTER_PASS
 
 func _on_player_action_text_changed() -> void:
 	if Input.is_action_just_pressed("nextDialogue"):
 		SaveState.prevInput = playerInput.text.replace(" ", "")
 		playerInput.clear()
-
 
 func healPlayer():
 	if SaveState.healthPotion >= 0:

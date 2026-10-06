@@ -17,6 +17,7 @@ border_color = Color(0.44705883, 0.44705883, 0.44705883, 1)
 script = ExtResource("1_gnhme")
 textBox = NodePath("dialogueScreen/Panel/dialogueArea/dialogue")
 npc = NodePath("dialogueScreen/scavengers")
+returnScene = "res://Scenes/the_gates.tscn"
 
 [node name="dialogueScreen" type="MarginContainer" parent="." unique_id=640003557]
 custom_minimum_size = Vector2(1152, 648)
@@ -50,8 +51,9 @@ layout_mode = 2
 
 [node name="scavengers" parent="dialogueScreen" unique_id=1913397892 node_paths=PackedStringArray("npcScene") instance=ExtResource("4_kohbg")]
 layout_mode = 2
+mouse_filter = 2
 npcScene = NodePath("../..")
-npcName = "Scavenger"
-groupName = "Scavengers"
+npcName = "scavenger"
+groupName = "scavengers"
 hPool = [-160, 60, 60, 60, 60]
 npcDamage = 25
