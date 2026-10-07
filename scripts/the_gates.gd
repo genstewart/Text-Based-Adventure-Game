@@ -10,7 +10,7 @@ extends Node2D
 
 var gatesIntro = ["You arrive at a large opened steel gate with towering watchtowers made of basalt on either side. You stormed these gates after marching for a month with the northern armies. Now all that remains is the casualties of the bloody siege.",
 "\n\nComing from the forest through the gates, you spot four hooded people walk through the gate and begin rummaging through the corpses.
-\n\nThey begin pocketing smaller trinkets and grabbing the swords of the fallen knights and commanders."]
+\nThey begin pocketing smaller trinkets and grabbing the swords of the fallen knights and commanders."]
 
 var recallMemory = ["Staring into the forest through the gates, you recall the night of the siege. After marching for a month, the armies had waited and made camp in the forest outside the gates. The plan of attack was simple.",
 " In the dead of night, ", SaveState.friendOne,
@@ -82,7 +82,8 @@ func c1():
 	print("you continue on the path home")
 
 func c2():
-	print("you approach the bandits")
+	player.option2.disabled = true
+	get_tree().change_scene_to_file("res://Scenes/npc_scene.tscn")
 
 func c3(memoryPart):
 	if memoryPart == 1:
@@ -91,11 +92,7 @@ func c3(memoryPart):
 		playText(recallMemory[5] + recallMemory[6] + recallMemory[7] + recallMemory[8] + recallMemory[9])
 		memoryPlaying = false
 		playerPlaying = true
-	#match  memoryPart:
-		#1:
-			#playText(recallMemory[0] + recallMemory[1] + recallMemory[2] + recallMemory[3] + recallMemory[4])
-		#2:
-			#playText(recallMemory[5] + recallMemory[6] + recallMemory[7] + recallMemory[8] + recallMemory[9])
+		player.option3.disabled = true
 
 func restButton():
 	restCount += 1

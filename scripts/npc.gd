@@ -11,13 +11,14 @@ extends Control
 var targetNum = 1
 var slashTargets = []
 var z = 1
-var stabDmg = SaveState.playerStab * 5 * aClass[targetNum]
+var stabDmg = SaveState.playerStab + 10 * aClass[targetNum]
 var slashDmg = SaveState.playerSlash - 10 * aClass[z]
 @export var targetName = ["","first ", "second ", "third ", "fourth "]
 var enemiesLeft
 @export var takeDamageDialogue = []
 @export var dealDamageDialogue = []
 
+var introText = "You approach the scavengers."
 var deathText = "You finish off the last scavenger, your sword glistening with blood, your conscious heavy with what you've done."
 
 @export var npcAttackDial = []
@@ -88,7 +89,7 @@ func slashAction():
 		takeDamage(SaveState.playerSlash)
 		hPool.remove_at(slashTargets[0])
 		hPool.remove_at(slashTargets[0])
-		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nBoth fall to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
+		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nThey both fall to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
 		print(hPool)
 	elif (hPool[slashTargets[0]] - slashDmg >= 0 and hPool[slashTargets[1]] - slashDmg <= 0) or (hPool[slashTargets[0]] - slashDmg <= 0 and hPool[slashTargets[1]] - slashDmg >= 0):
 		takeDamage(SaveState.playerSlash)
@@ -141,11 +142,12 @@ func slashTargetFinder():
 
 func talkAction():
 	if npcScene.playerCombat == false:
-		var talkText = ["You walk up to talk to the scavengers.",
+		var talkText = ["You walk up and talk to the scavengers.",
 		 " They are just some young boys from the village a month's walk away.",
-		 " You ask them what they are doing here and the oldest boy replies,", "\n\n\"Are you ", SaveState.playerName, "? The city watch told us we might meet you out here...\"",
-		 "\"Are you the only survivor? We were just looking for our Dad...\"", "\n\nYou explain to the orphan boys what happend to their father.",
-		 " The guilt of the battle weighs heavy on your mind, but you feel better that you didn't resort to killing the boys immediately."]
+		 " You ask them what they are doing here and the oldest boy replies,", "\n\n\"Are you ", SaveState.playerName, "? The city watch told us we might meet you out here.\"\n",
+		 "\"Are you the only survivor? We were just looking for our Dad...\"", "\n\nYou explain to the orphan boys what happend in the battle.",
+		 " The guilt of the battle weighs heavy on your mind, but you feel better that you didn't resort to killing the boys immediately.",
+		 " After you talk, the boys decide to continue looking for their father, and give him a proper burial. \nYou continue on your journey home."]
 		npcScene.playText("".join(talkText))
 		SaveState.playerJoy += 10
 		print(SaveState.playerJoy)
