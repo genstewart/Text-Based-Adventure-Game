@@ -56,4 +56,4 @@ npcScene = NodePath("../..")
 npcName = "scavenger"
 groupName = "scavengers"
 hPool = [-160, 60, 60, 60, 60]
-npcDamage = 25
+npcDamage = 8

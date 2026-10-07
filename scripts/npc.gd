@@ -7,6 +7,7 @@ extends Control
 @export var hPool = [0,0,0,0,0]
 @export var aClass = [1,1,1,1,1]
 @export var npcDamage : int
+var npcTotalDamage = (npcDamage * (hPool.size()-1))
 
 var targetNum = 1
 var slashTargets = []
@@ -19,7 +20,7 @@ var enemiesLeft
 @export var dealDamageDialogue = []
 
 var introText = "You approach the scavengers."
-var deathText = "You finish off the last scavenger, your sword glistening with blood, your conscious heavy with what you've done."
+var deathText = "You finish off the last scavenger, your sword glistening with blood. Standing over their wounded corpses you get a better look at their faces. \n\nThese were no bandits, just some young boys, and now they are part of the corpses that litter the ground. You continue your journey, thinking about what you've done."
 
 @export var npcAttackDial = []
 
@@ -27,7 +28,15 @@ var actionMap = {
 	"stab": stabAction,
 	"slash": slashAction,
 	"talk": talkAction,
+	
 	"sneak": sneakAction,
+	"stalk": sneakAction,
+	"creep": sneakAction,
+	
+	"look": lookAction,
+	"spy": lookAction,
+	"watch": lookAction,
+	
 	"": doNothing,
 }
 
@@ -114,9 +123,10 @@ func takeDamage(damage):
 func dealDamage():
 	if not npcScene.interactDone:
 		var attackDialogue = ["The ", groupName, " lunge at you with their knives. Some of their blades getting past your armor."]
-		dealDamageDialogue = ["The ", groupName, " dealt ", str(npcDamage), " damage!"]
+		npcTotalDamage = (npcDamage * (hPool.size()-1))
+		dealDamageDialogue = ["The ", groupName, " dealt ", str(npcTotalDamage), " damage!"]
 		npcScene.playText("".join(attackDialogue) + "\n\n" +"".join(dealDamageDialogue))
-		SaveState.health -= npcDamage
+		SaveState.health -= npcTotalDamage
 	else:
 		pass
 
@@ -164,5 +174,18 @@ func sneakAction():
 	npcScene.playText("".join(sneakText))
 	npcScene.interactDone = true
 
+func lookAction():
+	var lookText = ["Staying hidden behind the top of a hill, you spy on the scavengers from far away. One of them lowers his hood for just a moment, he's just a young boy, not a dangerous bandit",
+	" \n\nYou retreat behind the hill and think about what you should do."]
+	npcScene.playText("".join(lookText))
+
 func doNothing():
 	pass
+
+func death():
+	if hPool.size() == 1:
+		npcScene.playerTurn = true
+		npcScene.playerCombat = false
+		npcScene.playText(deathText)
+		npcScene.interactDone = true
+		SaveState.playerJoy -= 10

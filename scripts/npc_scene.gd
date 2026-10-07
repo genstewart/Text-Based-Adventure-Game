@@ -35,7 +35,7 @@ func _process(delta: float) -> void:
 			npc.dealDamage()
 			playerTurn = true
 		elif npc.hPool.size() <=1:
-			death()
+			npc.death()
 	elif Input.is_action_just_pressed("nextDialogue") and textBox.visible_ratio == 1.0 and playerTurn == true:
 		npc.actionHandler(SaveState.prevInput)
 		if SaveState.prevInput.begins_with("stab") or SaveState.prevInput.begins_with("slash"):
@@ -61,10 +61,3 @@ func skipDialogue():
 	continueButton.disabled = true
 	tween.custom_step(60)
 	continueButton.disabled = false
-
-func death():
-	if npc.hPool.size() == 1:
-		playerTurn = true
-		playerCombat = false
-		playText(npc.deathText)
-		interactDone = true
