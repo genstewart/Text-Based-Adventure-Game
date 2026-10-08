@@ -79,7 +79,7 @@ func _process(delta: float) -> void:
 		restButton()
 
 func c1():
-	print("you continue on the path home")
+	get_tree().change_scene_to_file("res://Scenes/eden.tscn")
 
 func c2():
 	player.option2.disabled = true

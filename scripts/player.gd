@@ -71,6 +71,13 @@ func _on_player_action_text_changed() -> void:
 		SaveState.prevInput = playerInput.text.replace(" ", "")
 		playerInput.clear()
 
+func updateMood():
+	if SaveState.playerJoy >= 0 and SaveState.playerJoy <= 1:
+		SaveState.playerStatus = "[color=red]Exhausted[/color]"
+	elif SaveState.playerJoy >=1 and SaveState.playerJoy <= 10:
+		SaveState.playerStatus = "[color=yellow]Tired[/color]"
+	Status.text = SaveState.playerStatus
+
 func healPlayer():
 	if SaveState.healthPotion >= 0:
 		potionButton.disabled = true

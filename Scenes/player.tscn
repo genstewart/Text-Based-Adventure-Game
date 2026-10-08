@@ -146,10 +146,12 @@ alignment = 0
 expand_icon = true
 
 [node name="playerStatus" type="RichTextLabel" parent="view/playerArea/playerInfo/playerStats" unique_id=2069221531]
+texture_filter = 1
 layout_mode = 2
 theme_override_colors/default_color = Color(0.72742903, 0.07724287, 9.62615e-08, 1)
 theme_override_fonts/normal_font = ExtResource("1_vgqql")
 theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
 text = "Exhausted"
 fit_content = true
 

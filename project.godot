@@ -22,7 +22,8 @@ DialogueLoader="*uid://b6bcwd3breh5n"
 
 [display]
 
-window/size/mode=2
+window/size/initial_position_type=0
+window/stretch/mode="viewport"
 
 [global_group]
 

@@ -13,11 +13,11 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color(0.44705883, 0.44705883, 0.44705883, 1)
 
-[node name="npcScene" type="Node2D" unique_id=1855492083 node_paths=PackedStringArray("textBox", "npc")]
+[node name="scavengerFight" type="Node2D" unique_id=1855492083 node_paths=PackedStringArray("textBox", "npc")]
 script = ExtResource("1_gnhme")
 textBox = NodePath("dialogueScreen/Panel/dialogueArea/dialogue")
 npc = NodePath("dialogueScreen/scavengers")
-returnScene = "res://Scenes/the_gates.tscn"
+returnScene = "res://Scenes/eden.tscn"
 
 [node name="dialogueScreen" type="MarginContainer" parent="." unique_id=640003557]
 custom_minimum_size = Vector2(1152, 648)

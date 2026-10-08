@@ -103,6 +103,7 @@ func restButton():
 		tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
 		player.option2.disabled = false
 		SaveState.playerJoy += 1
+		player.updateMood()
 	elif restCount == 3:
 		introNarration.text = "After a day of resting, you feel its time to begin the journey home."
 		tween = create_tween()
@@ -114,6 +115,7 @@ func restButton():
 		tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
 		player.option2.disabled = false
 		SaveState.playerJoy += 1
+		player.updateMood()
 
 
 func dialogueSkip():
