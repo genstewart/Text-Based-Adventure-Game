@@ -1,6 +1,7 @@
 extends Control
 
 @export var npcScene : Node2D
+@export var player : Control
 
 @export var npcName = ""
 @export var groupName = ""
@@ -160,6 +161,7 @@ func talkAction():
 		 " After you talk, the boys decide to continue looking for their father, and give him a proper burial. \nYou continue on your journey home."]
 		npcScene.playText("".join(talkText))
 		SaveState.playerJoy += 10
+		player.updateMood()
 		print(SaveState.playerJoy)
 		npcScene.interactDone = true
 	else:
@@ -189,3 +191,4 @@ func death():
 		npcScene.playText(deathText)
 		npcScene.interactDone = true
 		SaveState.playerJoy -= 10
+		player.updateMood()

@@ -49,10 +49,11 @@ visible_characters_behavior = 1
 [node name="player" parent="dialogueScreen" unique_id=135934462 instance=ExtResource("2_qqtv6")]
 layout_mode = 2
 
-[node name="scavengers" parent="dialogueScreen" unique_id=1913397892 node_paths=PackedStringArray("npcScene") instance=ExtResource("4_kohbg")]
+[node name="scavengers" parent="dialogueScreen" unique_id=1913397892 node_paths=PackedStringArray("npcScene", "player") instance=ExtResource("4_kohbg")]
 layout_mode = 2
 mouse_filter = 2
 npcScene = NodePath("../..")
+player = NodePath("../player")
 npcName = "scavenger"
 groupName = "scavengers"
 hPool = [-160, 60, 60, 60, 60]

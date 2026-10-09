@@ -45,3 +45,4 @@ visible_characters_behavior = 1
 
 [node name="player" parent="dialogueScreen" unique_id=135934462 instance=ExtResource("2_8wehl")]
 layout_mode = 2
+mouse_filter = 1

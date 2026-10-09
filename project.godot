@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="A Hero's End"
-run/main_scene="uid://c5dc8m7l66idt"
+run/main_scene="uid://bc7ny5ldll3s1"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 

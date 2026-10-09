@@ -90,6 +90,8 @@ func c3(memoryPart):
 		playText(recallMemory[0] + recallMemory[1] + recallMemory[2] + recallMemory[3] + recallMemory[4])
 	elif memoryPart == 2:
 		playText(recallMemory[5] + recallMemory[6] + recallMemory[7] + recallMemory[8] + recallMemory[9])
+		SaveState.playerJoy += 10
+		player.updateMood()
 		memoryPlaying = false
 		playerPlaying = true
 		player.option3.disabled = true
@@ -100,16 +102,19 @@ func restButton():
 		playText(restText[0])
 		player.option4.disabled = false
 		SaveState.playerJoy += 1
+		player.updateMood()
 	elif restCount == 5:
 		playText(restText[2] + SaveState.friendTwo + ", and " + SaveState.friendThree + restText[3] + SaveState.friendOne 
 		+  ". " + SaveState.friendTwo + restText[4] + SaveState.bossSlain + restText[5] + SaveState.friendOne + restText[6])
 		player.option4.disabled = true
 		SaveState.playerJoy += 1
+		player.updateMood()
 		print(SaveState.playerJoy)
 	elif restCount > 1 and restCount < 5:
 		playText(restText[1])
 		player.option4.disabled = false
 		SaveState.playerJoy += 1
+		player.updateMood()
 
 func skipDialogue():
 	continueButton.disabled = true

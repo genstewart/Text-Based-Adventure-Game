@@ -40,10 +40,9 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("heal") or potionButton.button_pressed == true:
 		healPlayer()
 
-func Buttons(state : bool):
+func showButtons(state : bool):
 	if not state:
 		optContainer.hide()
-		optContainer.MOUSE_FILTER_IGNORE
 		option1.disabled = true
 		option2.disabled = true
 		option3.disabled = true
@@ -51,7 +50,6 @@ func Buttons(state : bool):
 		option5.disabled = true
 	elif state:
 		optContainer.show()
-		optContainer.MOUSE_FILTER_PASS
 		option1.disabled = false
 		option2.disabled = false
 		option3.disabled = false
@@ -61,10 +59,8 @@ func Buttons(state : bool):
 func inputCon(state : bool):
 	if not state:
 		iContainer.hide()
-		playerInput.MOUSE_FILTER_IGNORE
 	elif state:
 		iContainer.show()
-		playerInput.MOUSE_FILTER_PASS
 
 func _on_player_action_text_changed() -> void:
 	if Input.is_action_just_pressed("nextDialogue"):
