@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://bxxval5b4noyo"
-path="res://.godot/imported/Born2bSportyV2.ttf-b5dd85a7721b302a00f8d75f2212a5f0.fontdata"
+uid="uid://gxqtmtl5jqbe"
+path="res://.godot/imported/ARCADECLASSIC.TTF-ce1c6362ebb2bee1f8ee05dd870cd3b3.fontdata"
 
 [deps]
 
-source_file="res://Born2bSportyV2.ttf"
-dest_files=["res://.godot/imported/Born2bSportyV2.ttf-b5dd85a7721b302a00f8d75f2212a5f0.fontdata"]
+source_file="res://fonts/ARCADECLASSIC.TTF"
+dest_files=["res://.godot/imported/ARCADECLASSIC.TTF-ce1c6362ebb2bee1f8ee05dd870cd3b3.fontdata"]
 
 [params]
 

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c5dc8m7l66idt"]
 
-[ext_resource type="FontFile" uid="uid://bxxval5b4noyo" path="res://Born2bSportyV2.ttf" id="1_fbga1"]
+[ext_resource type="FontFile" uid="uid://bxxval5b4noyo" path="res://fonts/Born2bSportyV2.ttf" id="1_fbga1"]
 [ext_resource type="Script" uid="uid://dsul0clx8c4lq" path="res://scripts/the_gates.gd" id="1_utine"]
 [ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="2_utine"]
 

@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bpv6mj4vwpsp6"]
 
 [ext_resource type="Script" uid="uid://bavxrkbcp4y5s" path="res://scripts/player.gd" id="1_fkybt"]
-[ext_resource type="FontFile" uid="uid://bxxval5b4noyo" path="res://Born2bSportyV2.ttf" id="1_vgqql"]
 [ext_resource type="Texture2D" uid="uid://b4mwvqqyg4ji5" path="res://Sprites/healthBar3.png" id="2_fkybt"]
 [ext_resource type="Texture2D" uid="uid://7ec6ln7kyae4" path="res://Sprites/healthBar2.png" id="3_x3wgy"]
 [ext_resource type="Texture2D" uid="uid://cjbp72ibh57gt" path="res://Sprites/healthBar1.png" id="4_3smsa"]
@@ -91,7 +90,6 @@ texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_fonts/font = ExtResource("1_vgqql")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_2ixp3")
 theme_override_styles/hover = SubResource("StyleBoxFlat_prosp")
@@ -116,7 +114,6 @@ theme_override_constants/separation = 14
 texture_filter = 1
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_fonts/font = ExtResource("1_vgqql")
 theme_override_font_sizes/font_size = 40
 text = "Name"
 
@@ -136,7 +133,6 @@ texture_filter = 1
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("1_vgqql")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_2pnq3")
 theme_override_styles/hover = SubResource("StyleBoxFlat_otxxp")
@@ -149,7 +145,6 @@ expand_icon = true
 texture_filter = 1
 layout_mode = 2
 theme_override_colors/default_color = Color(0.72742903, 0.07724287, 9.62615e-08, 1)
-theme_override_fonts/normal_font = ExtResource("1_vgqql")
 theme_override_font_sizes/normal_font_size = 40
 bbcode_enabled = true
 text = "Exhausted"
@@ -190,8 +185,7 @@ layout_mode = 2
 size_flags_vertical = 0
 focus_mode = 1
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("1_vgqql")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxEmpty_qmd0d")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_3qdye")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_qd6eu")
@@ -208,8 +202,7 @@ layout_mode = 2
 size_flags_vertical = 0
 focus_mode = 1
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("1_vgqql")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxEmpty_qmd0d")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_3qdye")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_qd6eu")
@@ -225,8 +218,7 @@ layout_mode = 2
 size_flags_vertical = 0
 focus_mode = 1
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("1_vgqql")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxEmpty_qmd0d")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_3qdye")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_qd6eu")
@@ -242,8 +234,7 @@ layout_mode = 2
 size_flags_vertical = 0
 focus_mode = 1
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("1_vgqql")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxEmpty_qmd0d")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_3qdye")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_qd6eu")
@@ -259,8 +250,7 @@ layout_mode = 2
 size_flags_vertical = 0
 focus_mode = 1
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("1_vgqql")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxEmpty_qmd0d")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_3qdye")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_qd6eu")

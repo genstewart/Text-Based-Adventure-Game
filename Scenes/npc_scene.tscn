@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://dc48b8wbv6vqi"]
 
-[ext_resource type="FontFile" uid="uid://bxxval5b4noyo" path="res://Born2bSportyV2.ttf" id="1_ayieh"]
 [ext_resource type="Script" uid="uid://dgtvjkxgvdwao" path="res://scripts/npc_scene.gd" id="1_gnhme"]
 [ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="2_qqtv6"]
 [ext_resource type="PackedScene" uid="uid://bgxkmlwf3r0et" path="res://Scenes/npc.tscn" id="4_kohbg"]
@@ -40,7 +39,6 @@ theme_override_constants/margin_right = 20
 
 [node name="dialogue" type="RichTextLabel" parent="dialogueScreen/Panel/dialogueArea" unique_id=220556302]
 layout_mode = 2
-theme_override_fonts/normal_font = ExtResource("1_ayieh")
 theme_override_font_sizes/normal_font_size = 30
 fit_content = true
 scroll_active = false

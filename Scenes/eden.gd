@@ -8,6 +8,8 @@ extends Node2D
 @onready var playerArea = player.get_node("view/playerArea")
 @onready var playerInfo = player.get_node("view/playerArea/playerInfo")
 
+@export var npc = ""
+
 var edenIntro1 = ["After a month of walking through the forest you finally notice a clearing appear in the trail. The city of Eden. Often seen as the last hearth of humanity before the " +
  SaveState.bossSlain + " was defeated.\n\nYou were here nearly half a year ago with " + SaveState.friendTwo + ", " + SaveState.friendOne + ", and " + SaveState.friendThree + 
 ". It was ten months after your quest had started that you arrived in Eden. Back then, the city was under constant siege from the The Valley. Goblins, orcs and trolls marched on the castle gates to gain access to the mountain pass and expand their conquest."
@@ -25,8 +27,15 @@ var restText = ["text"]
 
 var introStage = 1
 var introPlaying = true
-var playerPlaying = false
-var memoryPlaying = false
+
+var playerChoosing = false
+
+var playerTurn = false
+var playerCombat = false
+
+var interactTavernDone = false
+var interactStableDone = false
+var interactGuardsDone = false
 
 var restCount = 0
 
@@ -41,26 +50,44 @@ func _ready() -> void:
 	continueButton.show()
 
 func _process(delta: float) -> void:
+	turnHandler()
 	if Input.is_action_just_pressed("nextDialogue") or continueButton.button_pressed == true:
 		if tween.is_running():
 			skipDialogue()
-		elif textBox.visible_ratio == 1.0 and (introStage == 1 or introStage == 2) and introPlaying:
+		elif (introStage == 1 or introStage == 2) and introPlaying:
 			introStage += 1
 			introText(introStage)
+	
+		elif playerCombat and not playerTurn:
+			if npc.hPool.size() > 1:
+				npc.dealDamage()
+				playerTurn = true
+			elif npc.hPool.size() <=1:
+				npc.death()
+		elif playerTurn == true:
+			npc.actionHandler(SaveState.prevInput)
+			if SaveState.prevInput.begins_with("stab") or SaveState.prevInput.begins_with("slash"):
+				playerCombat = true
+				playerTurn = false
+	
 
-	if (Input.is_action_just_pressed("1") or player.option1.button_pressed == true) and playerPlaying:
+
+	if (Input.is_action_just_pressed("1") or player.option1.button_pressed == true) and playerChoosing:
 		c1()
 	
-	if (Input.is_action_just_pressed("2") or player.option2.button_pressed == true) and playerPlaying:
-		c2()
+	if (Input.is_action_just_pressed("2") or player.option2.button_pressed == true) and playerChoosing:
+		if interactTavernDone:
+			null
+		elif not interactTavernDone:
+			c2()
 	
-	if (Input.is_action_just_pressed("3") or player.option3.button_pressed == true)  and playerPlaying:
+	if (Input.is_action_just_pressed("3") or player.option3.button_pressed == true)  and playerChoosing:
 		c3()
 	
-	if (Input.is_action_just_pressed("4") or player.option4.button_pressed == true)  and playerPlaying:
+	if (Input.is_action_just_pressed("4") or player.option4.button_pressed == true)  and playerChoosing:
 		c4()
 	
-	if (Input.is_action_just_pressed("5") or player.option5.button_pressed == true) and playerPlaying:
+	if (Input.is_action_just_pressed("5") or player.option5.button_pressed == true) and playerChoosing:
 		restButton()
 
 func introText(introStage):
@@ -75,23 +102,28 @@ func introText(introStage):
 			playerInfo.show()
 			player.showButtons(true)
 			introPlaying = false
-			playerPlaying = true
-			print("called")
+			playerChoosing = true
 
 func c1():
 	print("you continue through the mountain pass")
 
 func c2():
-	pass
+	player.showButtons(false)
+	player.inputCon(true)
+	playerTurn = true
+	npc = get_node("dialogueScreen/tavernKeeper")
+	playText(npc.introText)
 
 func c3():
-	pass
+	player.showButtons(false)
+	player.inputCon(true)
+	playerTurn = true
 
 func c4():
-	pass
+	player.showButtons(false)
+	player.inputCon(true)
 
 func restButton():
-	print("called")
 	restCount += 1
 	if restCount == 1:
 		playText(restText[0])
@@ -128,3 +160,21 @@ func playerHide():
 
 func wait(seconds: float):
 	await get_tree().create_timer(seconds).timeout
+
+func interactOver(choice):
+	match choice:
+		1:
+			interactTavernDone = true
+			player.showButtons(true)
+			player.inputCon(false)
+			playerTurn = false
+		2:
+			interactStableDone = true
+		3:
+			interactGuardsDone = true
+
+func turnHandler():
+	if not playerTurn:
+		player.instructText.text = "[color=red]Not your turn[/color]"
+	if playerTurn:
+		player.instructText.text = "[color=white]What will you do?[/color]"
