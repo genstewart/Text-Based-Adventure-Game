@@ -42,7 +42,7 @@ var restCount = 0
 func _ready() -> void:
 	player.option1.text = "(1) Continue down the path into the mountains."
 	player.option2.text = "(2) Go to the Tavern."
-	player.option3.text = "(3) Go to the Stables."
+	player.option3.text = "(3) Go to the Blacksmith."
 	player.option4.text = "(4) Go to the Guard House."
 	player.option5.text = "(5) Rest in the Inn."
 	playerHide()
@@ -118,10 +118,15 @@ func c3():
 	player.showButtons(false)
 	player.inputCon(true)
 	playerTurn = true
+	npc = get_node("dialogueScreen/blacksmith")
+	playText(npc.introText)
 
 func c4():
 	player.showButtons(false)
 	player.inputCon(true)
+	playerTurn = true
+	npc = get_node("dialogueScreen/guardHouse")
+	playText(npc.introText)
 
 func restButton():
 	restCount += 1

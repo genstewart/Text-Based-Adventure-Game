@@ -24,7 +24,7 @@ var drinks = 0
 var food = 0
 
 var introText = "You enter the tavern and see a mostly empty room with a few people having a drink in the corner and talking amongst themselves. \n\nThe tavern keeper is behind the bar counter, she is cleaning some glasses when you approach her."
-var deathText = ""
+var deathText = "Why would you try that?"
 
 @export var npcAttackDial = []
 
@@ -52,6 +52,12 @@ var actionMap = {
 	"ale": drinkAction,
 	
 	"eat": eatAction,
+	"hungry": eatAction,
+	"food": eatAction,
+	
+	"quest": questAction,
+	"work": questAction,
+	"trade": questAction,
 	
 	"leave": exitAction,
 	
@@ -188,6 +194,7 @@ func recallAction():
 		npcScene.playText("".join(recallText) + "\n\nNow you feel that couldn't be further from the truth. The real heroes are already gone.")
 	elif SaveState.playerJoy > 15:
 		npcScene.playText("".join(recallText) + "\n\nNow, regardless of a title, you long for home and the friends you miss dearly. They were the real heroes.")
+		SaveState.playerJoy += 10
 
 func sneakAction():
 	var sneakText = ["You duck behind some stools and begin crouching around the tavern floor.\n\n\"" + SaveState.playerName + "? what are you doing...\"\n\nYou stand back up."]
@@ -227,6 +234,10 @@ func eatAction():
 		npcScene.playText(eatText[1])
 	elif food >= 3:
 		npcScene.playText(eatText[2])
+
+func questAction():
+	var questText = ["\"Maybe try asking the others in the town, they might have something for you.\""]
+	npcScene.playText("".join(questText))
 
 func exitAction():
 	var leaveText = ["You say goodbye to the tavern keeper and open the door to leave. \"Good luck, " + SaveState.playerName + "! get home safe\" \n\nYou are back in the town square."]

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cpjtdxgvl8ntm" path="res://Scenes/eden.gd" id="1_8wehl"]
 [ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="2_8wehl"]
 [ext_resource type="Script" uid="uid://cuu5y2ro7832v" path="res://scripts/tavern_keeper.gd" id="4_fbeqm"]
+[ext_resource type="Script" uid="uid://bt66nwogqh1c1" path="res://Scenes/blacksmith.gd" id="4_gflqv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fbeqm"]
 bg_color = Color(0, 0, 0, 1)
@@ -56,3 +57,18 @@ npcName = "tavern keeper"
 hPool = [0, 100, 0, 0, 0]
 aClass = [1, 2, 1, 1, 1]
 npcDamage = 40
+
+[node name="blacksmith" type="Control" parent="dialogueScreen" unique_id=840057195 node_paths=PackedStringArray("npcScene", "player")]
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("4_gflqv")
+npcScene = NodePath("../..")
+player = NodePath("../player")
+npcName = "blacksmith"
+hPool = [0, 200]
+aClass = [1, 1]
+npcDamage = 200
+
+[node name="guardHouse" type="Control" parent="dialogueScreen" unique_id=2131449413]
+layout_mode = 2
+mouse_filter = 2
