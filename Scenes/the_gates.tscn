@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://c5dc8m7l66idt"]
 
-[ext_resource type="FontFile" uid="uid://bxxval5b4noyo" path="res://fonts/Born2bSportyV2.ttf" id="1_fbga1"]
 [ext_resource type="Script" uid="uid://dsul0clx8c4lq" path="res://scripts/the_gates.gd" id="1_utine"]
 [ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="2_utine"]
 
@@ -37,7 +36,6 @@ theme_override_constants/margin_right = 20
 
 [node name="dialogue" type="RichTextLabel" parent="dialogueScreen/Panel/dialogueArea" unique_id=1049465702]
 layout_mode = 2
-theme_override_fonts/normal_font = ExtResource("1_fbga1")
 theme_override_font_sizes/normal_font_size = 30
 fit_content = true
 scroll_active = false

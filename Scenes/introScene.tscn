@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://3mauy78ikgcb"]
 
 [ext_resource type="Script" uid="uid://q8775xjg8ps4" path="res://scripts/intro_scene.gd" id="1_prosp"]
-[ext_resource type="FontFile" uid="uid://bxxval5b4noyo" path="res://fonts/Born2bSportyV2.ttf" id="1_qq6bv"]
 [ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="3_prosp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y564o"]
@@ -37,7 +36,6 @@ theme_override_constants/margin_right = 20
 [node name="dialogue" type="RichTextLabel" parent="MarginContainer/Panel/dialogueArea" unique_id=1760249946]
 texture_filter = 1
 layout_mode = 2
-theme_override_fonts/normal_font = ExtResource("1_qq6bv")
 theme_override_font_sizes/normal_font_size = 30
 fit_content = true
 scroll_active = false

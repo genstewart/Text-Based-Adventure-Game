@@ -19,7 +19,7 @@ var playerCombat = false
 var interactDone = false
 
 func _ready() -> void:
-	player.Buttons(false)
+	player.showButtons(false)
 	player.inputCon(true)
 	player.iContainer.show()
 	playText(npc.introText)

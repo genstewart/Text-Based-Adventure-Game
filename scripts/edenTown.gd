@@ -21,7 +21,7 @@ var edenIntro2 = ["When you first arrived here half a year ago, Eden was part of
 
 var edenIntro3 = ["Upon entering the city, the inside is not as dreary as the view from the forest. Within the walls of ruin are children playing, and people beginning the construction of their new homes." + 
 " As you step into the town square three children run up to talk to you.\n\nA young girl stares at the sword around your waist and asks, \"Are you the hero who slayed the " + SaveState.bossSlain + "? my mum told me about you y'know, shes the tavernkeeper.\"" + 
-" You nod along and tell her the bravery of the combined armies that came to your aid, and of course your dearest friends. You look up to see the Tavern, Stables and Guard House nearby. Maybe it will be good to visit again."]
+" You nod along and tell her the bravery of the combined armies that came to your aid, and of course your dearest friends. You look up to see the Tavern, Smith and Guard House nearby. Maybe it will be good to visit again."]
 
 var restText = ["text"]
 
@@ -34,7 +34,7 @@ var playerTurn = false
 var playerCombat = false
 
 var interactTavernDone = false
-var interactStableDone = false
+var interactSmithDone = false
 var interactGuardsDone = false
 
 var restCount = 0
@@ -77,12 +77,15 @@ func _process(delta: float) -> void:
 	
 	if (Input.is_action_just_pressed("2") or player.option2.button_pressed == true) and playerChoosing:
 		if interactTavernDone:
-			null
+			pass
 		elif not interactTavernDone:
 			c2()
 	
 	if (Input.is_action_just_pressed("3") or player.option3.button_pressed == true)  and playerChoosing:
-		c3()
+		if interactSmithDone:
+			pass
+		elif not interactSmithDone:
+			c3()
 	
 	if (Input.is_action_just_pressed("4") or player.option4.button_pressed == true)  and playerChoosing:
 		c4()
@@ -126,7 +129,10 @@ func c4():
 	player.inputCon(true)
 	playerTurn = true
 	npc = get_node("dialogueScreen/guardHouse")
-	playText(npc.introText)
+	if SaveState.playerJoy >= 30:
+		playText("".join(npc.introText) + "None of you imagined things ending like this. All you ever wanted was to offer your help. Now you'll be remembered for exactly that.")
+	elif SaveState.playerJoy < 30:
+		playText("".join(npc.introText) + "It hardly feels earned. You're at a loss for words.")
 
 func restButton():
 	restCount += 1
@@ -174,7 +180,10 @@ func interactOver(choice):
 			player.inputCon(false)
 			playerTurn = false
 		2:
-			interactStableDone = true
+			interactSmithDone = true
+			player.showButtons(true)
+			player.inputCon(false)
+			playerTurn = false
 		3:
 			interactGuardsDone = true
 

@@ -222,18 +222,18 @@ func drinkAction():
 		npcScene.playText(drinkText[3])
 
 func eatAction():
-	var eatText = ["You ask the tavern keeper for some food and she brings out a bowl of stew and some bread. \"Don't worry its on me.\" she says, and you happily accept and begin eating.",
-	"You order some more food and she brings out another bowl of stew and some bread. \"Don't worry about it.\" she says, she look a little concerned, but you happily accept and begin eating.",
+	var eatText = ["You ask the tavern keeper for some food and she brings out some ", SaveState.playerFood, " for you. \"Don't worry its on me.\" she says. You happily accept and begin eating.",
+	"You order some more food and she brings out even more this time. \"Don't worry about it.\" she says, she looks a little concerned, but you happily accept and begin eating.",
 	"You gained 10kg."]
 	food += 1
 	if food == 1:
-		npcScene.playText(eatText[0])
+		npcScene.playText(eatText[0] + eatText[1] + eatText[2])
 		SaveState.playerJoy += 10
 		player.updateMood()
 	elif food == 2:
-		npcScene.playText(eatText[1])
+		npcScene.playText(eatText[3])
 	elif food >= 3:
-		npcScene.playText(eatText[2])
+		npcScene.playText(eatText[4])
 
 func questAction():
 	var questText = ["\"Maybe try asking the others in the town, they might have something for you.\""]

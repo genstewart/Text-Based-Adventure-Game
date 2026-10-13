@@ -59,9 +59,7 @@ var actionMap = {
 	"work": questAction,
 	
 	"trade": tradeAction,
-	"sword": tradeAction,
 	"armor": tradeAction,
-	"weapon": tradeAction,
 	
 	"leave": exitAction,
 	
@@ -183,7 +181,7 @@ func talkAction():
 		var talkText = ["You approach the blacksmith and say hello, he looks up for a brief moment and nods to welcome you."]
 		npcScene.playText("".join(talkText))
 	else:
-		npcScene.playText("I think it's too late for talking now. Why would you attack the blacksmith?")
+		npcScene.playText("It's too late for talking now. Why would you attack the blacksmith?")
 		player.playerJoy -= 30
 		player.updateMood()
 
@@ -249,8 +247,8 @@ func tradeAction():
 func exitAction():
 	var leaveText = ["You say goodbye to the smith and walk back to the town square. \"Have a safe journey home bud.\" \n\nYou are back in the town square."]
 	npcScene.playText("".join(leaveText))
-	npcScene.interactTavernDone = true
-	npcScene.interactOver(1)
+	npcScene.interactSmithDone = true
+	npcScene.interactOver(2)
 
 func doNothing():
 	pass

@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://bc7ny5ldll3s1"]
 
-[ext_resource type="Script" uid="uid://cpjtdxgvl8ntm" path="res://Scenes/eden.gd" id="1_8wehl"]
+[ext_resource type="Script" uid="uid://cpjtdxgvl8ntm" path="res://scripts/edenTown.gd" id="1_8wehl"]
 [ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="2_8wehl"]
 [ext_resource type="Script" uid="uid://cuu5y2ro7832v" path="res://scripts/tavern_keeper.gd" id="4_fbeqm"]
-[ext_resource type="Script" uid="uid://bt66nwogqh1c1" path="res://Scenes/blacksmith.gd" id="4_gflqv"]
+[ext_resource type="Script" uid="uid://bt66nwogqh1c1" path="res://scripts/blacksmith.gd" id="4_gflqv"]
+[ext_resource type="Script" uid="uid://bmfp4p18pxfol" path="res://scripts/guard_house.gd" id="5_gflqv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fbeqm"]
 bg_color = Color(0, 0, 0, 1)
@@ -69,6 +70,10 @@ hPool = [0, 200]
 aClass = [1, 1]
 npcDamage = 200
 
-[node name="guardHouse" type="Control" parent="dialogueScreen" unique_id=2131449413]
+[node name="guardHouse" type="Control" parent="dialogueScreen" unique_id=2131449413 node_paths=PackedStringArray("npcScene", "player")]
 layout_mode = 2
 mouse_filter = 2
+script = ExtResource("5_gflqv")
+npcScene = NodePath("../..")
+player = NodePath("../player")
+hPool = [0, 999]
