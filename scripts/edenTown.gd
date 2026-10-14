@@ -66,7 +66,7 @@ func _process(delta: float) -> void:
 				npc.death()
 		elif playerTurn == true:
 			npc.actionHandler(SaveState.prevInput)
-			if SaveState.prevInput.begins_with("stab") or SaveState.prevInput.begins_with("slash"):
+			if (SaveState.prevInput.begins_with("stab") or SaveState.prevInput.begins_with("slash")):
 				playerCombat = true
 				playerTurn = false
 	
