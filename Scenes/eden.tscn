@@ -77,3 +77,4 @@ script = ExtResource("5_gflqv")
 npcScene = NodePath("../..")
 player = NodePath("../player")
 hPool = [0, 999]
+aClass = [1, 1, 1]

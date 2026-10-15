@@ -37,6 +37,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	healthBar.value = SaveState.health
+	potionButton.text = str(SaveState.healthPotion)
 	if Input.is_action_just_pressed("heal") or potionButton.button_pressed == true:
 		healPlayer()
 

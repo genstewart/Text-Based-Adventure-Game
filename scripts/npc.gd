@@ -154,7 +154,7 @@ func slashTargetFinder():
 func talkAction():
 	if npcScene.playerCombat == false:
 		var talkText = ["You walk up and talk to the scavengers.",
-		 " They are just some young boys from the village a month's walk away.",
+		 " They are just some young boys from the city, Eden.",
 		 " You ask them what they are doing here and the oldest boy replies,", "\n\n\"Are you ", SaveState.playerName, "? The city watch told us we might meet you out here.\"\n",
 		 "\"Are you the only survivor? We were just looking for our Dad...\"", "\n\nYou explain to the orphan boys what happend in the battle.",
 		 " The guilt of the battle weighs heavy on your mind, but you feel better that you didn't resort to killing the boys immediately.",
@@ -191,4 +191,5 @@ func death():
 		npcScene.playText(deathText)
 		npcScene.interactDone = true
 		SaveState.playerJoy -= 10
+		SaveState.boysKilled = true
 		player.updateMood()

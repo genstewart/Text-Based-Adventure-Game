@@ -106,14 +106,24 @@ func introText(introStage):
 			player.showButtons(true)
 			introPlaying = false
 			playerChoosing = true
+		4:
+			playText("You arrive back in Eden the following morning after camping a night in the woods. You stand in the town square.")
+			continueButton.hide()
+			playerInfo.show()
+			player.showButtons(true)
+			player.inputCon(false)
+			playerChoosing = true
+			playerTurn = false
 
 func c1():
 	print("you continue through the mountain pass")
+	playerChoosing = false
 
 func c2():
 	player.showButtons(false)
 	player.inputCon(true)
 	playerTurn = true
+	playerChoosing = false
 	npc = get_node("dialogueScreen/tavernKeeper")
 	playText(npc.introText)
 
@@ -121,6 +131,7 @@ func c3():
 	player.showButtons(false)
 	player.inputCon(true)
 	playerTurn = true
+	playerChoosing = false
 	npc = get_node("dialogueScreen/blacksmith")
 	playText(npc.introText)
 
@@ -128,11 +139,15 @@ func c4():
 	player.showButtons(false)
 	player.inputCon(true)
 	playerTurn = true
+	playerChoosing = false
 	npc = get_node("dialogueScreen/guardHouse")
-	if SaveState.playerJoy >= 30:
-		playText("".join(npc.introText) + "None of you imagined things ending like this. All you ever wanted was to offer your help. Now you'll be remembered for exactly that.")
-	elif SaveState.playerJoy < 30:
-		playText("".join(npc.introText) + "It hardly feels earned. You're at a loss for words.")
+	if not npc.questActive:
+		if SaveState.playerJoy >= 30:
+			playText("".join(npc.introText) + "None of you imagined things ending like this. All you ever wanted was to offer your help. Now you'll be remembered for exactly that.")
+		elif SaveState.playerJoy < 30:
+			playText("".join(npc.introText) + "It hardly feels earned. You're at a loss for words.")
+	if npc.questActive:
+		playText("".join(npc.afterQuestText))
 
 func restButton():
 	restCount += 1
@@ -179,13 +194,19 @@ func interactOver(choice):
 			player.showButtons(true)
 			player.inputCon(false)
 			playerTurn = false
+			playerChoosing = true
 		2:
 			interactSmithDone = true
 			player.showButtons(true)
 			player.inputCon(false)
 			playerTurn = false
+			playerChoosing = true
 		3:
 			interactGuardsDone = true
+			player.showButtons(true)
+			player.inputCon(false)
+			playerTurn = false
+			playerChoosing = true
 
 func turnHandler():
 	if not playerTurn:
