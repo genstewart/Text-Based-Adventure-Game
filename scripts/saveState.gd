@@ -24,6 +24,7 @@ var prevInput = ""
 
 #player events to effect story
 var boysKilled = false
+var boysTalked = false
 var orcsKilled = false
 
 

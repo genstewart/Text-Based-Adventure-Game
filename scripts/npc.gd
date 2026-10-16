@@ -161,8 +161,8 @@ func talkAction():
 		 " After you talk, the boys decide to continue looking for their father, and give him a proper burial. \nYou continue on your journey home."]
 		npcScene.playText("".join(talkText))
 		SaveState.playerJoy += 10
+		SaveState.boysTalked = true
 		player.updateMood()
-		print(SaveState.playerJoy)
 		npcScene.interactDone = true
 	else:
 		npcScene.playText("You try to talk to the scavengers and lock eyes with one. These are no 'bandits', these are just some boys from the village! But they're no longer willing to listen to you. \n\nNow they're fighting for their lives.")

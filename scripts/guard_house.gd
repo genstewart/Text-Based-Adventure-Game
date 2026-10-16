@@ -27,7 +27,7 @@ var questAccept = false
 
 var introText = ["You enter the Guard House and three guards are at a table talking over a map. You overhear part of their conversation.\"Are you sure... We really can't spare any men now.\" \"I agree, our focus should be in the city.\" ",
 "One guard glances towards the door and sees you.\n\n\"", SaveState.playerName,
- "? We never thought we'd see you again. Once again, you've saved us, we couldn't be more grateful. Y'know they are taking about building statues for you and your friends in the town square.\"\n",]
+ "? We never thought we'd see you again. Did you see any boys on your way here? Y'know they are taking about building statues for you and your friends in the town square.\"\n",]
 var afterQuestText = ["The guards are gathered around the map talking about the city."]
 var deathText = "The two orcs lie dead on the ground. The job is finished and the city is safer for it."
 
@@ -272,11 +272,8 @@ func acceptAction():
 
 ## do This
 func recallAction():
-	var recallText = [""]
-	if SaveState.playerJoy <= 40:
-		npcScene.playText("".join(recallText) + "")
-	elif SaveState.playerJoy > 40:
-		npcScene.playText("".join(recallText) + "")
+	var recallText = "There is nothing to recall about this place."
+	npcScene.playText(recallText)
 
 func sneakAction():
 	var sneakText = ["You're not sure why but you decide to crawl under the map table in the center of the room. The guards all silently watch as you crawl under.\n\n\"",
@@ -317,7 +314,17 @@ func eatAction():
 		npcScene.playText(eatText[2])
 
 func boysQ():
-	pass
+	if not SaveState.boysKilled and SaveState.boysTalked:
+		npcScene.playText("You tell the guards about the boys you met at the gates.\n\n\"Oh! Those boys from the east side, eh? Thank god their safe, thanks for looking out for our next generation of adventurers.\"")
+		SaveState.playerJoy += 10
+		player.updateMood()
+	elif SaveState.boysKilled:
+		npcScene.playText("You confess to killing the three boys who were at the gates.\n\n\"You killed those boys... They were just looking for their Dad after the battle, there was no need for violence. Just get out " + SaveState.playerName + ". Leave Eden.\"\n\nAshamed, you turn around and leave. You are in the town square.")
+		SaveState.playerJoy -= 10
+		player.updateMood()
+		npcScene.interactGuardsDone = true
+	elif not SaveState.boysTalked:
+		npcScene.playText("You tell the guards about some suspected looters you saw at the gates. \"Looters? that might be the boys from the east side, they told us they would go out looking for their dad. We had no way to stop them from going, glad they're okay out there.\"\n\nYou're relieved you didn't resort to violence.")
 
 func tradeAction():
 	if not questActive:

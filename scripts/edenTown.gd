@@ -51,6 +51,10 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	turnHandler()
+	
+	if Input.is_action_just_pressed("nextDialogue") and interactGuardsDone and npc == get_node("dialogueScreen/guardHouse"):
+		interactOver(3)
+	
 	if Input.is_action_just_pressed("nextDialogue") or continueButton.button_pressed == true:
 		if tween.is_running():
 			skipDialogue()
@@ -69,8 +73,6 @@ func _process(delta: float) -> void:
 			if (SaveState.prevInput.begins_with("stab") or SaveState.prevInput.begins_with("slash")):
 				playerCombat = true
 				playerTurn = false
-	
-
 
 	if (Input.is_action_just_pressed("1") or player.option1.button_pressed == true) and playerChoosing:
 		c1()
