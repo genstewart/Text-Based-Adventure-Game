@@ -90,7 +90,11 @@ func _process(delta: float) -> void:
 			c3()
 	
 	if (Input.is_action_just_pressed("4") or player.option4.button_pressed == true)  and playerChoosing:
-		c4()
+		if interactGuardsDone:
+			pass
+		elif not interactGuardsDone:
+			c4()
+		
 	
 	if (Input.is_action_just_pressed("5") or player.option5.button_pressed == true) and playerChoosing:
 		restButton()
@@ -197,18 +201,21 @@ func interactOver(choice):
 			player.inputCon(false)
 			playerTurn = false
 			playerChoosing = true
+			player.option2.disabled = true
 		2:
 			interactSmithDone = true
 			player.showButtons(true)
 			player.inputCon(false)
 			playerTurn = false
 			playerChoosing = true
+			player.option3.disabled = true
 		3:
 			interactGuardsDone = true
 			player.showButtons(true)
 			player.inputCon(false)
 			playerTurn = false
 			playerChoosing = true
+			player.option4.disabled = true
 
 func turnHandler():
 	if not playerTurn:

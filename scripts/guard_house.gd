@@ -314,6 +314,7 @@ func eatAction():
 		npcScene.playText(eatText[2])
 
 func boysQ():
+	SaveState.boysKilled = true
 	if not SaveState.boysKilled and SaveState.boysTalked:
 		npcScene.playText("You tell the guards about the boys you met at the gates.\n\n\"Oh! Those boys from the east side, eh? Thank god their safe, thanks for looking out for our next generation of adventurers.\"")
 		SaveState.playerJoy += 10
