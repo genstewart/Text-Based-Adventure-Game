@@ -69,10 +69,18 @@ func _on_player_action_text_changed() -> void:
 		playerInput.clear()
 
 func updateMood():
-	if SaveState.playerJoy >= 0 and SaveState.playerJoy <= 1:
-		SaveState.playerStatus = "[color=red]Exhausted[/color]"
-	elif SaveState.playerJoy >=1 and SaveState.playerJoy <= 10:
-		SaveState.playerStatus = "[color=yellow]Tired[/color]"
+	if SaveState.playerJoy <0:
+		SaveState.playerStatus = "[color=purple]Depressed[/color]"
+	elif SaveState.playerJoy >= 0 and SaveState.playerJoy <= 1:
+		SaveState.playerStatus = "[color=red]Empty[/color]"
+	elif SaveState.playerJoy >=1 and SaveState.playerJoy <= 20:
+		SaveState.playerStatus = "[color=orange]Exhausted[/color]"
+	elif SaveState.playerJoy >=20 and SaveState.playerJoy <= 40:
+		SaveState.playerStatus = "[color=yellow]Optimistic[/color]"
+	elif SaveState.playerJoy >=40 and SaveState.playerJoy <= 80:
+		SaveState.playerStatus = "[color=white]Hopeful[/color]"
+	elif SaveState.playerJoy >=80:
+		SaveState.playerStatus = "[color=lime]Nostalgic[/color]"
 	Status.text = SaveState.playerStatus
 
 func healPlayer():

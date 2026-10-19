@@ -215,10 +215,14 @@ func slashTargetFinder():
 func talkAction():
 	if not questActive:
 		if npcScene.playerCombat == false:
-			var talkText = [""]
-			npcScene.playText("".join(talkText))
+			var talkText = ["You give news to the guards about the slain Dragon and the fate of the army. \"Wow, I can't believe they're all gone... I'm just thankful you killed the dragon at last.\"",
+			"You give news to the guards about the slain Dragon and the fate of the army and your friends. You avoid all topics about the boys you killed at the gates."]
+			if not SaveState.boysKilled:
+				npcScene.playText(talkText[0])
+			elif SaveState.boysKilled:
+				npcScene.playText(talkText[1])
 		else:
-			npcScene.playText("")
+			npcScene.playText("It's too late to speak with the guards now.")
 			player.playerJoy -= 30
 			player.updateMood()
 	if questActive:

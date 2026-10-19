@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://dicbp1wf2tawv"]
+
+[ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="1_pe47h"]
+[ext_resource type="Script" uid="uid://vtfg5ipc33dj" path="res://scripts/cairn.gd" id="1_wqt34"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wqt34"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.44705883, 0.44705883, 0.44705883, 1)
+
+[node name="cairn" type="Node2D" unique_id=960428912 node_paths=PackedStringArray("textBox")]
+script = ExtResource("1_wqt34")
+textBox = NodePath("dialogueScreen/Panel/dialogueArea/dialogue")
+
+[node name="dialogueScreen" type="MarginContainer" parent="." unique_id=1290493780]
+custom_minimum_size = Vector2(1152, 648)
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="Panel" type="Panel" parent="dialogueScreen" unique_id=1144691337]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wqt34")
+
+[node name="dialogueArea" type="MarginContainer" parent="dialogueScreen/Panel" unique_id=1926412825]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 325.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 20
+
+[node name="dialogue" type="RichTextLabel" parent="dialogueScreen/Panel/dialogueArea" unique_id=1371251483]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 35
+fit_content = true
+scroll_active = false
+visible_characters_behavior = 1
+
+[node name="player" parent="dialogueScreen" unique_id=135934462 instance=ExtResource("1_pe47h")]
+layout_mode = 2
+mouse_filter = 1

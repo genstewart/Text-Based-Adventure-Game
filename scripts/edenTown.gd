@@ -12,7 +12,7 @@ extends Node2D
 
 var edenIntro1 = ["After a month of walking through the forest you finally notice a clearing appear in the trail. The city of Eden. Often seen as the last hearth of humanity before the " +
  SaveState.bossSlain + " was defeated.\n\nYou were here nearly half a year ago with " + SaveState.friendTwo + ", " + SaveState.friendOne + ", and " + SaveState.friendThree + 
-". It was ten months after your quest had started that you arrived in Eden. Back then, the city was under constant siege from the The Valley. Goblins, orcs and trolls marched on the castle gates to gain access to the mountain pass and expand their conquest."
+". It was ten half a year after your quest had started that you arrived in Eden. Back then, the city was under constant siege from the The Valley. Goblins, orcs and trolls marched on the castle gates to gain access to the mountain pass and expand their conquest."
 + " And it was you who helped Eden end the siege after slaying the Orc Commander at last."]
 
 var edenIntro2 = ["When you first arrived here half a year ago, Eden was part of the moutnains. The castle walls appeared to tower higher than the mountains they were built from and cascading rows of houses desceded from the surrounding peaks." + 
@@ -23,7 +23,7 @@ var edenIntro3 = ["Upon entering the city, the inside is not as dreary as the vi
 " As you step into the town square three children run up to talk to you.\n\nA young girl stares at the sword around your waist and asks, \"Are you the hero who slayed the " + SaveState.bossSlain + "? my mum told me about you y'know, shes the tavernkeeper.\"" + 
 " You nod along and tell her the bravery of the combined armies that came to your aid, and of course your dearest friends. You look up to see the Tavern, Smith and Guard House nearby. Maybe it will be good to visit again."]
 
-var restText = ["text"]
+var restText = ["You rest in the local inn and recover fully."]
 
 var introStage = 1
 var introPlaying = true
@@ -122,7 +122,7 @@ func introText(introStage):
 			playerTurn = false
 
 func c1():
-	print("you continue through the mountain pass")
+	get_tree().change_scene_to_file("res://Scenes/cairn.tscn")
 	playerChoosing = false
 
 func c2():
@@ -157,22 +157,14 @@ func c4():
 
 func restButton():
 	restCount += 1
-	if restCount == 1:
+	if restCount <= 1:
 		playText(restText[0])
 		player.option4.disabled = false
-		SaveState.health = 100
-		SaveState.playerJoy += 2
-	elif restCount == 3:
-		playText(restText)
+		SaveState.health = player.healthBar.max_value
+	elif restCount >=2:
+		playText("You can no longer rest in the inn.")
 		player.option4.disabled = true
-		SaveState.health = 100
-		SaveState.playerJoy += 1
-		print(SaveState.playerJoy)
-	elif restCount > 1 and restCount < 3:
-		playText(restText)
-		player.option4.disabled = false
-		SaveState.health = 100
-		SaveState.playerJoy += 1
+
 
 func skipDialogue():
 	continueButton.disabled = true
