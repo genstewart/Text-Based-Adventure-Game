@@ -11,17 +11,17 @@ extends Node2D
 @export var npc = ""
 
 var edenIntro1 = ["After a month of walking through the forest you finally notice a clearing appear in the trail. The city of Eden. Often seen as the last hearth of humanity before the " +
- SaveState.bossSlain + " was defeated.\n\nYou were here nearly half a year ago with " + SaveState.friendTwo + ", " + SaveState.friendOne + ", and " + SaveState.friendThree + 
-". It was ten half a year after your quest had started that you arrived in Eden. Back then, the city was under constant siege from the The Valley. Goblins, orcs and trolls marched on the castle gates to gain access to the mountain pass and expand their conquest."
+ SaveState.bossSlain + " was defeated.\n\nYou were here nearly four months ago with " + SaveState.friendTwo + ", " + SaveState.friendOne + ", and " + SaveState.friendThree + 
+". It was half a year after your quest had started that you arrived in Eden. Back then, the city was under constant siege. Goblins, orcs and trolls marched on the castle gates to gain access to the mountain pass and expand their conquest."
 + " And it was you who helped Eden end the siege after slaying the Orc Commander at last."]
 
-var edenIntro2 = ["When you first arrived here half a year ago, Eden was part of the moutnains. The castle walls appeared to tower higher than the mountains they were built from and cascading rows of houses desceded from the surrounding peaks." + 
-" The bustling city was full of thousands of humans, elves and dwarves with wildlife that coexisted, breathing life into every street and alleyway. And the carefully guarded mountain pass was a common path for traders and travellers alike."+ 
-"\n\nNow the city looks like a shell of its former self, the towering watchtowers have crumbled to all but ruin, and the housing has mostly burned down."]
+var edenIntro2 = ["When you first arrived here half a year ago, the castle walls appeared to tower higher than the mountains they were built from and cascading rows of houses desceded from the surrounding peaks." + 
+" The bustling city had many humans, elves and dwarves with wildlife that coexisted, breathing life into every street and alleyway. And the carefully guarded mountain pass was a common path for traders and travellers alike."+ 
+"\n\nNow the city is a shell of its former self, the towering watchtowers have crumbled to all but ruin, and many houses were burned in the siege."]
 
-var edenIntro3 = ["Upon entering the city, the inside is not as dreary as the view from the forest. Within the walls of ruin are children playing, and people beginning the construction of their new homes." + 
+var edenIntro3 = ["Upon entering the city, the inside is not as dreary as the view from the forest. Within the walls are children playing, and people beginning the construction of their new homes." + 
 " As you step into the town square three children run up to talk to you.\n\nA young girl stares at the sword around your waist and asks, \"Are you the hero who slayed the " + SaveState.bossSlain + "? my mum told me about you y'know, shes the tavernkeeper.\"" + 
-" You nod along and tell her the bravery of the combined armies that came to your aid, and of course your dearest friends. You look up to see the Tavern, Smith and Guard House nearby. Maybe it will be good to visit again."]
+" You nod along and tell her the bravery of the soldiers that came to your aid, and of course, your dearest friends. You look up to see the Tavern, Smith and Guard House nearby. Maybe it will be good to visit again."]
 
 var restText = ["You rest in the local inn and recover fully."]
 
@@ -54,14 +54,14 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("nextDialogue") and interactGuardsDone and npc == get_node("dialogueScreen/guardHouse"):
 		interactOver(3)
-	
+
 	if Input.is_action_just_pressed("nextDialogue") or continueButton.button_pressed == true:
 		if tween.is_running():
 			skipDialogue()
 		elif (introStage == 1 or introStage == 2) and introPlaying:
 			introStage += 1
 			introText(introStage)
-	
+
 		elif playerCombat and not playerTurn:
 			if npc.hPool.size() > 1:
 				npc.dealDamage()
@@ -88,14 +88,13 @@ func _process(delta: float) -> void:
 			pass
 		elif not interactSmithDone:
 			c3()
-	
+
 	if (Input.is_action_just_pressed("4") or player.option4.button_pressed == true)  and playerChoosing:
 		if interactGuardsDone:
 			pass
 		elif not interactGuardsDone:
 			c4()
-		
-	
+
 	if (Input.is_action_just_pressed("5") or player.option5.button_pressed == true) and playerChoosing:
 		restButton()
 

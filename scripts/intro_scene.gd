@@ -29,6 +29,8 @@ signal cBON
 var restCount = 0
 
 func _ready() -> void:
+	player.option1.text = "Travel to The Gates of The Valley."
+	player.option2.text = "Make a campfire and rest."
 	player.option3.hide()
 	player.option4.hide()
 	player.option5.hide()
@@ -59,11 +61,11 @@ func _process(delta: float) -> void:
 		tween.pause()
 		await wait(.9)
 		tween.play()
-	if introOver == false and introNarration.visible_characters == len(introText1 + introText2 + SaveState.bossName + " the " + SaveState.bossSlain + "'s" + "head from above, sliding your sword straight between its eyes.."):
+	if introOver == false and introNarration.visible_characters == len(introText1 + introText2 + " the " + SaveState.bossSlain + "'s" + "head from above, sliding your sword straight between its eyes."):
 		tween.pause()
 		await wait(0.7)
 		tween.play()
-	if introOver == false and introNarration.visible_characters == len(introText1 + introText2 + SaveState.bossName + " the " + SaveState.bossSlain + "'s " + introText3 + SaveState.bossSlain + introText4 + introText5):
+	if introOver == false and introNarration.visible_characters == len(introText1 + introText2 + " the " + SaveState.bossSlain + "'s " + introText3 + SaveState.bossSlain + introText4 + introText5):
 		tween.pause()
 		await wait(0.7)
 		tween.play()
@@ -110,7 +112,7 @@ func restButton():
 		tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
 		player.option2.disabled = true
 	elif restCount > 1 and restCount < 3:
-		introNarration.text = "You rest by the fire and feel a sense of longing. You defeated the dragon, \n\nbut at what cost?"
+		introNarration.text = "You rest by the fire and feel a sense of longing. You defeated the " + SaveState.bossSlain + ", \n\nbut at what cost?"
 		tween = create_tween()
 		tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
 		player.option2.disabled = false

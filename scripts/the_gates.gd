@@ -34,7 +34,7 @@ func _ready() -> void:
 	player.option1.text = "(1) Walk by the scavengers and through the gate, into the forest."
 	player.option2.text = "(2) Approach the four scavengers."
 	player.option3.text = "(3) Recall what happened during the siege."
-	player.option4.text = "(4) Make a campfire and rest"
+	player.option4.text = "(4) Make a campfire and rest."
 	player.option5.hide()
 	playerHide()
 	continueButton.show()

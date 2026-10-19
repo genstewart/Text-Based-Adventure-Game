@@ -5,7 +5,7 @@ const textspeed = .035
 #player stats
 var health = 100
 var healthPotion = 5
-var playerStatus = "Exhausted"
+var playerStatus = "Empty"
 var playerJoy = 0
 var playerSlash = 70
 var playerStab = 40
@@ -16,7 +16,6 @@ var playerFood = "Gyoza"
 var friendOne = "Dave"
 var friendTwo = "Kyle"
 var friendThree = "Clara"
-var bossName = "Gary"
 var bossSlain = "Griffin"
 
 #text input for npc interaction

@@ -73,6 +73,7 @@ var actionMap = {
 	"quest": questAction,
 	"work": questAction,
 	"map": questAction,
+	"help": questAction,
 	
 	"trade": tradeAction,
 	"armor": tradeAction,
@@ -233,7 +234,7 @@ func talkAction():
 
 func questAction():
 	var questText = ["You ask the Guards about what has happend and glance at the map.",
-	"\"There's been a report that some Orcs are camping by the road leading into town. We were just deciding whether we should investigate.\"",
+	"\"There's been a report that some Orcs are camping by the road leading into town and killing the townspeople. We were just deciding whether we should investigate.\"",
 	"\n\nDo you want to offer your help?"]
 	var questDone = ["\"",SaveState.playerName, "! you're back!\"",
 	" You tell the guards about the orcs you killed. They thank you, and give you two health potions for your help.",
@@ -299,23 +300,29 @@ func lookAction():
 
 func drinkAction():
 	var drinkText = ["\"Go to the taven to drink.\"", "\"We have important business to do.\"", "\"You are an alchoholic\""]
-	drinks += 1
-	if drinks == 1:
-		npcScene.playText(drinkText[0])
-	elif drinks >= 2:
-		npcScene.playText(drinkText[1])
-	elif drinks >= 3:
-		npcScene.playText(drinkText[2])
+	if not questActive:
+		drinks += 1
+		if drinks == 1:
+			npcScene.playText(drinkText[0])
+		elif drinks >= 2:
+			npcScene.playText(drinkText[1])
+		elif drinks >= 3:
+			npcScene.playText(drinkText[2])
+	else:
+		doNothing()
 
 func eatAction():
 	var eatText = ["\"Go to the taven if your hungry.\"", "\"We have important business to do.\"", "\"I think you're fat.\""]
-	food += 1
-	if food == 1:
-		npcScene.playText(eatText[0])
-	elif food == 2:
-		npcScene.playText(eatText[1])
-	elif food >= 3:
-		npcScene.playText(eatText[2])
+	if not questActive:
+		food += 1
+		if food == 1:
+			npcScene.playText(eatText[0])
+		elif food == 2:
+			npcScene.playText(eatText[1])
+		elif food >= 3:
+			npcScene.playText(eatText[2])
+	else:
+		doNothing()
 
 func boysQ():
 	SaveState.boysKilled = true
@@ -353,7 +360,7 @@ func exitAction():
 		npcScene.playText("You duck behind a tree and decide to turn back to the city. You're not built for this kind of battle anymore. The Guards are sure to be dissapointed.")
 		SaveState.playerJoy -= 20
 		player.updateMood()
-	
+
 func doNothing():
 	pass
 

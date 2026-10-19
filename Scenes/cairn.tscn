@@ -2,6 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="1_pe47h"]
 [ext_resource type="Script" uid="uid://vtfg5ipc33dj" path="res://scripts/cairn.gd" id="1_wqt34"]
+[ext_resource type="Script" uid="uid://bsrhg3fejcisn" path="res://scripts/thecairn.gd" id="3_8n0no"]
+[ext_resource type="Script" uid="uid://bwu7544fblj66" path="res://scripts/footsteps.gd" id="4_5e7nb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wqt34"]
 bg_color = Color(0, 0, 0, 1)
@@ -44,3 +46,17 @@ visible_characters_behavior = 1
 [node name="player" parent="dialogueScreen" unique_id=135934462 instance=ExtResource("1_pe47h")]
 layout_mode = 2
 mouse_filter = 1
+
+[node name="thecairn" type="Control" parent="dialogueScreen" unique_id=194885851 node_paths=PackedStringArray("npcScene", "player")]
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("3_8n0no")
+npcScene = NodePath("../..")
+player = NodePath("../player")
+hPool = [0, 9999]
+aClass = [1, 50]
+
+[node name="footsteps" type="Control" parent="dialogueScreen" unique_id=1724012775]
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("4_5e7nb")
