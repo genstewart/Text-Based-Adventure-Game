@@ -44,7 +44,7 @@ func playerHide():
 
 func playintrotext():
 	tween = create_tween()
-	introNarration.text = introText1 + introText2 + " the " + SaveState.bossSlain + "'s " + introText3 + SaveState.bossSlain + introText4 + introText5 + introText6
+	introNarration.text = introText1 + introText2 + "the " + SaveState.bossSlain + "'s " + introText3 + SaveState.bossSlain + introText4 + introText5 + introText6
 	tween.set_trans(Tween.TRANS_LINEAR)
 	tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
 
