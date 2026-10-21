@@ -14,7 +14,7 @@ var cairnIntro1 = ["You leave Eden through the mountain pass and begin the long 
 
 var cairnIntro2 = ["After two months of hiking over the mountains you finally begin to see the rolling hills of your hometown.\n\nBefore the descent, you stop at The Cairn; A tall monolothic stone spire that sits on top of a plateau. You can see anything from up here."]
 
-var restText = [""]
+var restText = ["You make a small campfire and rest at the top of the Cairn. You sit and stare at the view of the sun setting over the green rolling hills of your hometown.", "While staring out at the view you're reminded your journey back is almost over. It's been a long journey."]
 
 var introStage = 1
 var introPlaying = true
@@ -141,11 +141,14 @@ func c3():
 
 func restButton():
 	restCount += 1
-	if restCount <= 1:
+	if restCount == 1:
 		playText(restText[0])
 		player.option4.disabled = false
-	elif restCount >=2:
-		playText("You can no longer rest in the inn.")
+	elif restCount == 2:
+		playText(restText[1])
+		player.option4.disabled = false
+	elif restCount >=3:
+		playText("You can no longer rest.")
 		player.option4.disabled = true
 
 func skipDialogue():

@@ -182,7 +182,7 @@ func talkAction():
 		npcScene.playText("".join(talkText))
 	else:
 		npcScene.playText("It's too late for talking now. Why would you attack the blacksmith?")
-		player.playerJoy -= 30
+		player.playerJoy -= 10
 		player.updateMood()
 
 func recallAction():
@@ -259,5 +259,5 @@ func death():
 		npcScene.playerCombat = false
 		npcScene.playText(deathText)
 		npcScene.interactDone = true
-		SaveState.playerJoy -= 30
+		SaveState.playerJoy -= 10
 		player.updateMood()

@@ -170,7 +170,7 @@ func takeDamage(damage):
 		hPool[targetNum] -= stabDmg
 	if damage == SaveState.playerSlash:
 		slashDmg = SaveState.playerSlash - 10 * aClass[z]
-		dealDamageDialogue = ["You slash in a large arc, hitting two of the ", groupName, " cutting them both."]
+		dealDamageDialogue = ["You slash in a large arc, hitting two of the ", groupName, " injuring them both."]
 		takeDamageDialogue = ["The ", groupName, " took ", str(slashDmg), " damage!"]
 		for z in slashTargets:
 			hPool[z] -= slashDmg
@@ -185,7 +185,7 @@ func dealDamage():
 				npcScene.playText("".join(attackDialogue) + "\n\n" +"".join(dealDamageDialogue))
 				SaveState.health -= npcTotalDamage
 			elif hPool.size() <=2:
-				attackDialogue = ["The ", npcName, " slash you with their scimtars."]
+				attackDialogue = ["The ", npcName, " slashes you with its scimtar."]
 				npcTotalDamage = (npcDamage * (hPool.size()-1))
 				dealDamageDialogue = ["The ", npcName, " dealt ", str(npcTotalDamage), " damage!"]
 				npcScene.playText("".join(attackDialogue) + "\n\n" +"".join(dealDamageDialogue))
@@ -224,7 +224,7 @@ func talkAction():
 				npcScene.playText(talkText[1])
 		else:
 			npcScene.playText("It's too late to speak with the guards now.")
-			player.playerJoy -= 30
+			player.playerJoy -= 10
 			player.updateMood()
 	if questActive:
 		if npcScene.playerCombat == false:
@@ -246,11 +246,11 @@ func questAction():
 		questActive = false
 		npcScene.playText("".join(questDone))
 		SaveState.healthPotion += 2
-		SaveState.playerJoy += 20
+		SaveState.playerJoy += 10
 	elif questActive and not SaveState.orcsKilled:
 		questActive = false
 		npcScene.playText("You tell the Guards you found where the orcs camped but didn't deal with them. They're, still happy for your help and send you on your way.")
-		SaveState.playerJoy -= 20
+		SaveState.playerJoy -= 10
 
 func acceptAction():
 	var questAcceptText = ["You decide to check out the reports for the guards and leave the city while the sun is still setting",
@@ -286,7 +286,7 @@ func sneakAction():
 	"You decide to sneak up on the orcs. Creeping up through the bushes, you grab one of the orcs from behind and stab your sword through his back. He falls to the ground lifeless.\n\nThe other jumps up in response ready to avenge his friend."]
 	if not questActive:
 		npcScene.playText(sneakText[0]+sneakText[1]+sneakText[2])
-	elif questActive:
+	elif questActive and not npcScene.playerCombat:
 		npcScene.playText(sneakText[3])
 		hPool.remove_at(1)
 
@@ -358,7 +358,7 @@ func exitAction():
 		npcScene.introText(4)
 	elif questActive:
 		npcScene.playText("You duck behind a tree and decide to turn back to the city. You're not built for this kind of battle anymore. The Guards are sure to be dissapointed.")
-		SaveState.playerJoy -= 20
+		SaveState.playerJoy -= 10
 		player.updateMood()
 
 func doNothing():

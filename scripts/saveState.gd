@@ -25,7 +25,10 @@ var prevInput = ""
 var boysKilled = false
 var boysTalked = false
 var orcsKilled = false
-
+var goblinsKilled = false
+var cofferOpen = false
+var goldTaken = false
+var traderBuried = false
 
 func savePlayerStart():
 	null

@@ -190,6 +190,6 @@ func death():
 		npcScene.playerCombat = false
 		npcScene.playText(deathText)
 		npcScene.interactDone = true
-		SaveState.playerJoy -= 20
+		SaveState.playerJoy -= 10
 		SaveState.boysKilled = true
 		player.updateMood()
