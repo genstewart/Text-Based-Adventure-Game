@@ -103,14 +103,13 @@ func restButton():
 		player.option4.disabled = false
 		SaveState.playerJoy += 1
 		player.updateMood()
-	elif restCount == 5:
+	elif restCount == 4:
 		playText(restText[2] + SaveState.friendTwo + ", and " + SaveState.friendThree + restText[3] + SaveState.friendOne 
 		+  ". " + SaveState.friendTwo + restText[4] + SaveState.bossSlain + restText[5] + SaveState.friendOne + restText[6])
 		player.option4.disabled = true
 		SaveState.playerJoy += 1
 		player.updateMood()
-		print(SaveState.playerJoy)
-	elif restCount > 1 and restCount < 5:
+	elif restCount > 1 and restCount < 4:
 		playText(restText[1])
 		player.option4.disabled = false
 		SaveState.playerJoy += 1

@@ -116,7 +116,6 @@ func restButton():
 		tween = create_tween()
 		tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
 		player.option2.disabled = false
-		SaveState.playerJoy += 1
 		player.updateMood()
 
 
