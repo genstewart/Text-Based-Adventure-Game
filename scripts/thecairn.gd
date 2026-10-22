@@ -24,6 +24,7 @@ var actionMap = {
 	"recall": recallAction,
 	"remember": recallAction,
 	"view": recallAction,
+	"scene": recallAction,
 	
 	"sneak": sneakAction,
 	"stalk": sneakAction,
@@ -83,14 +84,14 @@ func talkAction():
 		npcScene.playText(talkText[1])
 
 func recallAction():
-	var recallText = ["You recall nearly a year ago now when you, ", SaveState.friendTwo, ", ", SaveState.friendThree, ", and ", SaveState.friendOne,
-	" were all sitting at the Cairn.\n\nYou had just set out from your hometown weeks before where the four of you began your quest.",
-	" All of you sat on top the plateau The Cairn stands on and looked out at The Valley ahead of you and the small towns of the rolling hills behind you.",
-	" You all knew you had a long way to go, and were ready for the adventures to come."]
+	var recallText = ["Looking out at the view, you recall what happend here nearly a year ago. You, ", SaveState.friendTwo, ", ", SaveState.friendThree, ", and ", SaveState.friendOne,
+	" were all sitting at the Cairn.\n\nYou had just set out from your hometown weeks before, where the four of you began your quest.",
+	" All of you looked out at The Valley ahead of you and the small towns of the rolling hills behind you.",
+	" We knew we had a long way to go, and were ready for the adventures to come."]
 	if SaveState.playerJoy <= 50:
 		npcScene.playText("".join(recallText) + "\n\nWho knew the adventure would become such a lonely one.")
 	elif SaveState.playerJoy > 50:
-		npcScene.playText("".join(recallText) + "\n\n") ##ADD DIALOGUE HERE
+		npcScene.playText("".join(recallText) + "\n\nLooking back, none of you would have regret a thing. Including you.")
 		SaveState.playerJoy += 10
 
 func sneakAction():

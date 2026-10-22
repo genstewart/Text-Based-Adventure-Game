@@ -155,13 +155,13 @@ visible = false
 custom_minimum_size = Vector2(750, 0)
 layout_mode = 2
 size_flags_horizontal = 8
-theme_override_constants/separation = 8
+theme_override_constants/separation = 10
 
 [node name="playerInstruct" type="RichTextLabel" parent="view/playerArea/playerInfo/inputContainer" unique_id=1782275707]
 texture_filter = 1
-custom_minimum_size = Vector2(0, 32)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/normal_font_size = 35
 bbcode_enabled = true
 text = "What will you do?"
 

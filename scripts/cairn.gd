@@ -10,9 +10,9 @@ extends Node2D
 
 @export var npc = ""
 
-var cairnIntro1 = ["You leave Eden through the mountain pass and begin the long hike through the mountains."]
+var cairnIntro1 = ["You leave Eden through the mountain pass and begin the long hike over the mountains.\n\nTrailing mountainside cliffs, passing under waterfalls and camping in grasy plaeaus. You see glimpses of home from the peaks."]
 
-var cairnIntro2 = ["After two months of hiking over the mountains you finally begin to see the rolling hills of your hometown.\n\nBefore the descent, you stop at The Cairn; A tall monolothic stone spire that sits on top of a plateau. You can see anything from up here."]
+var cairnIntro2 = ["After two months of hiking you finally begin to see the rolling hills of your hometown much clearer.\n\nBefore the descent, you stop at The Cairn; A tall monolothic stone spire that sits on top of a stony plateau. You can see anything from up here."]
 
 var restText = ["You make a small campfire and rest at the top of the Cairn. You sit and stare at the view of the sun setting over the green rolling hills of your hometown.", "While staring out at the view you're reminded your journey back is almost over. It's been a long journey."]
 
@@ -41,17 +41,14 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	turnHandler()
-	
-	##if Input.is_action_just_pressed("nextDialogue") and interactGuardsDone and npc == get_node("dialogueScreen/guardHouse"):
-	##	interactOver(3)
-	
+
 	if Input.is_action_just_pressed("nextDialogue") or continueButton.button_pressed == true:
 		if tween.is_running():
 			skipDialogue()
-		elif (introStage == 1 or introStage == 2) and introPlaying:
+		elif introStage == 1 and introPlaying:
 			introStage += 1
 			introText(introStage)
-	
+
 		elif playerCombat and not playerTurn:
 			if npc.hPool.size() > 1:
 				npc.dealDamage()
@@ -81,9 +78,6 @@ func _process(delta: float) -> void:
 	
 	if (Input.is_action_just_pressed("4") or player.option4.button_pressed == true)  and playerChoosing:
 		restButton()
-	
-	##if (Input.is_action_just_pressed("5") or player.option5.button_pressed == true) and playerChoosing:
-	
 
 func introText(introStage):
 	match introStage:
@@ -124,20 +118,6 @@ func c3():
 	playerChoosing = false
 	npc = get_node("dialogueScreen/footsteps")
 	playText(npc.introText)
-
-#func c4():
-#	player.showButtons(false)
-#	player.inputCon(true)
-#	playerTurn = true
-#	playerChoosing = false
-#	npc = get_node("dialogueScreen/guardHouse")
-#	if not npc.questActive:
-#		if SaveState.playerJoy >= 30:
-#			playText("".join(npc.introText) + "None of you imagined things ending like this. All you ever wanted was to offer your help. Now you'll be remembered for exactly that.")
-#		elif SaveState.playerJoy < 30:
-#			playText("".join(npc.introText) + "It hardly feels earned. You're at a loss for words.")
-#	if npc.questActive:
-#		playText("".join(npc.afterQuestText))
 
 func restButton():
 	restCount += 1
@@ -186,13 +166,6 @@ func interactOver(choice):
 			playerTurn = false
 			playerChoosing = true
 			player.option3.disabled = true
-#		3:
-#			interactGuardsDone = true
-#			player.showButtons(true)
-#			player.inputCon(false)
-#			playerTurn = false
-#			playerChoosing = true
-#			player.option4.disabled = true
 
 func turnHandler():
 	if not playerTurn:
