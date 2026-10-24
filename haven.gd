@@ -10,7 +10,7 @@ extends Node2D
 
 @export var npc = ""
 
-var havenIntro1 = ["You descend the Cairn and begin the walk to Haven, " + SaveState.friendOne + "'s home.\n\nYou stroll through the rolling green fields and camp under trees while fishing   in nearby ponds."]
+var havenIntro1 = ["You descend the Cairn and begin the walk to Haven, " + SaveState.friendOne + "'s home.\n\nYou stroll through the rolling green fields and camp under trees while fishing in nearby ponds."]
 
 var havenIntro2 = ["After a week of walking you arrive in the small township of Haven. A humble town at a crossroads, there can't be more than four buildings.\n\nYou stand at the cross roads in front of " + SaveState.friendOne + "'s house. A dog sits beside the house, wagging it's tail."]
 

@@ -145,8 +145,8 @@ func takeDamage(damage):
 			print(hPool)
 
 func dealDamage():
-	if not npcScene.interactDone:
-		var attackDialogue = ["The ", npcName, " cuts your throat."]
+	if not npcScene.interactTavernDone:
+		var attackDialogue = ["The tavern keeper calls the guards in and they stab you with their swords."]
 		npcTotalDamage = (npcDamage * (hPool.size()-1))
 		dealDamageDialogue = ["The ", npcName, " dealt ", str(npcTotalDamage), " damage!"]
 		npcScene.playText("".join(attackDialogue) + "\n\n" +"".join(dealDamageDialogue))

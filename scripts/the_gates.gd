@@ -90,6 +90,7 @@ func c3(memoryPart):
 		playText(recallMemory[0] + recallMemory[1] + recallMemory[2] + recallMemory[3] + recallMemory[4])
 	elif memoryPart == 2:
 		playText(recallMemory[5] + recallMemory[6] + recallMemory[7] + recallMemory[8] + recallMemory[9])
+		SaveState.daveDeath = true
 		SaveState.playerJoy += 10
 		player.updateMood()
 		memoryPlaying = false

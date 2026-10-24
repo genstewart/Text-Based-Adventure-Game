@@ -57,7 +57,7 @@ player = NodePath("../player")
 npcName = "tavern keeper"
 hPool = [0, 100, 0, 0, 0]
 aClass = [1, 2, 1, 1, 1]
-npcDamage = 40
+npcDamage = 50
 
 [node name="blacksmith" type="Control" parent="dialogueScreen" unique_id=840057195 node_paths=PackedStringArray("npcScene", "player")]
 layout_mode = 2

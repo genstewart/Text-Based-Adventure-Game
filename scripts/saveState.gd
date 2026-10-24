@@ -22,6 +22,7 @@ var bossSlain = "Griffin"
 var prevInput = ""
 
 #player events to effect story
+var daveDeath = false
 var boysKilled = false
 var boysTalked = false
 var orcsKilled = false
