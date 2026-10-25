@@ -11,7 +11,6 @@ extends Node2D
 @export var npc = ""
 
 var cairnIntro1 = ["You leave Eden through the mountain pass and begin the long hike over the mountains.\n\nTrailing mountainside cliffs, passing under waterfalls and camping in grasy plaeaus. You see glimpses of home from the peaks."]
-
 var cairnIntro2 = ["After two months of hiking you finally begin to see the rolling hills of your hometown much clearer.\n\nBefore the descent, you stop at The Cairn; A tall monolothic stone spire that sits on top of a stony plateau. You can see anything from up here."]
 
 var restText = ["You make a small campfire and rest at the top of the Cairn. You sit and stare at the view of the sun setting over the green rolling hills of your hometown.", "While staring out at the view you're reminded your journey back is almost over. It's been a long journey."]

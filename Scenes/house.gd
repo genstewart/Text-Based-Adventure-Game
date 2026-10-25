@@ -39,6 +39,10 @@ var actionMap = {
 	
 	SaveState.friendTwo: recallMeeting,
 	SaveState.friendTwo.to_lower(): recallMeeting,
+	SaveState.friendThree: recallMeeting,
+	SaveState.friendThree.to_lower(): recallMeeting,
+	"friends": recallMeeting,
+	"friend": recallMeeting,
 	
 	"reminisce": recallAction,
 	"recall": recallAction,

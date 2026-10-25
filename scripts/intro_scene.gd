@@ -29,8 +29,8 @@ signal cBON
 var restCount = 0
 
 func _ready() -> void:
-	player.option1.text = "Travel to The Gates of The Valley."
-	player.option2.text = "Make a campfire and rest."
+	player.option1.text = "(1) Travel to The Gates of The Valley."
+	player.option2.text = "(2) Make a campfire and rest."
 	player.option3.hide()
 	player.option4.hide()
 	player.option5.hide()
