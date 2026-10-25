@@ -25,7 +25,7 @@ var food = 0
 
 var introText = "You knock on the door of the house. After hearing a few pots fall on the ground and some footsteps approaching the door, " + npcName + " opens the door and invites you in.\n\n\"" + SaveState.playerName + "!\" she says excitedly. \"Where is " + SaveState.friendOne + "?\""
 var deathText = npcName + " lies dead on the floor, blood pooling up under her. Now she doesn't have to deal with "
-var leaveText = [""]
+var leaveText = ["You turn around and leave the house.\n\nYou stand at the cross roads."]
 
 @export var npcAttackDial = []
 
@@ -37,8 +37,8 @@ var actionMap = {
 	SaveState.friendOne: talkAction,
 	SaveState.friendOne.to_lower(): talkAction,
 	
-	##friend 2
-	##friend 3
+	SaveState.friendTwo: recallMeeting,
+	SaveState.friendTwo.to_lower(): recallMeeting,
 	
 	"reminisce": recallAction,
 	"recall": recallAction,
@@ -182,16 +182,23 @@ func slashTargetFinder():
 
 func talkAction():
 	if npcScene.playerCombat == false:
-		var talkText = ["You explain to her how ", SaveState.friendOne, " died at the siege of the gates." ]
+		var talkText = ["You explain to her how ", SaveState.friendOne, " died at the siege of The Gates." ]
 		if SaveState.daveDeath:
 			if SaveState.playerJoy >= 70:
-				npcScene.playText("".join(talkText) + " He died a hero, and the world is safer for it.\n\n" + npcName + " pauses for a moment and thanks you for coming all this way to tell her. She's glad " + SaveState.friendOne + " died for the greater good of everybody.")
+				npcScene.playText("".join(talkText) + "\n\nHe died a hero, and the world is safer for it.\n\n" + npcName + " pauses for a moment and thanks you for coming all this way to tell her. She's glad " + SaveState.friendOne + " died for the greater good of everybody.")
 				SaveState.playerJoy += 10
+				player.updateMood()
 			elif SaveState.playerJoy < 70:
-				npcScene.playText("".join(talkText) + " he died in vain, anybody could have gone in to open those gates. You should have never put your friend at risk.\n\n" + npcName + " breaks down into tears, and curses you for not going with your friend.")
+				npcScene.playText("".join(talkText) + "\n\nHe died in vain, anybody could have gone in to open the gate. You should have never put your friend at risk.\n\n" + npcName + " breaks down into tears, and curses you for not going with your friend.")
 				SaveState.playerJoy -= 10
+				player.updateMood()
+				leaveText = ["Ashamed, you turn around and walk out of the house. " + SaveState.friendOne + " was your friend.\n\nHow can you call yourself a hero, if you can't even save those closest to you?\n\nYou stand at the crossroads in Haven."]
+				npcScene.interactHouseDone = true
 		else:
 			npcScene.playText("You can't recall how " + SaveState.friendOne + " died.\n\n" + npcName + " bursts into tears and curses you for forgetting about her child.")
+			leaveText = ["Ashamed, you leave the house and think about your friends who died for you nearly a year ago now. How could you forget about their sacrafice?.\n\nYou stand at the crossroads in Haven."]
+			SaveState.playerJoy -= 10
+			player.updateMood()
 			npcScene.interactHouseDone = true
 	else:
 		npcScene.playText("I think it's too late for talking now. Why would you attack her?")
@@ -199,12 +206,17 @@ func talkAction():
 		player.updateMood()
 
 func recallAction():
-	var recallText = [""]
-	if SaveState.playerJoy <= 15:
-		npcScene.playText("".join(recallText) + "\n\n")
-	elif SaveState.playerJoy > 15:
-		npcScene.playText("".join(recallText) + "\n\n")
+	var recallText = ["You recall the day you decided to embark on this quest. You and your friends just finished defending Haven from a small group of goblins and orcs. You all sat quietly inside the house after the brutal raid. After seeing the destruction and aftermath, the four of you chose to travel to Eden and join the defence there."]
+	if SaveState.playerJoy < 85:
+		npcScene.playText("".join(recallText) + "\n\nStanding here now, you're not sure if you ever should have gone. The people here needed you too. They needed their family too.")
+	elif SaveState.playerJoy >= 85:
+		npcScene.playText("".join(recallText) + "\n\nYou know now that if you hadn't gone to Eden you would have never been there to end the siege. Even if they had, the siege at The Gates may have failed without "
+		 + SaveState.friendOne + ". Without " + SaveState.friendTwo + " and " + SaveState.friendThree + ", no one may have survived to kill the " + SaveState.bossSlain + " and end this war.")
 		SaveState.playerJoy += 10
+		player.updateMoood()
+
+func recallMeeting():
+	pass
 
 func sneakAction():
 	var sneakText = [""]
@@ -246,7 +258,7 @@ func questAction():
 
 func exitAction():
 	npcScene.playText("".join(leaveText))
-	npcScene.interactTavernDone = true
+	npcScene.interactHouseDone = true
 	npcScene.interactOver(1)
 
 func doNothing():
@@ -257,6 +269,6 @@ func death():
 		npcScene.playerTurn = true
 		npcScene.playerCombat = false
 		npcScene.playText(deathText)
-		npcScene.interactDone = true
+		npcScene.interactHouseDone = true
 		SaveState.playerJoy -= 10
 		player.updateMood()

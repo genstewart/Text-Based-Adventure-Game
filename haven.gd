@@ -48,6 +48,8 @@ func _process(delta: float) -> void:
 		elif introStage == 1 and introPlaying:
 			introStage += 1
 			introText(introStage)
+		elif playerTurn and (interactHouseDone or interactDogDone):
+			npc.exitAction()
 	
 		elif playerCombat and not playerTurn:
 			if npc.hPool.size() > 1:
