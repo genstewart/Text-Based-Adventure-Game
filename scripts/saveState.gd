@@ -30,6 +30,9 @@ var goblinsKilled = false
 var cofferOpen = false
 var goldTaken = false
 var traderBuried = false
+var toldMom = false
+var dogTreats = false
+var recalledMeeting = false
 
 func savePlayerStart():
 	null

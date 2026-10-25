@@ -154,6 +154,7 @@ func playerHide():
 func wait(seconds: float):
 	await get_tree().create_timer(seconds).timeout
 
+##Maybe make the mothers house accessible even after one conversation.
 func interactOver(choice):
 	match choice:
 		1:

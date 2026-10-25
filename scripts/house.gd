@@ -24,7 +24,7 @@ var drinks = 0
 var food = 0
 
 var introText = "You knock on the door of the house. After hearing a few pots fall on the ground and some footsteps approaching the door, " + npcName + " opens the door and invites you in.\n\n\"" + SaveState.playerName + "!\" she says excitedly. \"Where is " + SaveState.friendOne + "?\""
-var deathText = npcName + " lies dead on the floor, blood pooling up under her. Now she doesn't have to deal with "
+var deathText = npcName + " lies dead on the floor, blood pools up under her. What have you done?"
 var leaveText = ["You turn around and leave the house.\n\nYou stand at the cross roads."]
 
 @export var npcAttackDial = []
@@ -60,10 +60,11 @@ var actionMap = {
 	"drink": drinkAction,
 	"thirsty": drinkAction,
 	
-	"eat": eatAction,
 	"hungry": eatAction,
 	"food": eatAction,
-	"dog": eatAction,
+	"treat": eatAction,
+	
+	"dog": dogAction,
 	
 	"quest": questAction,
 	"work": questAction,
@@ -220,18 +221,24 @@ func recallAction():
 		player.updateMoood()
 
 func recallMeeting():
-	pass
+	var recallMeetingText = ["You recall the day you and your friends met here in Haven. The four of you came from the surrounding towns.\n\n",
+	 SaveState.friendOne, " from Haven, ", SaveState.friendTwo, " and ", SaveState.friendThree,
+	 " both came from a town to the west. After hearing news of a group of goblins and orcs heading to Haven, you all gathered to aid in the defence of the town."]
+	npcScene.playText("".join(recallMeetingText))
+	SaveState.recalledMeeting = true
 
 func sneakAction():
-	var sneakText = [""]
+	var sneakText = ["You duck behind the kitchen counter. \"", SaveState.playerName, ", what are you up to...?\" She looks concerned for you."]
 	npcScene.playText("".join(sneakText))
 
 func lookAction():
-	var lookText = [""]
+	var lookText = ["The house is old and shabby. The paint is chipping off the walls and mostly empty since ", npcName, " lives alone.\n\nDespite the appearance of things this house is a comforting home."]
 	npcScene.playText("".join(lookText))
 
 func drinkAction():
-	var drinkText = [""]
+	var drinkText = ["You ask for something to drink.\n\nShe brings your a nice hot cup of tea to drink. The taste is comforting and reminds you of home.",
+	 "You ask for another cup of tea. She gives it to you but seems to be running out of things to talk to you about.",
+	"I think it's about time to leave"]
 	drinks += 1
 	if drinks == 1:
 		npcScene.playText(drinkText[0])
@@ -239,25 +246,24 @@ func drinkAction():
 		player.updateMood()
 	elif drinks == 2:
 		npcScene.playText(drinkText[1])
-	elif drinks == 3:
+	elif drinks >= 3:
 		npcScene.playText(drinkText[2])
-	elif drinks >= 4:
-		npcScene.playText(drinkText[3])
 
 func eatAction():
-	var eatText = [""]
+	var eatText = ["You ask her if she has any food.\n\n\"Here you are.\" She hands you some smoked beef jerky with visible grains of salt on it.", "You don't want to take all her food."]
 	food += 1
 	if food == 1:
-		npcScene.playText(eatText[0] + eatText[1] + eatText[2])
-		SaveState.playerJoy += 10
-		player.updateMood()
-	elif food == 2:
-		npcScene.playText(eatText[3])
-	elif food >= 3:
-		npcScene.playText(eatText[4])
+		npcScene.playText(eatText[0])
+		SaveState.dogTreats = true
+	elif food >= 2:
+		npcScene.playText(eatText[1])
+
+func dogAction():
+	var dogText = ["You ask her about the dog sitting outside.\"I could use some help with that dog. He won't leave me alone after I gave him some food the other week.\""]
+	npcScene.playText("".join(dogText))
 
 func questAction():
-	var questText = ["\"\""]
+	var questText = ["You ask her if she needs any help around the house.\n\n\"Oh no don't bother, I am doing just fine by myself. I could use some help with that dog however. He won't leave me alone after I gave him some food the other week.\""]
 	npcScene.playText("".join(questText))
 
 func exitAction():
