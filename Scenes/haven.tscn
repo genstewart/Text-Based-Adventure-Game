@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://co0rvdw80aswd" path="res://haven.gd" id="1_jtu3x"]
 [ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="2_pl6yh"]
 [ext_resource type="Script" uid="uid://88aukklgkr52" path="res://scripts/house.gd" id="3_pl6yh"]
+[ext_resource type="Script" uid="uid://b44lwmpi644qr" path="res://Scenes/dog.gd" id="4_qbjut"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qbjut"]
 bg_color = Color(0, 0, 0, 1)
@@ -52,9 +53,16 @@ mouse_filter = 2
 script = ExtResource("3_pl6yh")
 npcScene = NodePath("../..")
 player = NodePath("../player")
+npcName = "dog"
 hPool = [0, 50]
 npcDamage = 5
 
-[node name="dog" type="Control" parent="dialogueScreen" unique_id=2090818144]
+[node name="dog" type="Control" parent="dialogueScreen" unique_id=2090818144 node_paths=PackedStringArray("npcScene", "player")]
 layout_mode = 2
 mouse_filter = 2
+script = ExtResource("4_qbjut")
+npcScene = NodePath("../..")
+player = NodePath("../player")
+hPool = [0, 50]
+aClass = [1, 1]
+npcDamage = 10

@@ -3,7 +3,7 @@ extends Control
 @export var npcScene : Node2D
 @export var player : Control
 
-@export var npcName = ""
+@export var npcName = SaveState.friendOne + "'s mom"
 @export var groupName = ""
 @export var hPool = [0,0,0,0,0]
 @export var aClass = [1,1,1,1,1]
@@ -24,8 +24,8 @@ var drinks = 0
 var food = 0
 
 var introText = "You knock on the door of the house. After hearing a few pots fall on the ground and some footsteps approaching the door, " + npcName + " opens the door and invites you in.\n\n\"" + SaveState.playerName + "!\" she says excitedly. \"Where is " + SaveState.friendOne + "?\""
-var deathText = npcName + " lies dead on the floor, blood pools up under her. What have you done?"
-var leaveText = ["You turn around and leave the house.\n\nYou stand at the cross roads."]
+var deathText = [npcName, " lies dead on the floor, blood pools up under her. What have you done?"]
+var leaveText = ["You turn around and leave the house.\n\nYou stand at the crossroads."]
 
 @export var npcAttackDial = []
 
@@ -119,7 +119,7 @@ func slashAction():
 	slashTargetFinder()
 	print(slashTargets)
 	if slashTargets.size() == 1:
-		var damageText = ["You slash in a large arc, hitting one of the ", groupName, " cutting them."]
+		var damageText = ["You slash in a large arc, hitting", npcName, " cutting them."]
 		if hPool[slashTargets[0]] - slashDmg < 0:
 			takeDamage(SaveState.playerSlash)
 			hPool.remove_at(slashTargets[0])
@@ -146,11 +146,11 @@ func slashAction():
 func takeDamage(damage):
 	if damage == SaveState.playerStab:
 		dealDamageDialogue = ["You stab ",  npcName, " piercing straight through it's armor."]
-		takeDamageDialogue = ["The ", npcName, " took ", str(stabDmg), " damage!"]
+		takeDamageDialogue = [npcName, " took ", str(stabDmg), " damage!"]
 		hPool[targetNum] -= stabDmg
 	if damage == SaveState.playerSlash:
 		dealDamageDialogue = ["You slash in a large arc, hitting ", npcName, " cutting them."]
-		takeDamageDialogue = ["The ", npcName, " took ", str(slashDmg), " damage!"]
+		takeDamageDialogue = [npcName, " took ", str(slashDmg), " damage!"]
 		for z in slashTargets:
 			hPool[z] -= slashDmg
 			print(hPool)
@@ -178,7 +178,7 @@ func slashTargetFinder():
 	slashTargets = []
 	var y = 1
 	if hPool.size() >= 2:
-		while y <= 2 and hPool[y] > 0:
+		while y < 2 and hPool[y] > 0:
 			slashTargets.append(y)
 			y += 1
 		return slashTargets
@@ -278,7 +278,7 @@ func death():
 	if hPool.size() == 1:
 		npcScene.playerTurn = true
 		npcScene.playerCombat = false
-		npcScene.playText(deathText)
+		npcScene.playText("".join(deathText))
 		npcScene.interactHouseDone = true
 		SaveState.playerJoy -= 10
 		player.updateMood()

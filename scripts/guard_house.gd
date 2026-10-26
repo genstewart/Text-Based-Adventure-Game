@@ -277,7 +277,8 @@ func acceptAction():
 
 ## do This
 func recallAction():
-	var recallText = "There is nothing to recall about this place."
+	var recallText = ["You recall the moments after you killed the orc commander.\n\nYou stood in the guard house with your friends and the armies commanders. After the bloody siege you all knew there was only one way to end this war for sure, to kill the ",
+	 SaveState.bossSlain, " at last.\n\nThen you began planning the siege of The Gates with the other commanders."]
 	npcScene.playText(recallText)
 
 func sneakAction():

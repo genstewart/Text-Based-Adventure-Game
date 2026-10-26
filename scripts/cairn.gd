@@ -99,7 +99,7 @@ func introText(introStage):
 			playerTurn = false
 
 func c1():
-	print("you continue down the mountain and towrds the rolling hills")
+	get_tree().change_scene_to_file("res://Scenes/haven.tscn")
 	playerChoosing = false
 
 func c2():

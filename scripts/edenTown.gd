@@ -10,17 +10,14 @@ extends Node2D
 
 @export var npc = ""
 
-var edenIntro1 = ["After a month of walking through the forest you finally notice a clearing appear in the trail. The city of Eden. Often seen as the last hearth of humanity before the " +
- SaveState.bossSlain + " was defeated.\n\nYou were here nearly four months ago with " + SaveState.friendTwo + ", " + SaveState.friendOne + ", and " + SaveState.friendThree + 
-". It was half a year after your quest had started that you arrived in Eden. Back then, the city was under constant siege. Goblins, orcs and trolls marched on the castle gates to gain access to the mountain pass and expand their conquest."
-+ " And it was you who helped Eden end the siege after slaying the Orc Commander at last."]
+var edenIntro1 = ["After a month of walking through the forest you notice a clearing appear in the trail. The city of Eden.\n\nYou left here nearly four months ago with the " + SaveState.friendTwo + ", " + SaveState.friendOne + ", " + SaveState.friendThree + 
+" and the army to kill the ",SaveState.bossSlain, ". Before that, it was half a year after your quest had started that you arrived to help defend Eden. Back then, the walls appeared to tower higher than the mountains they were built from and rows of houses desceded from the surrounding peaks."]
 
-var edenIntro2 = ["When you first arrived here half a year ago, the castle walls appeared to tower higher than the mountains they were built from and cascading rows of houses desceded from the surrounding peaks." + 
-" The bustling city had many humans, elves and dwarves with wildlife that coexisted, breathing life into every street and alleyway. And the carefully guarded mountain pass was a common path for traders and travellers alike."+ 
-"\n\nNow the city is a shell of its former self, the towering watchtowers have crumbled to all but ruin, and many houses were burned in the siege."]
+var edenIntro2 = ["You came to defend the city from the constant siege of the ", SaveState.bossSlain, "'s army, who wanted access to the mountain pass to expand their conquest. After months of the grueling siege, it was you who killed the Orc Commander to end it.
+\nNow the city is a shell of its former self, the towering watchtowers have crumbled to all but ruin, and many houses were burned in the siege."]
 
-var edenIntro3 = ["Upon entering the city, the inside is not as dreary as the view from the forest. Within the walls are children playing, and people beginning the construction of their new homes." + 
-" As you step into the town square three children run up to talk to you.\n\nA young girl stares at the sword around your waist and asks, \"Are you the hero who slayed the " + SaveState.bossSlain + "? my mum told me about you y'know, shes the tavernkeeper.\"" + 
+var edenIntro3 = ["Upon entering the city, you can see children playing and people beginning the construction of their new homes." + 
+" As you walk into the town square three children run up to you.\n\nOne girl stares at the sword around your waist and asks, \"Are you the hero who slayed the " + SaveState.bossSlain + "? my mum told me about you y'know, shes the tavernkeeper.\"" + 
 " You nod along and tell her the bravery of the soldiers that came to your aid, and of course, your dearest friends. You look up to see the Tavern, Smith and Guard House nearby. Maybe it will be good to visit again."]
 
 var restText = ["You rest in the local inn and recover fully."]

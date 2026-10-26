@@ -79,7 +79,10 @@ func _process(delta: float) -> void:
 		restButton()
 
 func c1():
-	get_tree().change_scene_to_file("res://Scenes/eden.tscn")
+	if not SaveState.boysKilled or not SaveState.boysTalked:
+		playText("The scavengers are in your way.")
+	else:
+		get_tree().change_scene_to_file("res://Scenes/eden.tscn")
 
 func c2():
 	player.option2.disabled = true

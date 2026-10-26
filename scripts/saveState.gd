@@ -33,6 +33,7 @@ var traderBuried = false
 var toldMom = false
 var dogTreats = false
 var recalledMeeting = false
+var dogFriend = false
 
 func savePlayerStart():
 	null
