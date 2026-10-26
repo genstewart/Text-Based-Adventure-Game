@@ -47,7 +47,7 @@ action = &"1"
 [sub_resource type="Shortcut" id="Shortcut_x3wgy"]
 events = [SubResource("InputEventAction_fkybt")]
 
-[node name="player" type="Control" unique_id=135934462 node_paths=PackedStringArray("continueB", "nameTag", "healthBar", "potionButton", "Status", "optContainer", "option1", "option2", "option3", "option4", "option5", "iContainer", "instructText", "playerInput") groups=["player"]]
+[node name="player" type="Control" unique_id=135934462 node_paths=PackedStringArray("continueB", "nameTag", "healthBar", "potionButton", "Status", "optContainer", "option1", "option2", "option3", "option4", "option5", "iContainer", "instructText", "playerInput")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_fkybt")
@@ -84,7 +84,7 @@ theme_override_constants/margin_bottom = 30
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_jrqb4")
 
-[node name="continueButton" type="Button" parent="view/playerArea" unique_id=826936625 groups=["player"]]
+[node name="continueButton" type="Button" parent="view/playerArea" unique_id=826936625]
 visible = false
 texture_filter = 1
 layout_mode = 2
@@ -104,7 +104,7 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="playerStats" type="VBoxContainer" parent="view/playerArea/playerInfo" unique_id=850186024 groups=["player"]]
+[node name="playerStats" type="VBoxContainer" parent="view/playerArea/playerInfo" unique_id=850186024]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -173,7 +173,7 @@ focus_mode = 1
 theme_override_font_sizes/font_size = 30
 placeholder_text = "Press Space to Submit"
 
-[node name="optionsContainer" type="VBoxContainer" parent="view/playerArea/playerInfo" unique_id=329609427 groups=["player"]]
+[node name="optionsContainer" type="VBoxContainer" parent="view/playerArea/playerInfo" unique_id=329609427]
 custom_minimum_size = Vector2(750, 0)
 layout_mode = 2
 size_flags_horizontal = 8

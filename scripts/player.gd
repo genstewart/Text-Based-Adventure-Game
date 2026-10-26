@@ -22,20 +22,14 @@ extends Control
 @export var playerInput : TextEdit
 @export var playerChoice = ""
 
-#player's stats
-##var playerName = "Gen"
-##var health = 100
-##var healthPotion = 5
-##var playerStatus = "Exhausted"
-##var playerJoy = 0
-
 func _ready() -> void:
+	healthBar.max_value = SaveState.maxHealth
 	nameTag.text = SaveState.playerName
 	healthBar.value = SaveState.health
 	potionButton.text = str(SaveState.healthPotion)
 	Status.text = SaveState.playerStatus
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	healthBar.value = SaveState.health
 	potionButton.text = str(SaveState.healthPotion)
 	if Input.is_action_just_pressed("heal") or potionButton.button_pressed == true:
@@ -68,6 +62,9 @@ func _on_player_action_text_changed() -> void:
 		SaveState.prevInput = playerInput.text.replace(" ", "")
 		playerInput.clear()
 
+func playerDeath():
+	pass
+
 func updateMood():
 	if SaveState.playerJoy <0:
 		SaveState.playerStatus = "[color=purple]Depressed[/color]"
@@ -92,4 +89,4 @@ func healPlayer():
 		potionButton.text = str(SaveState.healthPotion)
 		potionButton.disabled = false
 	else:
-		null
+		pass

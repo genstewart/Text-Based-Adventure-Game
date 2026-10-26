@@ -169,7 +169,7 @@ func slashTargetFinder():
 	slashTargets = []
 	var y = 1
 	if hPool.size() >= 2:
-		while y <= 2 and hPool[y] > 0:
+		while y < 2 and hPool[y] > 0:
 			slashTargets.append(y)
 			y += 1
 		return slashTargets
@@ -237,6 +237,7 @@ func tradeAction():
 	if trades == 0:
 		npcScene.playText("".join(tradeText))
 		player.healthBar.max_value = 175
+		SaveState.maxHealth = 175
 		SaveState.health += 75
 		SaveState.playerJoy += 10
 		player.updateMood()

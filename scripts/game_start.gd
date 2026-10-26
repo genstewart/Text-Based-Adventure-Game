@@ -26,6 +26,7 @@ var currQ = 0
 @onready var tween = create_tween()
 
 func _ready() -> void:
+	SaveState.savePlayerStart()
 	currQ = 0
 	qBox.visible_characters = 0
 	pInput.text = ""

@@ -14,7 +14,7 @@ var havenIntro1 = ["You descend the Cairn and begin the walk to Haven, " + SaveS
 
 var havenIntro2 = ["After a week of walking you arrive in the small township of Haven. A humble town at a crossroads, there can't be more than four buildings.\n\nYou stand at the cross roads in front of " + SaveState.friendOne + "'s house. A dog sits beside the house, wagging it's tail."]
 
-var restText = [""]
+var restText = ["You walk over to the hills beside Haven and sit in the tall green grass.\n\nThe rolling green hills smell like home.","You stroll around and end up sitting by a nearby pond.\n\nYou relax while watching the fish swim around."]
 
 var introStage = 1
 var introPlaying = true
@@ -132,7 +132,7 @@ func restButton():
 		playText(restText[1])
 		player.option4.disabled = false
 	elif restCount >=3:
-		playText("You can no longer rest.")
+		playText("After a day of resting by the pond, you feels it's time to move on.")
 		player.option4.disabled = true
 
 func skipDialogue():

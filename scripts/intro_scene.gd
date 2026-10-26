@@ -30,8 +30,8 @@ var restCount = 0
 
 func _ready() -> void:
 	player.option1.text = "(1) Travel to The Gates of The Valley."
-	player.option2.text = "(2) Make a campfire and rest."
-	player.option3.hide()
+	player.option2.text = "(2) Recall the events of the battle."
+	player.option3.text = "(3) Make a campfire and rest."
 	player.option4.hide()
 	player.option5.hide()
 	loadDialogue()
@@ -85,8 +85,16 @@ func _process(delta: float) -> void:
 		continueButton.disabled = true
 		if player.option1.button_pressed == true or Input.is_action_just_pressed("1"):
 			get_tree().change_scene_to_file("res://Scenes/the_gates.tscn")
-		if player.option2.button_pressed == true or Input.is_action_just_pressed("2") and restCount < 3:
-			player.option2.disabled = true
+		if player.option1.button_pressed == true or Input.is_action_just_pressed("2"):
+			introNarration.visible_characters = 0
+			introNarration.text = ("You recall the moments leading up to you killing the " + SaveState.bossSlain +
+			".\n\nThe two armies met in the center of The Valley. A long brutal battle resulted with the remaining goblins and orcs retreating to protect the " + SaveState.bossSlain + 
+			".\n\nThat was when you charged forward with " + SaveState.friendTwo + ", " + SaveState.friendThree + ", and the remaining few soldiers to end the battle.") 
+			tween = create_tween()
+			tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
+			player.option2.disabled = true	
+		if player.option3.button_pressed == true or Input.is_action_just_pressed("3") and restCount < 3:
+			player.option3.disabled = true
 			restButton()
 			print(restCount)
 
@@ -103,19 +111,19 @@ func restButton():
 		introNarration.text = "You spend some time digging two graves to bury the bodies of your lost friends. \n\nAfter, you rest by the fire and feel a sense of longing. You defeated the dragon, \n\nbut at what cost?"
 		tween = create_tween()
 		tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
-		player.option2.disabled = false
+		player.option3.disabled = false
 		SaveState.playerJoy += 1
 		player.updateMood()
 	elif restCount == 3:
 		introNarration.text = "After a day of resting, you feel its time to begin the journey home."
 		tween = create_tween()
 		tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
-		player.option2.disabled = true
+		player.option3.disabled = true
 	elif restCount > 1 and restCount < 3:
 		introNarration.text = "You rest by the fire and feel a sense of longing. You defeated the " + SaveState.bossSlain + ", \n\nbut at what cost?"
 		tween = create_tween()
 		tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
-		player.option2.disabled = false
+		player.option3.disabled = false
 		player.updateMood()
 
 

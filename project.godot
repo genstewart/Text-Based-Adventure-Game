@@ -25,10 +25,6 @@ DialogueLoader="*uid://b6bcwd3breh5n"
 window/size/initial_position_type=0
 window/stretch/mode="viewport"
 
-[global_group]
-
-player=""
-
 [gui]
 
 theme/custom_font="uid://c2nydegt6iyj3"

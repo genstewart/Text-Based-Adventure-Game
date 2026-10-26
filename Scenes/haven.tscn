@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://da51lvg566b1g"]
 
-[ext_resource type="Script" uid="uid://co0rvdw80aswd" path="res://haven.gd" id="1_jtu3x"]
+[ext_resource type="Script" uid="uid://co0rvdw80aswd" path="res://scripts/haven.gd" id="1_jtu3x"]
 [ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="2_pl6yh"]
 [ext_resource type="Script" uid="uid://88aukklgkr52" path="res://scripts/house.gd" id="3_pl6yh"]
-[ext_resource type="Script" uid="uid://b44lwmpi644qr" path="res://Scenes/dog.gd" id="4_qbjut"]
+[ext_resource type="Script" uid="uid://b44lwmpi644qr" path="res://scripts/dog.gd" id="4_qbjut"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qbjut"]
 bg_color = Color(0, 0, 0, 1)
