@@ -79,7 +79,7 @@ func _ready() -> void:
 	npcName = SaveState.friendOne + "'s mom"
 	groupName = ""
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	enemiesLeft = [npcName + " is still alive."]
 
 func actionHandler(playerChoice):

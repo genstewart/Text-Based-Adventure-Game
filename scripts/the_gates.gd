@@ -40,7 +40,7 @@ func _ready() -> void:
 	continueButton.show()
 	playText(gatesIntro[0] + gatesIntro[1])
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if introPlaying and textBox.visible_characters == len(gatesIntro[0]):
 		tween.pause()
 		await wait(0.3)

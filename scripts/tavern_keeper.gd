@@ -54,6 +54,8 @@ var actionMap = {
 	"eat": eatAction,
 	"hungry": eatAction,
 	"food": eatAction,
+	SaveState.playerFood: eatAction,
+	SaveState.playerFood.to_lower(): eatAction,
 	
 	"quest": questAction,
 	"work": questAction,
@@ -69,7 +71,10 @@ func _ready() -> void:
 	groupName = ""
 
 func _process(delta: float) -> void:
-	enemiesLeft = ["There are ", str(hPool.size() - 1)," ", groupName, " left."]
+	if hPool.size() == 2:
+		enemiesLeft = ["There is one ", npcName, " left."]
+	elif hPool.size() >=2:
+		enemiesLeft = ["There are ", str(hPool.size() - 1)," ", groupName, " left."]
 
 func actionHandler(playerChoice):
 	var findAction = findTargetStab(playerChoice)
@@ -148,7 +153,7 @@ func dealDamage():
 	if not npcScene.interactTavernDone:
 		var attackDialogue = ["The tavern keeper calls the guards in and they stab you with their swords."]
 		npcTotalDamage = (npcDamage * (hPool.size()-1))
-		dealDamageDialogue = ["The ", npcName, " dealt ", str(npcTotalDamage), " damage!"]
+		dealDamageDialogue = ["The guards dealt ", str(npcTotalDamage), " damage!"]
 		npcScene.playText("".join(attackDialogue) + "\n\n" +"".join(dealDamageDialogue))
 		SaveState.health -= npcTotalDamage
 	else:
@@ -212,7 +217,7 @@ func drinkAction():
 	drinks += 1
 	if drinks == 1:
 		npcScene.playText(drinkText[0])
-		SaveState.playerJoy += 10
+		SaveState.playerJoy += 5
 		player.updateMood()
 	elif drinks == 2:
 		npcScene.playText(drinkText[1])
@@ -228,7 +233,7 @@ func eatAction():
 	food += 1
 	if food == 1:
 		npcScene.playText(eatText[0] + eatText[1] + eatText[2])
-		SaveState.playerJoy += 10
+		SaveState.playerJoy += 5
 		player.updateMood()
 	elif food == 2:
 		npcScene.playText(eatText[3])

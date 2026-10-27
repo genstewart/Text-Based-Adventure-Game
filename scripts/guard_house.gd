@@ -93,7 +93,10 @@ func _ready() -> void:
 	groupName = "guards"
 
 func _process(delta: float) -> void:
-	enemiesLeft = ["There are ", str(hPool.size() - 1)," ", groupName, " left."]
+	if hPool.size() == 2:
+		enemiesLeft = ["There is one ", npcName, " left."]
+	elif hPool.size() >=2:
+		enemiesLeft = ["There are ", str(hPool.size() - 1)," ", groupName, " left."]
 
 func actionHandler(playerChoice):
 	var findAction = findTargetStab(playerChoice)

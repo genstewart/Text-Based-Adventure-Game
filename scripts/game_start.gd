@@ -36,7 +36,7 @@ func _ready() -> void:
 	tween.set_trans(Tween.TRANS_LINEAR)
 	tween.tween_property(qBox, "visible_characters", len(qArray[currQ]), len(qArray[currQ]) * textspeed)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if 1 < len(pInput.text) and len(pInput.text) <= 15:
 		iGood = true
 		eBox.text = ""

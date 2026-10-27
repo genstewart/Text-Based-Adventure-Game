@@ -38,7 +38,7 @@ func _ready() -> void:
 	introText(1)
 	continueButton.show()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	turnHandler()
 
 	if Input.is_action_just_pressed("nextDialogue") or continueButton.button_pressed == true:

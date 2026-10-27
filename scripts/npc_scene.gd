@@ -24,7 +24,7 @@ func _ready() -> void:
 	player.iContainer.show()
 	playText(npc.introText)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("nextDialogue") and interactDone == true and textBox.visible_ratio == 1.0:
 		print("nextScene")
 		loadNextScene()

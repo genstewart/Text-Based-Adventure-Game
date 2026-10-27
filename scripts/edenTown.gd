@@ -17,8 +17,7 @@ var edenIntro2 = ["You came to defend the city from the constant siege of the ",
 \nNow the city is a shell of its former self, the towering watchtowers have crumbled to all but ruin, and many houses were burned in the siege."]
 
 var edenIntro3 = ["Upon entering the city, you can see children playing and people beginning the construction of their new homes." + 
-" As you walk into the town square three children run up to you.\n\nOne girl stares at the sword around your waist and asks, \"Are you the hero who slayed the " + SaveState.bossSlain + "? my mum told me about you y'know, shes the tavernkeeper.\"" + 
-" You nod along and tell her the bravery of the soldiers that came to your aid, and of course, your dearest friends. You look up to see the Tavern, Smith and Guard House nearby. Maybe it will be good to visit again."]
+"\n\nAs you walk into the town square you can smell the smell of " + SaveState.playerFood + " coming from the Tavern. You can also see the Smith and Guard House nearby. Visiting again might spark some old memories."]
 
 var restText = ["You rest in the local inn and recover fully."]
 
@@ -46,7 +45,7 @@ func _ready() -> void:
 	introText(1)
 	continueButton.show()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	turnHandler()
 	
 	if Input.is_action_just_pressed("nextDialogue") and interactGuardsDone and npc == get_node("dialogueScreen/guardHouse"):

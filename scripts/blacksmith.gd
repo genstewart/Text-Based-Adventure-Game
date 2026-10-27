@@ -70,8 +70,11 @@ func _ready() -> void:
 	npcName = "blacksmith"
 	groupName = "blacksmith"
 
-func _process(delta: float) -> void:
-	enemiesLeft = ["There are ", str(hPool.size() - 1)," ", groupName, " left."]
+func _process(_delta: float) -> void:
+	if hPool.size() == 2:
+		enemiesLeft = ["There is one ", npcName, " left."]
+	elif hPool.size() >=2:
+		enemiesLeft = ["There are ", str(hPool.size() - 1)," ", groupName, " left."]
 
 func actionHandler(playerChoice):
 	var findAction = findTargetStab(playerChoice)
@@ -232,7 +235,7 @@ func questAction():
 
 func tradeAction():
 	var tradeText = ["You ask the blacksmith to trade.\n\n\"I heard what you did for Eden when it was under siege. I made this for you.\" He walks to the back of his store and pulls out a mail shirt.",
-	"\nThe mail shirt glitters in the sun and is made with unmatched expertise. You wear the mail shirt under your coat and thank the blacksmith.\n\n"]
+	"\n\nThe mail shirt glitters in the sun and is made with unmatched expertise. You wear the mail shirt under your coat and thank the blacksmith.\n\n"]
 	var trades = 0
 	if trades == 0:
 		npcScene.playText("".join(tradeText))

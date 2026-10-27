@@ -5,6 +5,29 @@
 [ext_resource type="Texture2D" uid="uid://7ec6ln7kyae4" path="res://Sprites/healthBar2.png" id="3_x3wgy"]
 [ext_resource type="Texture2D" uid="uid://cjbp72ibh57gt" path="res://Sprites/healthBar1.png" id="4_3smsa"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vgqql"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.44705883, 0.44705883, 0.44705883, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vgqql"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fkybt"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.44705883, 0.44705883, 0.44705883, 1)
+corner_detail = 1
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jrqb4"]
 bg_color = Color(0.07284262, 0.072842635, 0.072842576, 1)
 
@@ -47,11 +70,12 @@ action = &"1"
 [sub_resource type="Shortcut" id="Shortcut_x3wgy"]
 events = [SubResource("InputEventAction_fkybt")]
 
-[node name="player" type="Control" unique_id=135934462 node_paths=PackedStringArray("continueB", "nameTag", "healthBar", "potionButton", "Status", "optContainer", "option1", "option2", "option3", "option4", "option5", "iContainer", "instructText", "playerInput")]
+[node name="player" type="Control" unique_id=135934462 node_paths=PackedStringArray("continueB", "playerArea", "nameTag", "healthBar", "potionButton", "Status", "optContainer", "option1", "option2", "option3", "option4", "option5", "iContainer", "instructText", "playerInput", "dContainer", "deathText", "restartButton")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_fkybt")
 continueB = NodePath("view/playerArea/continueButton")
+playerArea = NodePath("view/playerArea")
 nameTag = NodePath("view/playerArea/playerInfo/playerStats/playerName")
 healthBar = NodePath("view/playerArea/playerInfo/playerStats/healthBar")
 potionButton = NodePath("view/playerArea/playerInfo/playerStats/healthPotion")
@@ -65,11 +89,62 @@ option5 = NodePath("view/playerArea/playerInfo/optionsContainer/option5")
 iContainer = NodePath("view/playerArea/playerInfo/inputContainer")
 instructText = NodePath("view/playerArea/playerInfo/inputContainer/playerInstruct")
 playerInput = NodePath("view/playerArea/playerInfo/inputContainer/playerAction")
+dContainer = NodePath("view/deathScreen")
+deathText = NodePath("view/deathScreen/dtextCon/dVCon/deathText")
+restartButton = NodePath("view/deathScreen/dtextCon/dVCon/restartButton")
 
 [node name="view" type="MarginContainer" parent="." unique_id=1630542472]
 layout_mode = 0
 offset_right = 1152.0
 offset_bottom = 648.0
+
+[node name="deathScreen" type="MarginContainer" parent="view" unique_id=712789244]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 200
+
+[node name="dtextCon" type="MarginContainer" parent="view/deathScreen" unique_id=1725512371]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="dVCon" type="VBoxContainer" parent="view/deathScreen/dtextCon" unique_id=1126548500]
+layout_mode = 2
+
+[node name="deathText" type="RichTextLabel" parent="view/deathScreen/dtextCon/dVCon" unique_id=1526919933]
+z_index = 2
+texture_filter = 1
+custom_minimum_size = Vector2(0, 280)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 35
+text = "You died a bitter hero who couldn't let go of the past or move on."
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="restartButton" type="Button" parent="view/deathScreen/dtextCon/dVCon" unique_id=1291931621]
+z_index = 2
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxFlat_vgqql")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_vgqql")
+text = " Restart "
+
+[node name="dBG" type="Panel" parent="view/deathScreen" unique_id=2037667285]
+z_index = 1
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fkybt")
 
 [node name="playerArea" type="MarginContainer" parent="view" unique_id=1287666644]
 custom_minimum_size = Vector2(1152, 312)
@@ -260,5 +335,6 @@ text = "(5)"
 alignment = 0
 autowrap_mode = 3
 
+[connection signal="pressed" from="view/deathScreen/dtextCon/dVCon/restartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="view/playerArea/playerInfo/playerStats/healthPotion" to="." method="_on_health_potion_pressed"]
 [connection signal="text_changed" from="view/playerArea/playerInfo/inputContainer/playerAction" to="." method="_on_player_action_text_changed"]

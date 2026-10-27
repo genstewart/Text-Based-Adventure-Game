@@ -56,7 +56,7 @@ func playATBtext():
 	tween = create_tween()
 	tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if introOver == false and introNarration.visible_characters == len(introText1):
 		tween.pause()
 		await wait(.9)
