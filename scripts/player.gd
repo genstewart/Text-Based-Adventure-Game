@@ -126,9 +126,10 @@ func healPlayer():
 	if SaveState.healthPotion >= 0:
 		potionButton.disabled = true
 		print("healing")
-		SaveState.health += 50
+		healthBar.value += 50
 		SaveState.healthPotion -= 1
 		potionButton.text = str(SaveState.healthPotion)
 		potionButton.disabled = false
+		print(healthBar.value)
 	else:
 		pass

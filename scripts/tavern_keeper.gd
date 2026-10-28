@@ -68,9 +68,9 @@ var actionMap = {
 
 func _ready() -> void:
 	npcName = "tavern keeper"
-	groupName = ""
+	groupName = "guards"
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if hPool.size() == 2:
 		enemiesLeft = ["There is one ", npcName, " left."]
 	elif hPool.size() >=2:
