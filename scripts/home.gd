@@ -10,11 +10,11 @@ extends Node2D
 
 @export var npc = ""
 
-var homeIntrojoy = [""] #1
-var homeIntrojoydog = [""] #3
+var homeIntrojoy = ["You walk down the country road alone towards your home. The orchards and lush green meadows remind you of the times you walked this same road with your friends.\n\nThey live forever in your memories.\n\nAfter a day of walking you arrive back home."] #1
+var homeIntrojoydog = ["You and the dog walk down the country road towards home. The dog runs circles around you as you walk the familiar meadows of your home.\n\nThe dog is happy to have a friend.\n\nAfter a day of walking you arrive back home."] #3
 
-var homeIntrosad = [""] #2 
-var homeIntrosaddog = [""] #4
+var homeIntrosad = ["You walk down the country road alone towards your home. The familiar roads remind you of nothing but the times you walked here with your friends so long ago, now you have to walk here alone.\n\nAfter a day of walking you arrive back home."] #2 
+var homeIntrosaddog = ["You and the dog walk down the country road towards home. The memories of times you walked the same roads with your friends fill your mind, at least now you don't have to walk alone.\n\nAfter a day of walking you arrive back home."] #4
 
 var playerChoosing = false
 
@@ -25,6 +25,9 @@ func _ready() -> void:
 	player.option1.text = "(1) Return home."
 	playerHide()
 	continueButton.show()
+	
+	SaveState.playerJoy = 100
+	SaveState.dogFriend = false
 	
 	if SaveState.playerJoy > 70:
 		if SaveState.dogFriend:
@@ -43,44 +46,34 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("nextDialogue") or continueButton.button_pressed == true:
 		if tween.is_running():
 			skipDialogue()
+		elif playerTurn == true:
+			npc.actionHandler(SaveState.prevInput)
 
 	if (Input.is_action_just_pressed("1") or player.option1.button_pressed == true) and playerChoosing:
 		c1()
 
 func introText(introStage):
+	continueButton.hide()
+	playerInfo.show()
+	player.showButtons(true)
+	playerChoosing = true
 	match introStage:
 		1:
 			playText("".join(homeIntrojoy))
-			continueButton.hide()
-			playerInfo.show()
-			player.showButtons(true)
-			introPlaying = false
-			playerChoosing = true
 		2:
 			playText("".join(homeIntrosad))
-			continueButton.hide()
-			playerInfo.show()
-			player.showButtons(true)
-			introPlaying = false
-			playerChoosing = true
 		3:
 			playText("".join(homeIntrojoydog))
-			continueButton.hide()
-			playerInfo.show()
-			player.showButtons(true)
-			introPlaying = false
-			playerChoosing = true
 		4:
 			playText("".join(homeIntrosaddog))
-			continueButton.hide()
-			playerInfo.show()
-			player.showButtons(true)
-			introPlaying = false
-			playerChoosing = true
 
 func c1():
-	print("You begin the walk down the road to your home.")
+	player.showButtons(false)
+	player.inputCon(true)
+	playerTurn = true
 	playerChoosing = false
+	npc = get_node("dialogueScreen/ending")
+	playText(npc.introText)
 
 func skipDialogue():
 	continueButton.disabled = true

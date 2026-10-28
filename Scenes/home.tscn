@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://eflhgfd1nugi" path="res://scripts/home.gd" id="1_dt112"]
 [ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="1_uq2cn"]
+[ext_resource type="Script" uid="uid://b3v8w1u22w7nb" path="res://Scenes/ending.gd" id="3_ibywg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dt112"]
 bg_color = Color(0, 0, 0, 1)
@@ -14,7 +15,6 @@ border_color = Color(0.44705883, 0.44705883, 0.44705883, 1)
 [node name="home" type="Node2D" unique_id=921791482 node_paths=PackedStringArray("textBox")]
 script = ExtResource("1_dt112")
 textBox = NodePath("dialogueScreen/Panel/dialogueArea/dialogue")
-npc = null
 
 [node name="dialogueScreen" type="MarginContainer" parent="." unique_id=538827419]
 custom_minimum_size = Vector2(1152, 648)
@@ -45,3 +45,8 @@ visible_characters_behavior = 1
 [node name="player" parent="dialogueScreen" unique_id=135934462 instance=ExtResource("1_uq2cn")]
 layout_mode = 2
 mouse_filter = 1
+
+[node name="ending" type="Control" parent="dialogueScreen" unique_id=1683261969]
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("3_ibywg")
