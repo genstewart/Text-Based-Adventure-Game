@@ -16,9 +16,6 @@ var homeIntrojoydog = [""] #3
 var homeIntrosad = [""] #2 
 var homeIntrosaddog = [""] #4
 
-var introStage = 1
-var introPlaying = true
-
 var playerChoosing = false
 
 var playerTurn = false
@@ -46,9 +43,6 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("nextDialogue") or continueButton.button_pressed == true:
 		if tween.is_running():
 			skipDialogue()
-		elif introStage == 1 and introPlaying:
-			introStage += 1
-			introText(introStage)
 
 	if (Input.is_action_just_pressed("1") or player.option1.button_pressed == true) and playerChoosing:
 		c1()

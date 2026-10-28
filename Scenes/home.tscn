@@ -11,8 +11,10 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color(0.44705883, 0.44705883, 0.44705883, 1)
 
-[node name="home" type="Node2D" unique_id=921791482]
+[node name="home" type="Node2D" unique_id=921791482 node_paths=PackedStringArray("textBox")]
 script = ExtResource("1_dt112")
+textBox = NodePath("dialogueScreen/Panel/dialogueArea/dialogue")
+npc = null
 
 [node name="dialogueScreen" type="MarginContainer" parent="." unique_id=538827419]
 custom_minimum_size = Vector2(1152, 648)
