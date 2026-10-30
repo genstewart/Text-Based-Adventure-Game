@@ -337,6 +337,7 @@ func boysQ():
 	elif SaveState.boysKilled:
 		npcScene.playText("You confess to killing the three boys who were at the gates.\n\n\"You killed those boys... They were just looking for their Dad after the battle, there was no need for violence. Just get out " + SaveState.playerName + ". Leave Eden.\"\n\nAshamed, you turn around and leave. You are in the town square.")
 		SaveState.playerJoy -= 10
+		SaveState.toldGuards = true
 		player.updateMood()
 		npcScene.interactGuardsDone = true
 	elif not SaveState.boysTalked:

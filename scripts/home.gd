@@ -26,9 +26,6 @@ func _ready() -> void:
 	playerHide()
 	continueButton.show()
 	
-	SaveState.playerJoy = 100
-	SaveState.dogFriend = false
-	
 	if SaveState.playerJoy > 70:
 		if SaveState.dogFriend:
 			introText(3)

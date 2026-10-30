@@ -46,7 +46,9 @@ visible_characters_behavior = 1
 layout_mode = 2
 mouse_filter = 1
 
-[node name="ending" type="Control" parent="dialogueScreen" unique_id=1683261969]
+[node name="ending" type="Control" parent="dialogueScreen" unique_id=1683261969 node_paths=PackedStringArray("npcScene", "player")]
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("3_ibywg")
+npcScene = NodePath("../..")
+player = NodePath("../player")
