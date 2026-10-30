@@ -242,7 +242,7 @@ func drinkAction():
 	drinks += 1
 	if drinks == 1:
 		npcScene.playText(drinkText[0])
-		SaveState.playerJoy += 10
+		SaveState.playerJoy += 5
 		player.updateMood()
 	elif drinks == 2:
 		npcScene.playText(drinkText[1])

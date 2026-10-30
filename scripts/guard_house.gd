@@ -249,11 +249,11 @@ func questAction():
 		questActive = false
 		npcScene.playText("".join(questDone))
 		SaveState.healthPotion += 2
-		SaveState.playerJoy += 10
+		SaveState.playerJoy += 5
 	elif questActive and not SaveState.orcsKilled:
 		questActive = false
 		npcScene.playText("You tell the Guards you found where the orcs camped but didn't deal with them. They're, still happy for your help and send you on your way.")
-		SaveState.playerJoy -= 10
+		SaveState.playerJoy -= 5
 
 func acceptAction():
 	var questAcceptText = ["You decide to check out the reports for the guards and leave the city while the sun is still setting",
@@ -278,7 +278,6 @@ func acceptAction():
 	else:
 		doNothing()
 
-## do This
 func recallAction():
 	var recallText = ["You recall the moments after you killed the orc commander.\n\nYou stood in the guard house with your friends and the armies commanders. After the bloody siege you all knew there was only one way to end this war for sure, to kill the ",
 	 SaveState.bossSlain, " at last.\n\nThen you began planning the siege of The Gates with the other commanders."]
@@ -363,7 +362,7 @@ func exitAction():
 		npcScene.introText(4)
 	elif questActive:
 		npcScene.playText("You duck behind a tree and decide to turn back to the city. You're not built for this kind of battle anymore. The Guards are sure to be dissapointed.")
-		SaveState.playerJoy -= 10
+		SaveState.playerJoy -= 5
 		player.updateMood()
 
 func doNothing():
@@ -375,6 +374,6 @@ func death():
 			npcScene.playerTurn = true
 			npcScene.playerCombat = false
 			npcScene.playText(deathText)
-			SaveState.playerJoy += 10
+			SaveState.playerJoy += 5
 			SaveState.orcsKilled = true
 			player.updateMood()

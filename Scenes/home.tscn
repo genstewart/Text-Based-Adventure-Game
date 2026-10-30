@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://eflhgfd1nugi" path="res://scripts/home.gd" id="1_dt112"]
 [ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="1_uq2cn"]
-[ext_resource type="Script" uid="uid://b3v8w1u22w7nb" path="res://Scenes/ending.gd" id="3_ibywg"]
+[ext_resource type="Script" uid="uid://b3v8w1u22w7nb" path="res://scripts/ending.gd" id="3_ibywg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dt112"]
 bg_color = Color(0, 0, 0, 1)
@@ -20,9 +20,15 @@ textBox = NodePath("dialogueScreen/Panel/dialogueArea/dialogue")
 custom_minimum_size = Vector2(1152, 648)
 offset_right = 1152.0
 offset_bottom = 648.0
+focus_behavior_recursive = 1
+mouse_filter = 2
+mouse_behavior_recursive = 1
 
 [node name="Panel" type="Panel" parent="dialogueScreen" unique_id=1756490082]
 layout_mode = 2
+focus_behavior_recursive = 1
+mouse_filter = 2
+mouse_behavior_recursive = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_dt112")
 
 [node name="dialogueArea" type="MarginContainer" parent="dialogueScreen/Panel" unique_id=49020555]
@@ -31,24 +37,36 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 325.0
 grow_horizontal = 2
+focus_behavior_recursive = 1
+mouse_filter = 2
+mouse_behavior_recursive = 1
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 30
 theme_override_constants/margin_right = 20
 
 [node name="dialogue" type="RichTextLabel" parent="dialogueScreen/Panel/dialogueArea" unique_id=1342642799]
 layout_mode = 2
+focus_mode = 2
+focus_behavior_recursive = 2
+mouse_behavior_recursive = 2
 theme_override_font_sizes/normal_font_size = 35
+bbcode_enabled = true
 fit_content = true
 scroll_active = false
 visible_characters_behavior = 1
+language = "en"
 
 [node name="player" parent="dialogueScreen" unique_id=135934462 instance=ExtResource("1_uq2cn")]
 layout_mode = 2
-mouse_filter = 1
+focus_mode = 2
+focus_behavior_recursive = 1
+mouse_behavior_recursive = 1
 
 [node name="ending" type="Control" parent="dialogueScreen" unique_id=1683261969 node_paths=PackedStringArray("npcScene", "player")]
 layout_mode = 2
+focus_behavior_recursive = 1
 mouse_filter = 2
+mouse_behavior_recursive = 1
 script = ExtResource("3_ibywg")
 npcScene = NodePath("../..")
 player = NodePath("../player")

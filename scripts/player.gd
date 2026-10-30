@@ -108,18 +108,20 @@ func playText(nextText: String):
 	tween.tween_property(deathText, "visible_characters", len(deathText.text), len(deathText.text) * SaveState.textspeed)
 
 func updateMood():
-	if SaveState.playerJoy <0:
+	if SaveState.playerJoy < 0:
 		SaveState.playerStatus = "[color=purple]Depressed[/color]"
-	elif SaveState.playerJoy >= 0 and SaveState.playerJoy <= 1:
-		SaveState.playerStatus = "[color=red]Empty[/color]"
-	elif SaveState.playerJoy >=1 and SaveState.playerJoy <= 20:
-		SaveState.playerStatus = "[color=orange]Exhausted[/color]"
-	elif SaveState.playerJoy >=20 and SaveState.playerJoy <= 40:
+	elif SaveState.playerJoy >= 0 and SaveState.playerJoy <= 5:
+		SaveState.playerStatus = "[color=red]Exhausted[/color]"
+	elif SaveState.playerJoy > 5 and SaveState.playerJoy <= 30:
+		SaveState.playerStatus = "[color=orange]Tired[/color]"
+	elif SaveState.playerJoy > 30 and SaveState.playerJoy <= 60:
 		SaveState.playerStatus = "[color=yellow]Optimistic[/color]"
-	elif SaveState.playerJoy >=40 and SaveState.playerJoy <= 80:
+	elif SaveState.playerJoy > 60 and SaveState.playerJoy <= 90:
 		SaveState.playerStatus = "[color=white]Hopeful[/color]"
-	elif SaveState.playerJoy >=80:
+	elif SaveState.playerJoy > 90 and SaveState.playerJoy <= 130:
 		SaveState.playerStatus = "[color=lime]Nostalgic[/color]"
+	elif SaveState.playerJoy > 130:
+		SaveState.playerStatus = "[color=lightblue]At Peace[/color]"
 	Status.text = SaveState.playerStatus
 
 func healPlayer():

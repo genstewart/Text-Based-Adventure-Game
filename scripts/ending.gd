@@ -25,6 +25,15 @@ var leaveText = ["You journey is over. Now it's time to rest."]
 var actionMap = {
 	"rest": restAction,
 	
+	"look": lookAction,
+	
+	"credits": creditsAction,
+	
+	"gen": easterEgg,
+	"Gen": easterEgg,
+	"allan": easterEgg,
+	"Allan": easterEgg,
+	
 	"leave": exitAction,
 	
 	"": doNothing,
@@ -35,8 +44,6 @@ func _ready() -> void:
 		introText = "You open the door to enter your home with your dog. Here it is, the place where your quest began nearly one year ago.\n\nNow you can finally rest."
 	elif not SaveState.dogFriend:
 		introText = "You open the door to enter your home. Here it is, the place where your quest began nearly one year ago.\n\nNow you can finally rest."
-
-	SaveState.playerJoy = 120
 
 	if SaveState.boysTalked:
 		merciful = mercifulText[3]
@@ -66,11 +73,13 @@ func _ready() -> void:
 		friend = friendText[0]
 
 	if SaveState.playerJoy <= 40:
-		remembered = "\n\nYou weren't remembered by many, and your story slowly stopped being told."
-	elif SaveState.playerJoy <= 110 and SaveState.playerJoy > 40:
-		remembered = "\n\nThose you personally knew will remember you, and you live in their memories forever."
-	elif SaveState.playerJoy > 110:
-		remembered = "\n\nYou will go down in history as not only the hero to save the world but a truly kind and admirable person. You will be an inspiration for many people to come."
+		remembered = "\n\nYou weren't remembered by many, and your story slowly stopped being [hint=type \"credits\"]told.[/hint]"
+	elif SaveState.playerJoy <= 90 and SaveState.playerJoy > 40:
+		remembered = "\n\nThose you personally knew will remember you, but your story will end with [hint=type \"credits\"]them.[/hint]"
+	elif SaveState.playerJoy <= 130 and SaveState.playerJoy > 90:
+		remembered = "\n\nThose you personally knew will remember you, and you live in their memories [hint=type \"credits\"]forever.[/hint]"
+	elif SaveState.playerJoy > 130:
+		remembered = "\n\nYou will go down in history as not only the hero to save the world but a truly kind and admirable person. You will be an inspiration for many people to [hint=type \"credits\"]come.[/hint]"
 
 	restText = ["You sit down to rest after the long journey. You were one of the heros who saved so many.\n\n", merciful, generous, selfless, honest, friend, remembered]
 
@@ -79,13 +88,22 @@ func actionHandler(playerChoice):
 	var action = playerChoice
 	
 	if not actionMap.has(action):
-		npcScene.playText("You can't do that.")
+		doNothing()
 		return
 
 	actionMap[action].call()
 
 func restAction():
 	npcScene.playText("".join(restText))
+
+func lookAction():
+	npcScene.playText("Nothing to see here but home sweet home. It's the perfect place to rest.")
+
+func creditsAction():
+	npcScene.playText("[color=orange]Thank you for playing!\n\nThis game was made entirely by Gen over the course of one month-ish, special thanks to Yukie got helping play-test it. If you enjoyed the game please send a screenshot of your ending text to Gen![/color]")
+
+func easterEgg():
+	npcScene.playText("I just wanted a command in the game that was my name lol")
 
 func exitAction():
 	npcScene.playText("".join(leaveText))

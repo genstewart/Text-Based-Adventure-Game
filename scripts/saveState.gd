@@ -6,7 +6,7 @@ const textspeed = .035
 var maxHealth = 100
 var health = 100
 var healthPotion = 5
-var playerStatus = "Empty"
+var playerStatus = "Exhausted"
 var playerJoy = 0
 var playerSlash = 70
 var playerStab = 40
@@ -56,7 +56,7 @@ func savePlayerStart():
 	maxHealth = 100
 	health = 100
 	healthPotion = 5
-	playerStatus = "Empty"
+	playerStatus = "Exhausted"
 	playerJoy = 0
 	playerSlash = 70
 	playerStab = 40

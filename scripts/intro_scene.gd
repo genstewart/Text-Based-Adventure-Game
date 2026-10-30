@@ -92,7 +92,7 @@ func _process(_delta: float) -> void:
 			".\n\nThat was when you charged forward with " + SaveState.friendTwo + ", " + SaveState.friendThree + ", and the remaining few soldiers to end the tyranny of the " + SaveState.bossSlain + ".") 
 			tween = create_tween()
 			tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
-			player.option2.disabled = true	
+			player.option2.disabled = true
 		if player.option3.button_pressed == true or Input.is_action_just_pressed("3") and restCount < 3:
 			player.option3.disabled = true
 			restButton()
