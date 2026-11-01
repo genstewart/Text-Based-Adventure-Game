@@ -10,7 +10,7 @@ extends Node2D
 
 @export var npc = ""
 
-var cairnIntro1 = ["You leave Eden through the mountain pass and begin the long hike over the mountains.\n\nYou trail the mountainside cliffs, passing under waterfalls and camp in grassy plateaus. You see glimpses of home from the peaks."]
+var cairnIntro1 = ["You leave Eden through the mountain pass and begin the long hike over the mountains.\n\nYou trail the mountainside cliffs, passing under waterfalls and camping on grassy plateaus. From the top of the mountain range, you can see glimpses of home."]
 var cairnIntro2 = ["After two months of hiking you finally begin to see the rolling hills of your hometown much clearer.\n\nBefore the descent, you stop at The Cairn; A tall monolothic stone spire that sits on top of a stony plateau. You can see anything from up here."]
 
 var restText = ["You make a small campfire and rest at the top of the Cairn. You sit and stare at the view of the sun setting over the green rolling hills of your hometown.", "While staring out at the view you're reminded your journey back is almost over. It's been a long time since you saw home."]
@@ -39,8 +39,6 @@ func _ready() -> void:
 	continueButton.show()
 
 func _process(_delta: float) -> void:
-	turnHandler()
-
 	if Input.is_action_just_pressed("nextDialogue") or continueButton.button_pressed == true:
 		if tween.is_running():
 			skipDialogue()
@@ -52,31 +50,34 @@ func _process(_delta: float) -> void:
 			if npc.hPool.size() > 1:
 				npc.dealDamage()
 				playerTurn = true
+				player.instructText.text = "[color=white]What will you do?[/color]"
 			elif npc.hPool.size() <=1:
 				npc.death()
 		elif playerTurn == true:
 			npc.actionHandler(SaveState.prevInput)
-			if (SaveState.prevInput.begins_with("stab") or SaveState.prevInput.begins_with("slash")) and npc == get_node("dialogueScreen/footsteps"):
+			if (SaveState.prevInput.begins_with("stab") or SaveState.prevInput.begins_with("slash")) and npc == get_node("dialogueScreen/footsteps") and npc.questActive:
 				playerCombat = true
 				playerTurn = false
+				player.instructText.text = "[color=red]Not your turn[/color]"
 
-	if (Input.is_action_just_pressed("1") or player.option1.button_pressed == true) and playerChoosing:
-		c1()
-	
-	if (Input.is_action_just_pressed("2") or player.option2.button_pressed == true) and playerChoosing:
-		if interactCairnDone:
-			pass
-		elif not interactCairnDone:
-			c2()
-	
-	if (Input.is_action_just_pressed("3") or player.option3.button_pressed == true)  and playerChoosing:
-		if interactFootstepsDone:
-			pass
-		elif not interactFootstepsDone:
-			c3()
-	
-	if (Input.is_action_just_pressed("4") or player.option4.button_pressed == true)  and playerChoosing:
-		restButton()
+	if playerChoosing:
+		if Input.is_action_just_pressed("1") or player.option1.button_pressed:
+			c1()
+		
+		if Input.is_action_just_pressed("2") or player.option2.button_pressed:
+			if interactCairnDone:
+				pass
+			elif not interactCairnDone:
+				c2()
+		
+		if Input.is_action_just_pressed("3") or player.option3.button_pressed:
+			if interactFootstepsDone:
+				pass
+			elif not interactFootstepsDone:
+				c3()
+		
+		if Input.is_action_just_pressed("4") or player.option4.button_pressed:
+			restButton()
 
 func introText(introStage):
 	match introStage:
@@ -166,9 +167,9 @@ func interactOver(choice):
 			playerTurn = false
 			playerChoosing = true
 			player.option3.disabled = true
-
-func turnHandler():
-	if not playerTurn:
-		player.instructText.text = "[color=red]Not your turn[/color]"
-	if playerTurn:
-		player.instructText.text = "[color=white]What will you do?[/color]"
+	if interactCairnDone:
+		player.option2.disabled = true
+	if interactFootstepsDone:
+		player.option3.disabled = true
+	if restCount >= 3:
+		player.option4.disabled = true

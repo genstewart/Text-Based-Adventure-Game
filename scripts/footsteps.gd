@@ -89,12 +89,11 @@ func _process(_delta: float) -> void:
 		enemiesLeft = ["There are ", str(hPool.size() - 1)," ", groupName, " left."]
 
 func actionHandler(playerChoice):
-	var findAction = findTargetStab(playerChoice)
-	var action = findAction["action"]
-	targetNum = findAction["target"]
+	var action = playerChoice
+	player.instructText.text = "[color=white]What will you do?[/color]"
 	
 	if not actionMap.has(action):
-		npcScene.playText("You can't do that.")
+		player.instructText.text = "[color=orange]You can't do that action[/color]"
 		return
 
 	actionMap[action].call()
@@ -102,26 +101,18 @@ func actionHandler(playerChoice):
 func stabAction():
 	stabDmg = SaveState.playerStab + 10 * aClass[targetNum]
 	if questActive:
-		if targetNum == 0:
-			npcScene.playText("You thrust forwards stabbing, but no one is there...")
-			return
 		if targetNum < 0 or targetNum >= hPool.size():
-			npcScene.playText("There's no target there.")
-			return
-		if hPool[targetNum] <= 0:
-			npcScene.playText("That target is dead!")
+			npcScene.playText("There's no one to stab.")
 			return
 
 		if hPool[targetNum] - stabDmg <= 0:
 			takeDamage("stab")
 			hPool.remove_at(targetNum)
-			print(hPool.size() -1)
 			npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nThey fall to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
-			print(hPool)
 		elif hPool[targetNum] - stabDmg >= 0:
 			takeDamage("stab")
-			print(hPool)
 			npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue))
+
 	elif not questActive:
 		npcScene.playText("You thrust your sword repeatedly into the ground and ruin the footprints.")
 		npcScene.playerCombat = false
@@ -131,7 +122,7 @@ func slashAction():
 	if questActive:
 		slashTargetFinder()
 		if slashTargets.size() == 1:
-			var damageText = ["You slash in a large arc, hitting one of the ", groupName, " cutting them."]
+			var damageText = ["You slash in a large arc, hitting a ", npcName, " cutting them."]
 			if hPool[slashTargets[0]] - slashDmg < 0:
 				takeDamage("slash")
 				hPool.remove_at(slashTargets[0])
@@ -144,6 +135,7 @@ func slashAction():
 			hPool.remove_at(slashTargets[0])
 			hPool.remove_at(slashTargets[0])
 			npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nThey both fall to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
+			print(hPool)
 		elif (hPool[slashTargets[0]] - slashDmg >= 0 and hPool[slashTargets[1]] - slashDmg <= 0) or (hPool[slashTargets[0]] - slashDmg <= 0 and hPool[slashTargets[1]] - slashDmg >= 0):
 			takeDamage("slash")
 			hPool.remove_at(slashTargets[0])
@@ -155,14 +147,14 @@ func slashAction():
 		npcScene.playText("You slash the rock wall beside you with your sword and carve a few scratches into it. Pretty cool.")
 		npcScene.playerCombat = false
 
-func takeDamage(damage):
+func takeDamage(damage : String):
+	stabDmg = SaveState.playerStab + 10 * aClass[targetNum]
+	slashDmg = SaveState.playerSlash - 10 * aClass[z]
 	if damage == "stab":
-		stabDmg = SaveState.playerStab + 10 * aClass[targetNum]
 		dealDamageDialogue = ["You stab the ", targetName[targetNum], npcName, " piercing straight through it's armor."]
 		takeDamageDialogue = ["The ", targetName[targetNum], npcName, " took ", str(stabDmg), " damage!"]
 		hPool[targetNum] -= stabDmg
 	if damage == "slash":
-		slashDmg = SaveState.playerSlash - 10 * aClass[z]
 		dealDamageDialogue = ["You slash in a large arc, hitting two of the ", groupName, " cutting them both."]
 		takeDamageDialogue = ["The ", groupName, " took ", str(slashDmg), " damage!"]
 		for z in slashTargets:
@@ -171,39 +163,29 @@ func takeDamage(damage):
 func dealDamage():
 		if not npcScene.interactFootstepsDone and questActive:
 			var attackDialogue = ["The ", groupName, " attack you with their clubs"]
+			npcTotalDamage = (npcDamage * (hPool.size()-1))
 			if hPool.size() > 2:
 				attackDialogue = ["The ", groupName, " attack you with their clubs"]
-				npcTotalDamage = (npcDamage * (hPool.size()-1))
 				dealDamageDialogue = ["The ", groupName, " dealt ", str(npcTotalDamage), " damage!"]
-				npcScene.playText("".join(attackDialogue) + "\n\n" +"".join(dealDamageDialogue))
-				SaveState.health -= npcTotalDamage
 			elif hPool.size() <=2:
 				attackDialogue = ["The ", npcName, " attacks you with its club"]
-				npcTotalDamage = (npcDamage * (hPool.size()-1))
 				dealDamageDialogue = ["The ", npcName, " dealt ", str(npcTotalDamage), " damage!"]
-				npcScene.playText("".join(attackDialogue) + "\n\n" +"".join(dealDamageDialogue))
-				SaveState.health -= npcTotalDamage
+			npcScene.playText("".join(attackDialogue) + "\n\n" +"".join(dealDamageDialogue))
+			SaveState.health -= npcTotalDamage
 		else:
 			pass
 
-func findTargetStab(playerChoice : String) -> Dictionary:
-	var x = 0
-	while x < len(playerChoice) and not playerChoice[x].is_valid_int():
-		x += 1
-	var action = playerChoice.substr(0, x)
-	var targetStr = playerChoice.substr(x)
-	var target = targetStr.to_int() if targetStr.is_valid_int() else -1
-	return {"action": action, "target": target}
+func findTargetStab():
+	if hPool.size() >= 2:
+		targetNum = 1
+	elif hPool.size() < 2:
+		targetNum = -1
 
 func slashTargetFinder():
 	slashTargets = []
-	var y = 1
-	if hPool.size() >= 2:
-		while y < 2 and hPool[y] > 0:
-			slashTargets.append(y)
-			y += 1
-		return slashTargets
-	elif hPool.size() == 1:
+	if hPool.size() > 2:
+		slashTargets = [1, 2]
+	elif hPool.size() == 2:
 		slashTargets = [1]
 
 func talkAction():
@@ -276,7 +258,7 @@ func recallAction():
 	npcScene.playText(recallText)
 
 func sneakAction():
-	var sneakText = ["There is nothing to sneak up on now.",
+	var sneakText = ["No one is around to end your sneaking. You tip toe in circles until you get tired.",
 	"You decide to sneak up on the goblins while they are trying to open the coffer.\n\nWhile they are trying to open it, you quickly cut the head clean off one of the goblins. The other two turn to you with their clubs ready to fight."]
 	if not questActive:
 		npcScene.playText(sneakText[0])
@@ -300,11 +282,12 @@ func lookAction():
 func exitAction():
 	if not questActive:
 		npcScene.playText("You walk back to The Cairn.")
-		npcScene.interactFootstepsDone = true
 		npcScene.interactOver(2)
 	elif questActive and SaveState.goblinsKilled:
 		npcScene.introText(3)
+		npcScene.interactOver(2)
 	elif questActive:
+		npcScene.interactOver(2)
 		SaveState.playerJoy -= 10
 		player.updateMood()
 		if SaveState.playerSlash > 70:

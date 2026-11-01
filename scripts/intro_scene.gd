@@ -99,7 +99,7 @@ func _process(_delta: float) -> void:
 		if player.option2.button_pressed == true or Input.is_action_just_pressed("2"):
 			introNarration.visible_characters = 0
 			introNarration.text = ("You recall the moments leading up to you killing the " + SaveState.bossSlain +
-			".\n\nThe two armies met in the center of The Valley. A long brutal battle resulted with the remaining goblins and orcs retreating to protect the " + SaveState.bossSlain + 
+			".\n\nThe two armies met in the center of The Valley. A grueling battle resulted with the remaining enemy forces retreating to protect the " + SaveState.bossSlain + 
 			".\n\nThat was when you charged forward with " + SaveState.friendTwo + ", " + SaveState.friendThree + ", and the remaining few soldiers to end the tyranny of the " + SaveState.bossSlain + ".") 
 			tween = create_tween()
 			tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)

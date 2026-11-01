@@ -10,11 +10,11 @@ extends Node2D
 
 @export var npc = ""
 
-var edenIntro1 = ["After a month of walking through the forest you notice a clearing appear in the trail. The city of Eden.\n\nYou left here nearly four months ago with the " + SaveState.friendTwo + ", " + SaveState.friendOne + ", " + SaveState.friendThree + 
-" and the army to kill the ",SaveState.bossSlain, ". Before that, it was half a year after your quest had started that you arrived to help defend Eden. Back then, the walls appeared to tower higher than the mountains they were built from and rows of houses desceded from the surrounding peaks."]
+var edenIntro1 = ["After a month of walking through the forest you see a clearing appear in the trail.\nThe city of Eden.\n\nYou left here nearly four months ago with " + SaveState.friendTwo + ", " + SaveState.friendOne + ", " + SaveState.friendThree + 
+" and the army of Eden to kill the ",SaveState.bossSlain, ".\n\nBefore that, it was half a year after your quest had started that you arrived to help defend Eden. Back then, the walls appeared to tower higher than the mountains they were built from and rows of houses desceded from the surrounding peaks."]
 
-var edenIntro2 = ["You came to defend the city from the constant siege of the ", SaveState.bossSlain, "'s army, who wanted access to the mountain pass to expand their conquest. After months of the grueling siege, it was you who killed the Orc Commander to end it.
-\nNow the city is a shell of its former self, the towering watchtowers have crumbled to all but ruin, and many houses were burned in the siege."]
+var edenIntro2 = ["You came to defend the city from the siege of the ", SaveState.bossSlain, "'s army, who wanted to access the mountain pass and expand their conquest. After months of a bloody siege, you killed the Orc Commander to end it all.
+\nNow the city is a shell of its former self, the towering watchtowers have crumbled to all but ruin, and many houses have burned down."]
 
 var edenIntro3 = ["Upon entering the city, you can see children playing and people beginning the construction of their new homes." + 
 "\n\nAs you walk into the town square you can smell the smell of " + SaveState.playerFood + " coming from the Tavern. You can also see the Smith and Guard House nearby. Visiting again might spark some old memories."]
@@ -40,13 +40,12 @@ func _ready() -> void:
 	player.option2.text = "(2) Go to the Tavern."
 	player.option3.text = "(3) Go to the Blacksmith."
 	player.option4.text = "(4) Go to the Guard House."
-	player.option5.text = "(5) Rest in the Inn."
+	player.option5.text = "(5) Rest and heal fully at the Inn."
 	playerHide()
 	introText(1)
 	continueButton.show()
 
 func _process(_delta: float) -> void:
-	
 	if Input.is_action_just_pressed("nextDialogue") and interactGuardsDone and npc == get_node("dialogueScreen/guardHouse"):
 		interactOver(3)
 
@@ -72,28 +71,28 @@ func _process(_delta: float) -> void:
 				player.instructText.text = "[color=red]Not your turn[/color]"
 
 	if playerChoosing:
-		if Input.is_action_just_pressed("1") or player.option1.button_pressed == true:
+		if Input.is_action_just_pressed("1") or player.option1.button_pressed:
 			c1()
 		
-		if Input.is_action_just_pressed("2") or player.option2.button_pressed == true:
+		if Input.is_action_just_pressed("2") or player.option2.button_pressed:
 			if interactTavernDone:
 				pass
 			elif not interactTavernDone:
 				c2()
 		
-		if Input.is_action_just_pressed("3") or player.option3.button_pressed == true:
+		if Input.is_action_just_pressed("3") or player.option3.button_pressed:
 			if interactSmithDone:
 				pass
 			elif not interactSmithDone:
 				c3()
 
-		if Input.is_action_just_pressed("4") or player.option4.button_pressed == true:
+		if Input.is_action_just_pressed("4") or player.option4.button_pressed:
 			if interactGuardsDone:
 				pass
 			elif not interactGuardsDone:
 				c4()
 
-	if Input.is_action_just_pressed("5") or player.option5.button_pressed == true:
+	if Input.is_action_just_pressed("5") or player.option5.button_pressed:
 		restButton()
 
 func introText(introStage):
@@ -156,12 +155,11 @@ func restButton():
 	restCount += 1
 	if restCount <= 1:
 		playText(restText[0])
-		player.option4.disabled = false
+		player.option5.disabled = false
 		SaveState.health = player.healthBar.max_value
 	elif restCount >=2:
 		playText("You can no longer rest in the inn.")
-		player.option4.disabled = true
-
+		player.option5.disabled = true
 
 func skipDialogue():
 	continueButton.disabled = true
@@ -179,10 +177,8 @@ func playText(nextText: String):
 func playerHide():
 	playerInfo.hide()
 
-func wait(seconds: float):
-	await get_tree().create_timer(seconds).timeout
-
 func interactOver(choice):
+	SaveState.prevInput = ""
 	match choice:
 		1:
 			interactTavernDone = true
@@ -205,3 +201,11 @@ func interactOver(choice):
 			playerTurn = false
 			playerChoosing = true
 			player.option4.disabled = true
+	if interactTavernDone:
+			player.option2.disabled = true
+	if interactSmithDone:
+		player.option3.disabled = true
+	if interactGuardsDone:
+		player.option4.disabled = true
+	if restCount >=2:
+		player.option5.disabled = true

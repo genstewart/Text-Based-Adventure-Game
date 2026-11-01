@@ -15,7 +15,7 @@ var playerStab = 40
 var playerName = "Gen"
 var playerFood = "Gyoza"
 var friendOne = "Dave"
-var friendTwo = "Kyle"
+var friendTwo = "Jack"
 var friendThree = "Clara"
 var bossSlain = "Griffin"
 
@@ -23,6 +23,7 @@ var bossSlain = "Griffin"
 var prevInput = ""
 
 #for the gates
+var restDone = false
 var scavengersDone = false
 
 #player events to effect story

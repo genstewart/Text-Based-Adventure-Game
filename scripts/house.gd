@@ -83,77 +83,65 @@ func _process(_delta: float) -> void:
 	enemiesLeft = [npcName + " is still alive."]
 
 func actionHandler(playerChoice):
-	var findAction = findTargetStab(playerChoice)
-	var action = findAction["action"]
-	targetNum = findAction["target"]
+	var action = playerChoice
+	player.instructText.text = "[color=white]What will you do?[/color]"
 	
 	if not actionMap.has(action):
-		npcScene.playText("You can't do that.")
+		player.instructText.text = "[color=orange]You can't do that action[/color]"
 		return
 
 	actionMap[action].call()
 
 func stabAction():
-	if targetNum == 0:
-		npcScene.playText("You thrust forwards stabbing, but no one is there...")
-		return
 	if targetNum < 0 or targetNum >= hPool.size():
-		npcScene.playText("There's no target there.")
-		return
-	if hPool[targetNum] <= 0:
-		npcScene.playText("That target is dead!")
+		npcScene.playText("There's no one to stab.")
 		return
 
 	if hPool[targetNum] - stabDmg <= 0:
-		takeDamage(SaveState.playerStab)
+		takeDamage("stab")
 		hPool.remove_at(targetNum)
-		print(hPool.size() -1)
 		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nThey fall to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
-		print(hPool)
 	elif hPool[targetNum] - stabDmg >= 0:
-		takeDamage(SaveState.playerStab)
-		print(hPool)
+		takeDamage("stab")
 		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue))
 
 func slashAction():
 	slashTargetFinder()
-	print(slashTargets)
 	if slashTargets.size() == 1:
-		var damageText = ["You slash in a large arc, hitting", npcName, " cutting them."]
+		var damageText = ["You slash in a large arc, hitting ", npcName, " cutting them."]
 		if hPool[slashTargets[0]] - slashDmg < 0:
-			takeDamage(SaveState.playerSlash)
+			takeDamage("slash")
 			hPool.remove_at(slashTargets[0])
 			npcScene.playText("".join(damageText) + "\n\n" + "".join(takeDamageDialogue) + "\n\nOne falls to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
-			print(hPool)
 		else:
-			takeDamage(SaveState.playerSlash)
+			takeDamage("slash")
 			npcScene.playText("".join(damageText) + "\n\n" + "".join(takeDamageDialogue))
-			print(hPool)
 	elif hPool[slashTargets[0]] - slashDmg <= 0 and hPool[slashTargets[1]] - slashDmg <= 0:
-		takeDamage(SaveState.playerSlash)
+		takeDamage("slash")
 		hPool.remove_at(slashTargets[0])
 		hPool.remove_at(slashTargets[0])
 		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nThey both fall to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
 		print(hPool)
 	elif (hPool[slashTargets[0]] - slashDmg >= 0 and hPool[slashTargets[1]] - slashDmg <= 0) or (hPool[slashTargets[0]] - slashDmg <= 0 and hPool[slashTargets[1]] - slashDmg >= 0):
-		takeDamage(SaveState.playerSlash)
+		takeDamage("slash")
 		hPool.remove_at(slashTargets[0])
 		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nOne falls to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
 	elif hPool[slashTargets[0]] - slashDmg >=0:
-		takeDamage(SaveState.playerSlash)
+		takeDamage("slash")
 		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue))
 
-func takeDamage(damage):
-	if damage == SaveState.playerStab:
-		dealDamageDialogue = ["You stab ",  npcName, " piercing straight through it's armor."]
-		takeDamageDialogue = [npcName, " took ", str(stabDmg), " damage!"]
+func takeDamage(damage : String):
+	stabDmg = SaveState.playerStab + 10 * aClass[targetNum]
+	slashDmg = SaveState.playerSlash - 10 * aClass[z]
+	if damage == "stab":
+		dealDamageDialogue = ["You stab the ", targetName[targetNum], npcName, " piercing straight through it's armor."]
+		takeDamageDialogue = ["The ", targetName[targetNum], npcName, " took ", str(stabDmg), " damage!"]
 		hPool[targetNum] -= stabDmg
-	if damage == SaveState.playerSlash:
-		dealDamageDialogue = ["You slash in a large arc, hitting ", npcName, " cutting them."]
-		takeDamageDialogue = [npcName, " took ", str(slashDmg), " damage!"]
+	if damage == "slash":
+		dealDamageDialogue = ["You slash in a large arc, hitting two of the ", groupName, " cutting them both."]
+		takeDamageDialogue = ["The ", groupName, " took ", str(slashDmg), " damage!"]
 		for z in slashTargets:
 			hPool[z] -= slashDmg
-			print(hPool)
 
 func dealDamage():
 	if not npcScene.interactDone:
@@ -165,24 +153,17 @@ func dealDamage():
 	else:
 		pass
 
-func findTargetStab(playerChoice : String) -> Dictionary:
-	var x = 0
-	while x < len(playerChoice) and not playerChoice[x].is_valid_int():
-		x += 1
-	var action = playerChoice.substr(0, x)
-	var targetStr = playerChoice.substr(x)
-	var target = targetStr.to_int() if targetStr.is_valid_int() else -1
-	return {"action": action, "target": target}
+func findTargetStab():
+	if hPool.size() >= 2:
+		targetNum = 1
+	elif hPool.size() < 2:
+		targetNum = -1
 
 func slashTargetFinder():
 	slashTargets = []
-	var y = 1
-	if hPool.size() >= 2:
-		while y < 2 and hPool[y] > 0:
-			slashTargets.append(y)
-			y += 1
-		return slashTargets
-	elif hPool.size() == 1:
+	if hPool.size() > 2:
+		slashTargets = [1, 2]
+	elif hPool.size() == 2:
 		slashTargets = [1]
 
 func talkAction():
@@ -211,17 +192,18 @@ func talkAction():
 		player.updateMood()
 
 func recallAction():
-	var recallText = ["You recall the day you decided to embark on this quest. You and your friends just finished defending Haven from a small group of goblins and orcs. You all sat quietly inside the house after the brutal raid. After seeing the destruction and aftermath, the four of you chose to travel to Eden and join the defence there."]
+	SaveState.playerJoy = 100
+	var recallText = ["You recall the day you decided to embark on this quest.\n\nYou and your friends just finished defending Haven from a small group of goblins and orcs. You all sat quietly inside the house afterwards. After seeing the destruction and aftermath, the four of you decided to travel to Eden and join the defence there."]
 	if SaveState.playerJoy < 85:
 		npcScene.playText("".join(recallText) + "\n\nStanding here now, you're not sure if you ever should have gone. The people here needed you too. They needed their family too.")
 	elif SaveState.playerJoy >= 85:
-		npcScene.playText("".join(recallText) + "\n\nYou know now that if you hadn't gone to Eden you would have never been there to end the siege. Even if they had, the siege at The Gates may have failed without "
-		 + SaveState.friendOne + ". Without " + SaveState.friendTwo + " and " + SaveState.friendThree + ", no one may have survived to kill the " + SaveState.bossSlain + " and end this war.")
+		npcScene.playText("".join(recallText) + "\n\nNow you know that if you didn't go you would have never been there to save Eden. And the siege at The Gates would have failed without "
+		 + SaveState.friendOne + "'s sacrifice. And if " + SaveState.friendTwo + " and " + SaveState.friendThree + " never went, no one would have survived to kill the " + SaveState.bossSlain + " and end the war.")
 		SaveState.playerJoy += 10
-		player.updateMoood()
+		player.updateMood()
 
 func recallMeeting():
-	var recallMeetingText = ["You recall the day you and your friends met here in Haven. The four of you came from the surrounding towns.\n\n",
+	var recallMeetingText = ["You recall the day you and your friends met. The four of you came from the surrounding towns and met in Haven.\n\n",
 	 SaveState.friendOne, " from Haven, ", SaveState.friendTwo, " and ", SaveState.friendThree,
 	 " both came from a town to the west. After hearing news of a group of goblins and orcs heading to Haven, you all gathered to aid in the defence of the town."]
 	npcScene.playText("".join(recallMeetingText))
@@ -259,11 +241,11 @@ func eatAction():
 		npcScene.playText(eatText[1])
 
 func dogAction():
-	var dogText = ["You ask her about the dog sitting outside.\"I could use some help with that dog. He won't leave me alone after I gave him some food the other week.\""]
+	var dogText = ["You ask her about the dog sitting outside.\"I could use some help with that dog. He won't leave me alone after I gave him some food last week.\""]
 	npcScene.playText("".join(dogText))
 
 func questAction():
-	var questText = ["You ask her if she needs any help around the house.\n\n\"Oh no don't bother, I am doing just fine by myself. I could use some help with that dog however. He won't leave me alone after I gave him some food the other week.\""]
+	var questText = ["You ask her if she needs any help around the house.\n\n\"Oh no don't bother, I am doing just fine by myself. I could use some help with that dog however. He won't leave me alone after I gave him some food last week.\""]
 	npcScene.playText("".join(questText))
 
 func exitAction():

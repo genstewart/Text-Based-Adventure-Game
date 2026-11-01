@@ -25,9 +25,9 @@ var food = 0
 var questActive = false
 var questAccept = false
 
-var introText = ["You enter the Guard House and three guards are at a table talking over a map. You overhear part of their conversation.\"Are you sure... We really can't spare any men now.\" \"I agree, our focus should be in the city.\" ",
-"One guard glances towards the door and sees you.\n\n\"", SaveState.playerName,
- "? We never thought we'd see you again. Did you see any boys on your way here? Y'know they are taking about building statues for you and your friends in the town square.\"\n",]
+var introText = ["You enter the Guard House and see three guards at a table talking over a map. You overhear part of their conversation. \"Are you sure... We really can't spare any men now.\" \"I agree, our focus should be in the city.\" ",
+"One guard glances at the door and sees you.\n\n\"", SaveState.playerName,
+ "? We never thought we'd see you again! Did you see any boys on your way here?\"\n\n\"Y'know they are taking about building statues for you and your friends in the town square.\"\n",]
 var afterQuestText = ["The guards are gathered around the map talking about the city."]
 var deathText = "The two orcs lie dead on the ground. The job is finished and the city is safer for it."
 
@@ -99,37 +99,28 @@ func _process(_delta: float) -> void:
 		enemiesLeft = ["There are ", str(hPool.size() - 1)," ", groupName, " left."]
 
 func actionHandler(playerChoice):
-	var findAction = findTargetStab(playerChoice)
-	var action = findAction["action"]
-	targetNum = findAction["target"]
+	var action = playerChoice
+	player.instructText.text = "[color=white]What will you do?[/color]"
 	
 	if not actionMap.has(action):
-		npcScene.playText("You can't do that.")
+		player.instructText.text = "[color=orange]You can't do that action[/color]"
 		return
 
 	actionMap[action].call()
 
 func stabAction():
 	if questActive:
-		if targetNum == 0:
-			npcScene.playText("You thrust forwards stabbing, but no one is there...")
-			return
 		if targetNum < 0 or targetNum >= hPool.size():
-			npcScene.playText("There's no target there.")
-			return
-		if hPool[targetNum] <= 0:
-			npcScene.playText("That target is dead!")
+			npcScene.playText("There's no one to stab.")
 			return
 
 		if hPool[targetNum] - stabDmg <= 0:
-			takeDamage(SaveState.playerStab)
+			takeDamage("stab")
 			hPool.remove_at(targetNum)
-			print(hPool.size() -1)
 			npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nThey fall to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
-			print(hPool)
+
 		elif hPool[targetNum] - stabDmg >= 0:
-			takeDamage(SaveState.playerStab)
-			print(hPool)
+			takeDamage("stab")
 			npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue))
 	elif not questActive:
 		npcScene.playText("These guards are holdings swords as tall as you and as wide as your face. You put your sword down.")
@@ -138,42 +129,40 @@ func stabAction():
 func slashAction():
 	if questActive:
 		slashTargetFinder()
-		print(slashTargets)
 		if slashTargets.size() == 1:
-			var damageText = ["You slash in a large arc, hitting one of the ", groupName, " cutting them."]
+			var damageText = ["You slash in a large arc, hitting a ", npcName, " cutting them."]
+			takeDamage("slash")
 			if hPool[slashTargets[0]] - slashDmg < 0:
-				takeDamage(SaveState.playerSlash)
 				hPool.remove_at(slashTargets[0])
 				npcScene.playText("".join(damageText) + "\n\n" + "".join(takeDamageDialogue) + "\n\nOne falls to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
 			else:
-				takeDamage(SaveState.playerSlash)
 				npcScene.playText("".join(damageText) + "\n\n" + "".join(takeDamageDialogue))
+
 		elif hPool[slashTargets[0]] - slashDmg <= 0 and hPool[slashTargets[1]] - slashDmg <= 0:
-			takeDamage(SaveState.playerSlash)
+			takeDamage("slash")
 			hPool.remove_at(slashTargets[0])
 			hPool.remove_at(slashTargets[0])
 			npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nThey both fall to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
-			print(hPool)
 		elif (hPool[slashTargets[0]] - slashDmg >= 0 and hPool[slashTargets[1]] - slashDmg <= 0) or (hPool[slashTargets[0]] - slashDmg <= 0 and hPool[slashTargets[1]] - slashDmg >= 0):
-			takeDamage(SaveState.playerSlash)
+			takeDamage("slash")
 			hPool.remove_at(slashTargets[0])
 			npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nOne falls to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
 		elif hPool[slashTargets[0]] - slashDmg >=0:
-			takeDamage(SaveState.playerSlash)
+			takeDamage("slash")
 			npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue))
 	elif not questActive:
 		npcScene.playText("These guards are holdings swords as tall as you and as wide as your face. You put your sword down.")
 		npcScene.playerCombat = false
 
 func takeDamage(damage):
-	if damage == SaveState.playerStab:
-		stabDmg = SaveState.playerStab + 10 * aClass[targetNum]
+	stabDmg = SaveState.playerStab + 10 * aClass[targetNum]
+	slashDmg = SaveState.playerSlash - 10 * aClass[z]
+	if damage == "stab":
 		dealDamageDialogue = ["You stab the ", targetName[targetNum], npcName, " piercing straight through it's armor."]
 		takeDamageDialogue = ["The ", targetName[targetNum], npcName, " took ", str(stabDmg), " damage!"]
 		hPool[targetNum] -= stabDmg
-	if damage == SaveState.playerSlash:
-		slashDmg = SaveState.playerSlash - 10 * aClass[z]
-		dealDamageDialogue = ["You slash in a large arc, hitting two of the ", groupName, " injuring them both."]
+	if damage == "slash":
+		dealDamageDialogue = ["You slash in a large arc, hitting two of the ", groupName, " cutting them both."]
 		takeDamageDialogue = ["The ", groupName, " took ", str(slashDmg), " damage!"]
 		for z in slashTargets:
 			hPool[z] -= slashDmg
@@ -196,44 +185,42 @@ func dealDamage():
 		else:
 			pass
 
-func findTargetStab(playerChoice : String) -> Dictionary:
-	var x = 0
-	while x < len(playerChoice) and not playerChoice[x].is_valid_int():
-		x += 1
-	var action = playerChoice.substr(0, x)
-	var targetStr = playerChoice.substr(x)
-	var target = targetStr.to_int() if targetStr.is_valid_int() else -1
-	return {"action": action, "target": target}
+func findTargetStab():
+	if hPool.size() >= 2:
+		targetNum = 1
+	elif hPool.size() < 2:
+		targetNum = -1
 
 func slashTargetFinder():
 	slashTargets = []
-	var y = 1
-	if hPool.size() >= 2:
-		while y < 2 and hPool[y] > 0:
-			slashTargets.append(y)
-			y += 1
-		return slashTargets
-	elif hPool.size() == 1:
+	if hPool.size() > 2:
+		slashTargets = [1, 2]
+	elif hPool.size() == 2:
 		slashTargets = [1]
 
 func talkAction():
 	if not questActive:
 		if npcScene.playerCombat == false:
-			var talkText = ["You give news to the guards about the slain ",SaveState.bossSlain, " and the fate of the army. \"Wow, I can't believe they're all gone... I'm just thankful you killed the ",SaveState.bossSlain, " at last.\"",
+			var talkText = ["You give news to the guards about the slain ", SaveState.bossSlain, " and the fate of the army. \"Wow, I can't believe they're all gone... I'm just thankful you killed the ",SaveState.bossSlain, " at last.\"",
 			"You give news to the guards about the slain ",SaveState.bossSlain, " and the fate of the army and your friends. You avoid all topics about the boys you killed at the gates."]
 			if not SaveState.boysKilled:
-				npcScene.playText(talkText[0])
+				npcScene.playText(talkText[0]+talkText[1]+talkText[2]+talkText[3]+talkText[4])
 			elif SaveState.boysKilled:
-				npcScene.playText(talkText[1])
+				npcScene.playText(talkText[5]+talkText[6]+talkText[7])
 		else:
 			npcScene.playText("It's too late to speak with the guards now.")
 			player.playerJoy -= 10
 			player.updateMood()
 	if questActive:
 		if npcScene.playerCombat == false:
-			npcScene.playText("The orcs don't even speak the same language.")
-		else:
-			npcScene.playText("It's far too late to try talking with them.")
+			if not SaveState.orcsKilled and npcName == "orc":
+				npcScene.playText("The shout out and greet the orcs. They turn around and charge towards you.")
+				npcScene.playerCombat = true
+				npcScene.playerTurn = false
+			elif SaveState.orcsKilled and npcName == "guard":
+				questAction()
+		elif npcScene.playerCombat:
+			npcScene.playText("They won't talk to you now.")
 
 func questAction():
 	var questText = ["You ask the Guards about what has happend and glance at the map. ",
@@ -252,7 +239,7 @@ func questAction():
 		SaveState.playerJoy += 5
 	elif questActive and not SaveState.orcsKilled:
 		questActive = false
-		npcScene.playText("You tell the Guards you found where the orcs camped but didn't deal with them. They're, still happy for your help and send you on your way.")
+		npcScene.playText("You tell the Guards you found where the orcs camped but didn't deal with them. They're still happy for your help locating them and send you on your way.")
 		SaveState.playerJoy -= 5
 
 func acceptAction():
@@ -365,6 +352,8 @@ func exitAction():
 		SaveState.playerJoy -= 5
 		player.updateMood()
 		npcScene.interactGuardsDone = true
+		npcName = "guard"
+		groupName = "guards"
 		npcScene.interactOver(3)
 
 func doNothing():
@@ -378,4 +367,6 @@ func death():
 			npcScene.playText(deathText)
 			SaveState.playerJoy += 5
 			SaveState.orcsKilled = true
+			npcName = "guard"
+			groupName = "guards"
 			player.updateMood()

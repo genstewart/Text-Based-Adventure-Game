@@ -21,7 +21,7 @@ var enemiesLeft
 @export var dealDamageDialogue = []
 
 var introText = "You approach the scavengers."
-var deathText = "You finish off the last scavenger, your sword glistening with blood. Standing over their corpses you get a better look at their faces. \n\nThese were no bandits, just some young boys, and now they are part of the corpses that litter the ground. You continue your journey, thinking about what you've done."
+var deathText = "You finish off the last scavenger, your sword glistening with blood. Standing over their corpses you get a better look at one of their faces. \n\nThese were no bandits, just some young boys, and now they have joined the corpses that litter the ground. You continue your journey, thinking about what you've done."
 
 @export var npcAttackDial = []
 
@@ -137,31 +137,32 @@ func slashTargetFinder():
 
 func talkAction():
 	if npcScene.playerCombat == false:
-		var talkText = ["You walk up and talk to the scavengers.",
-		 " They are just some young boys from the city, Eden.",
-		 " You ask them what they are doing here and the oldest boy replies,", "\n\n\"Are you ", SaveState.playerName, "? The city watch told us we might meet you out here.\"\n",
-		 "\"Are you the only survivor? We were just looking for our Dad...\"", "\n\nYou explain to the orphan boys what happend in the battle.",
-		 " The guilt of the battle weighs heavy on your mind, but you feel better that you didn't resort to killing the boys immediately.",
-		 " After you talk, the boys decide to continue looking for their father, and give him a proper burial. \nYou continue on your journey home."]
+		var talkText = ["You talk to the scavengers.",
+		 " The \"scavengers\" are just some young boys from the city, Eden.",
+		 " You ask why they came to The Gates and the oldest boy replies.", "\n\n\"Are you ", SaveState.playerName, "? The city watch said we might see you here.",
+		 " Where is the army? We were just looking for our Dad...\"", " You tell them what happend in the battle.",
+		 "\n\nThe guilt of the soldiers' deaths weighs heavy on your mind, but you're glad you didn't kill the boys when you saw them searching the bodies.",
+		 " After talking, the boys decide to continue searching and give their Dad a proper burial. You continue your journey home."]
 		npcScene.playText("".join(talkText))
 		SaveState.playerJoy += 10
 		SaveState.boysTalked = true
 		player.updateMood()
 		SaveState.scavengersDone = true
 	else:
-		npcScene.playText("You try to talk to the scavengers and lock eyes with one. These aren't 'bandits', these are just some boys from the village! But they're no longer willing to listen to you. \n\nNow they're fighting for their lives.")
+		npcScene.playText("You try to talk to the scavengers and lock eyes with one. These aren't some dangerous \"bandits\", they are just some boys from the city! Now they're no longer willing to listen to you. \n\nNow they're fighting for their lives.")
 		groupName = "boys"
 		npcName = "boy"
+		deathText = "You finish off the last boy, your sword glistening with blood. Standing over their corpses you get a better look at one of their faces. \n\nThese boys didn't deserve to die and now they have joined the corpses that litter the ground.\n\nYou continue your journey, thinking about what you've done."
 
 func sneakAction():
-	var sneakText = ["You wait for a while until the sun begins to set behind you.",
-"\n\nEventually, the scavengers walk into the northern watchtower to camp for the night.",
-" While they are staying in the tower you sneak towards the gates."]
+	var sneakText = ["You wait while watching the scavengers until the sun sets behind you.",
+"\n\nEventually, they walk into the northern watchtower to camp for the night.",
+" Once the moon reaches midnight you sneak towards the gates."]
 	npcScene.playText("".join(sneakText))
 	SaveState.scavengersDone = true
 
 func lookAction():
-	var lookText = ["Staying hidden behind the top of a hill, you spy on the scavengers from far away. One of them lowers his hood for just a moment, he's just a young boy, not a dangerous bandit",
+	var lookText = ["Staying hidden behind the top of a hill, you watch the scavengers. One of them lowers his hood for just a moment, he's just a young boy, not a dangerous bandit",
 	" \n\nYou retreat behind the hill and think about what you should do."]
 	npcScene.playText("".join(lookText))
 

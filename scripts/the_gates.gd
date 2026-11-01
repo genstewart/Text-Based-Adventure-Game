@@ -10,22 +10,22 @@ extends Node2D
 
 @onready var textSound: AudioStreamPlayer = $dialogueScreen/textSound
 
-var gatesIntro = ["You arrive at a large opened steel gate with towering watchtowers made of basalt on either side. You stormed these gates after marching for a month with the northern armies. Now all that remains is the casualties of the bloody siege.",
-"\n\nComing from the forest through the gates, you spot four hooded people walk through the gate and begin rummaging through the corpses.
-\nThey begin pocketing smaller trinkets and grabbing the swords of the fallen knights and commanders.", "You are standing at the gates. The young boys are still looking for their father.",
-"You are standing at the gates. The young boys lie with the other corpses on the ground.", "You are standing at the gates at night. You can here the scavengers talking inside the watchtower."]
+var gatesIntro = ["You arrive at a large opened steel gate with towering watchtowers made of basalt on either side. You stormed these gates after marching for a month with the army of Eden. Now all that remains is the casualties of the bloody siege.",
+"\n\nComing from the forest through the gates, four hooded people walk through and begin searching through the corpses.
+\nThey begin pocketing smaller trinkets and grabbing the swords of the fallen soldiers.", "You are standing at the gates. The young boys are still looking for their father.",
+"You are standing at the gates. The young boys lie with the other corpses on the ground.", "You are standing at the gates. A faint light is burning from inside the watchtower, you can here the scavengers talking inside."]
 
-var recallMemory = ["Staring into the forest through the gates, you recall the night of the siege. After marching for a month, the armies had waited and made camp in the forest outside the gates. The plan of attack was simple.",
+var recallMemory = ["You recall the night of the siege. After marching for a month, the armies made camp in the forest outside the gates to prepare for the siege.\n\nThe plan was simple.",
 " In the dead of night, ", SaveState.friendOne,
-" and a group of soldiers from the elven armies would climb the southern tower, sneak inside, and open the gate from the inside.",
-"\n\nAfter waiting in the edge of the forest eagerly watching the gate, it began to open. Leading the charge, you rushed through the gates with the full strength of the combined armies.", 
-"The goblin garrison were suprisingly prepared, and the resulting battle was a decisive but hard-fought victory.\n\nOnce day-break had come, the small remaining goblin force began running for the hills to join the rest of the "
-, SaveState.bossSlain,"'s army.\n\n", SaveState.friendOne, " was found a few hours later inside the southern tower lying against the lever used to open the gates. The assorted body parts of nearly 20 goblin soldiers littered the floor. Only one elf from his squad was alive."]
+" and a group of knights would climb the southern tower, sneak inside, and open the gate for the rest of the army to charge through.",
+"\n\nAfter waiting at the edge of the forest watching the gate, it began to open. You rushed through the gates to suprise the garrisoned army.", 
+"The resulting battle was a decisive but hard-fought victory.\n\nOnce day-break had come, some remaining goblins ran for the hills to join the rest of the "
+, SaveState.bossSlain,"'s army.\n\n", SaveState.friendOne, " was found dead a few hours later inside the southern tower lying against the lever used to open the gates. Their body was covered in wounds from the goblins."]
 
 var restText = ["You gather some firewood nearby and rest by a small fire in a nearby cave. You feel a sense of longing.",
  "As you sit by the fire; your empty mind wanders to the memories of your fallen friends.", 
-"Sitting by the fire reminds you of the night after you defeated the goblin army at the gates. After the bitter loss of one of your closest friends, it was hard to stay hopeful. You, ", " all shared stories about the heroism of ",
-" couldn't wait to return home after slaying the ", " and share the stories with ", "'s family. \n\nNow it's up to you."]
+"Sitting by the fire reminds you of the night after you sieged the gates. The loss of one of your closest friends made it hard to stay hopeful.\n\nYou, ", " shared stories about the heroism of ",
+" couldn't wait to return home after slaying the ", " and share the stories with ", "'s mom. \n\nNow it's up to you."]
 
 var introPlaying = true
 var playerPlaying = false
@@ -42,6 +42,10 @@ func _ready() -> void:
 	player.option5.hide()
 	playerHide()
 	continueButton.show()
+	if SaveState.daveDeath:
+		player.option3.disabled = true
+	if SaveState.restDone:
+		player.option4.disabled = true
 	if not SaveState.scavengersDone:
 		playText(gatesIntro[0] + gatesIntro[1])
 	elif SaveState.scavengersDone:
@@ -127,6 +131,7 @@ func restButton():
 		playText(restText[2] + SaveState.friendTwo + ", and " + SaveState.friendThree + restText[3] + SaveState.friendOne 
 		+  ". " + SaveState.friendTwo + restText[4] + SaveState.bossSlain + restText[5] + SaveState.friendOne + restText[6])
 		player.option4.disabled = true
+		SaveState.restDone = true
 		SaveState.playerJoy += 1
 		player.updateMood()
 	elif restCount > 1 and restCount < 4:

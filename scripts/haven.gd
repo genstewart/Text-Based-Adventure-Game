@@ -40,7 +40,6 @@ func _ready() -> void:
 	continueButton.show()
 
 func _process(_delta: float) -> void:
-	turnHandler()
 	
 	if Input.is_action_just_pressed("nextDialogue") or continueButton.button_pressed == true:
 		if tween.is_running():
@@ -55,6 +54,7 @@ func _process(_delta: float) -> void:
 			if npc.hPool.size() > 1:
 				npc.dealDamage()
 				playerTurn = true
+				player.instructText.text = "[color=white]What will you do?[/color]"
 			elif npc.hPool.size() <=1:
 				npc.death()
 		elif playerTurn == true:
@@ -62,26 +62,26 @@ func _process(_delta: float) -> void:
 			if SaveState.prevInput.begins_with("stab") or SaveState.prevInput.begins_with("slash"):
 				playerCombat = true
 				playerTurn = false
+				player.instructText.text = "[color=red]Not your turn[/color]"
 
-	if (Input.is_action_just_pressed("1") or player.option1.button_pressed == true) and playerChoosing:
-		c1()
-	
-	if (Input.is_action_just_pressed("2") or player.option2.button_pressed == true) and playerChoosing:
-		if interactHouseDone:
-			pass
-		elif not interactHouseDone:
-			c2()
-	
-	if (Input.is_action_just_pressed("3") or player.option3.button_pressed == true)  and playerChoosing:
-		if interactDogDone:
-			pass
-		elif not interactDogDone:
-			c3()
-	
-	if (Input.is_action_just_pressed("4") or player.option4.button_pressed == true)  and playerChoosing:
-		restButton()
-	
-	
+	if playerChoosing:
+		if Input.is_action_just_pressed("1") or player.option1.button_pressed:
+			c1()
+		
+		if Input.is_action_just_pressed("2") or player.option2.button_pressed:
+			if interactHouseDone:
+				pass
+			elif not interactHouseDone:
+				c2()
+		
+		if Input.is_action_just_pressed("3") or player.option3.button_pressed:
+			if interactDogDone:
+				pass
+			elif not interactDogDone:
+				c3()
+		
+		if Input.is_action_just_pressed("4") or player.option4.button_pressed:
+			restButton()
 
 func introText(introStage):
 	match introStage:
@@ -171,9 +171,7 @@ func interactOver(choice):
 			playerTurn = false
 			playerChoosing = true
 			player.option3.disabled = true
-
-func turnHandler():
-	if not playerTurn:
-		player.instructText.text = "[color=red]Not your turn[/color]"
-	if playerTurn:
-		player.instructText.text = "[color=white]What will you do?[/color]"
+	if interactHouseDone:
+		player.option2.disabled = true
+	if interactDogDone:
+		player.option3.disabled = true

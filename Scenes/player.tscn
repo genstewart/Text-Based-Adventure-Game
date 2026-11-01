@@ -368,6 +368,7 @@ stream = ExtResource("5_3smsa")
 
 [node name="attack" type="AudioStreamPlayer" parent="playerSoundEffects" unique_id=745866949]
 stream = ExtResource("6_x3wgy")
+volume_db = -4.0
 
 [node name="input" type="AudioStreamPlayer" parent="playerSoundEffects" unique_id=247990836]
 stream = ExtResource("7_3smsa")

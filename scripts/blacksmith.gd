@@ -23,7 +23,7 @@ var enemiesLeft
 var drinks = 0
 var food = 0
 
-var introText = "You walk across the town square and arrive in front of the smithy. There is a large open forge and slanted roof over a large work area. The blacksmith is busy at work and hasn't looked up for some time."
+var introText = "You walk across the town square and arrive in front of the blacksmith. There is a large open forge and slanted roof over a large work area. The blacksmith is busy at work and hasn't looked up for some time."
 var deathText = "Why would you try that?"
 
 @export var npcAttackDial = []
@@ -78,106 +78,87 @@ func _process(_delta: float) -> void:
 		enemiesLeft = ["There are ", str(hPool.size() - 1)," ", groupName, " left."]
 
 func actionHandler(playerChoice):
-	var findAction = findTargetStab(playerChoice)
-	var action = findAction["action"]
-	targetNum = findAction["target"]
+	var action = playerChoice
+	player.instructText.text = "[color=white]What will you do?[/color]"
 	
 	if not actionMap.has(action):
-		npcScene.playText("You can't do that.")
+		player.instructText.text = "[color=orange]You can't do that action[/color]"
 		return
 
 	actionMap[action].call()
 
 func stabAction():
-	if targetNum == 0:
-		npcScene.playText("You thrust forwards stabbing, but no one is there...")
-		return
 	if targetNum < 0 or targetNum >= hPool.size():
-		npcScene.playText("There's no target there.")
-		return
-	if hPool[targetNum] <= 0:
-		npcScene.playText("That target is dead!")
+		npcScene.playText("There's no one to stab.")
 		return
 
 	if hPool[targetNum] - stabDmg <= 0:
-		takeDamage(SaveState.playerStab)
+		takeDamage("stab")
 		hPool.remove_at(targetNum)
-		print(hPool.size() -1)
 		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nThey fall to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
-		print(hPool)
+
 	elif hPool[targetNum] - stabDmg >= 0:
-		takeDamage(SaveState.playerStab)
-		print(hPool)
+		takeDamage("stab")
 		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue))
 
 func slashAction():
 	slashTargetFinder()
-	print(slashTargets)
 	if slashTargets.size() == 1:
-		var damageText = ["You slash in a large arc, hitting one of the ", groupName, " cutting them."]
+		var damageText = ["You slash in a large arc, hitting a ", npcName, " cutting them."]
+		takeDamage("slash")
 		if hPool[slashTargets[0]] - slashDmg < 0:
-			takeDamage(SaveState.playerSlash)
 			hPool.remove_at(slashTargets[0])
 			npcScene.playText("".join(damageText) + "\n\n" + "".join(takeDamageDialogue) + "\n\nOne falls to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
-			print(hPool)
 		else:
-			takeDamage(SaveState.playerSlash)
 			npcScene.playText("".join(damageText) + "\n\n" + "".join(takeDamageDialogue))
-			print(hPool)
+
 	elif hPool[slashTargets[0]] - slashDmg <= 0 and hPool[slashTargets[1]] - slashDmg <= 0:
-		takeDamage(SaveState.playerSlash)
+		takeDamage("slash")
 		hPool.remove_at(slashTargets[0])
 		hPool.remove_at(slashTargets[0])
 		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nThey both fall to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
-		print(hPool)
 	elif (hPool[slashTargets[0]] - slashDmg >= 0 and hPool[slashTargets[1]] - slashDmg <= 0) or (hPool[slashTargets[0]] - slashDmg <= 0 and hPool[slashTargets[1]] - slashDmg >= 0):
-		takeDamage(SaveState.playerSlash)
+		takeDamage("slash")
 		hPool.remove_at(slashTargets[0])
 		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nOne falls to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
 	elif hPool[slashTargets[0]] - slashDmg >=0:
-		takeDamage(SaveState.playerSlash)
+		takeDamage("slash")
 		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue))
 
 func takeDamage(damage):
-	if damage == SaveState.playerStab:
+	stabDmg = SaveState.playerStab + 10 * aClass[targetNum]
+	slashDmg = SaveState.playerSlash - 10 * aClass[z]
+	if damage == "stab":
 		dealDamageDialogue = ["You stab the ", targetName[targetNum], npcName, " piercing straight through it's armor."]
 		takeDamageDialogue = ["The ", targetName[targetNum], npcName, " took ", str(stabDmg), " damage!"]
 		hPool[targetNum] -= stabDmg
-	if damage == SaveState.playerSlash:
+	if damage == "slash":
 		dealDamageDialogue = ["You slash in a large arc, hitting two of the ", groupName, " cutting them both."]
 		takeDamageDialogue = ["The ", groupName, " took ", str(slashDmg), " damage!"]
 		for z in slashTargets:
 			hPool[z] -= slashDmg
-			print(hPool)
 
 func dealDamage():
-	if not npcScene.interactDone:
-		var attackDialogue = ["The ", npcName, " hits you across the face with the hammer. You go flying to the side."]
+	if not npcScene.interactSmithDone:
+		var attackDialogue = ["The blacksmith hits you across the face with his hammer. You go flying to the side."]
 		npcTotalDamage = (npcDamage * (hPool.size()-1))
-		dealDamageDialogue = ["The ", npcName, " dealt ", str(npcTotalDamage), " damage!"]
+		dealDamageDialogue = ["The blacksmith dealt ", str(npcTotalDamage), " damage!"]
 		npcScene.playText("".join(attackDialogue) + "\n\n" +"".join(dealDamageDialogue))
 		SaveState.health -= npcTotalDamage
 	else:
 		pass
 
-func findTargetStab(playerChoice : String) -> Dictionary:
-	var x = 0
-	while x < len(playerChoice) and not playerChoice[x].is_valid_int():
-		x += 1
-	var action = playerChoice.substr(0, x)
-	var targetStr = playerChoice.substr(x)
-	var target = targetStr.to_int() if targetStr.is_valid_int() else -1
-	return {"action": action, "target": target}
+func findTargetStab():
+	if hPool.size() >= 2:
+		targetNum = 1
+	elif hPool.size() < 2:
+		targetNum = -1
 
 func slashTargetFinder():
 	slashTargets = []
-	var y = 1
-	if hPool.size() >= 2:
-		while y < 2 and hPool[y] > 0:
-			slashTargets.append(y)
-			y += 1
-		return slashTargets
-	elif hPool.size() == 1:
+	if hPool.size() > 2:
+		slashTargets = [1, 2]
+	elif hPool.size() == 2:
 		slashTargets = [1]
 
 func talkAction():
@@ -190,12 +171,12 @@ func talkAction():
 		player.updateMood()
 
 func recallAction():
-	var recallText = ["The banging of the hammer takes you back to the nights standing on the wall during the siege. You sat with ", SaveState.friendOne ,
-	" on top of the wall looking out for any full scale attacks. From atop the wall you could always hear the hammer of the blacksmith until late at night.",
-	" It was constantly interupting your conversation and ", SaveState.friendOne, " would eventually just give up and wait for the blacksmith to go to bed."]
+	var recallText = ["The banging of the hammer takes you back to the nights manning the wall during the siege. You sat with ", SaveState.friendOne ,
+	" on top of the wall looking out for any advances. From on top the wall you could always hear the hammer of the blacksmith until late at night.",
+	" It would constantly interrupt your conversation and ", SaveState.friendOne, " would eventually give up and wait for the blacksmith to go to bed."]
 	if SaveState.playerJoy <= 40:
-		npcScene.playText("".join(recallText) + "\n\nYou always felt frustrated by those long quiet moments, and now that " + SaveState.friendOne +
-		 " is gone, you can't help but feel like the blacksmith took some of those conversations away from you.")
+		npcScene.playText("".join(recallText) + "\n\nYou always felt frustrated by those long quiet moments. Now that " + SaveState.friendOne +
+		 " is gone, you can't help but feel like the blacksmith took some of those final conversations away from you.")
 	elif SaveState.playerJoy > 40:
 		npcScene.playText("".join(recallText) + "\n\nYou always hated those long quiet moments listening to the banging from the wall. Now, there isn't anything you wouldn't give to sit in silence with " +
 		 SaveState.friendOne + " one last time.")
@@ -235,7 +216,7 @@ func questAction():
 	npcScene.playText("".join(questText))
 
 func tradeAction():
-	var tradeText = ["You ask the blacksmith to trade.\n\n\"I heard what you did for Eden when it was under siege. I made this for you.\" He walks to the back of his store and pulls out a mail shirt.",
+	var tradeText = ["You ask the blacksmith to trade.\n\n\"I heard what you did for Eden when it was under siege, so I made something for you.\" He walks to the back of his store and pulls out a mail shirt.",
 	"\n\nThe mail shirt glitters in the sun and is made with unmatched expertise. You wear the mail shirt under your coat and thank the blacksmith.\n\n"]
 	var trades = 0
 	if trades == 0:

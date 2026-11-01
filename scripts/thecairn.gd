@@ -89,9 +89,9 @@ func talkAction():
 
 func recallAction():
 	var recallText = ["Looking out at the view, you recall what happend here nearly a year ago. You, ", SaveState.friendTwo, ", ", SaveState.friendThree, ", and ", SaveState.friendOne,
-	" were all sitting at the Cairn.\n\nYou had just set out from your hometown weeks before, where the four of you began your quest.",
-	" All of you looked out at The Valley ahead of you and the small towns of the rolling hills behind you.",
-	" We knew we had a long way to go, and were ready for the adventures to come."]
+	" were all sitting at the Cairn.\n\nYou just set out from Haven weeks before, where the four of you began your quest.",
+	" You all looked out at The Valley ahead of you and the small towns of the rolling hills behind you.",
+	" You knew you had a long way to go, and were ready for the adventures to come."]
 	if SaveState.playerJoy <= 50:
 		npcScene.playText("".join(recallText) + "\n\nWho knew the adventure would become such a lonely one.")
 	elif SaveState.playerJoy > 50:
@@ -107,7 +107,7 @@ func lookAction():
 	npcScene.playText("".join(lookText))
 
 func questAction():
-	var questText = ["You take a closer look at the letters carved into the stone, but some moss covers what they say. You clean it off and reveal what is written.",
+	var questText = ["You take a closer look at the letters carved into the stone, but some moss covers what they say. You clean it off to reveal what is written.",
 	"\n\n\"I stand by rain or shine,\nreflect your love in mine\nand I'm always there when you say \'hi\'\"",
 	"\n\nSpeak my name and enter."]
 	foundRiddle = true
@@ -122,18 +122,18 @@ func riddleAnswer():
 		npcScene.playText("You can't do that.")
 
 func takeSword():
-	var takeSword = ["You approach the sword and take it from the stone table.\n\nThe sword shines bright blue in the sunlight, it doesn't look like anything smithed this millenia even. The sword still feels sharp to the touch despite its age.",
+	var swordText = ["You approach the sword and take it from the stone table.\n\nThe sword shines bright blue in the sunlight, it doesn't look like anything smithed this millenia even. The sword still feels sharp to the touch despite its age.",
 	"\n\nYou put the sword in your sheath"]
 	if solvedRiddle:
 		item_sound.play()
 		SaveState.playerStab = 70
 		SaveState.playerSlash = 100
 		if SaveState.playerJoy >= 40:
-			npcScene.playText("".join(takeSword) + " and vow to use it in the name of helping others.")
+			npcScene.playText("".join(swordText) + " and vow to use it in the name of helping others.")
 			SaveState.playerJoy += 10
 			SaveState.updateMood()
 		elif SaveState.playerJoy < 40:
-			npcScene.playText("".join(takeSword) + ", it hardly feels earned, but you can't just leave it lying around.")
+			npcScene.playText("".join(swordText) + ", it hardly feels earned, but you can't just leave it lying around.")
 	else:
 		npcScene.playText("You can't do that.")
 

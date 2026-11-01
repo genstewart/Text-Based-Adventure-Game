@@ -23,7 +23,7 @@ var enemiesLeft
 var drinks = 0
 var food = 0
 
-var introText = "You enter the tavern and see a mostly empty room with a few people having a drink in the corner and talking amongst themselves. \n\nThe tavern keeper is behind the bar counter, she is cleaning some glasses when you approach her."
+var introText = "You enter the tavern to see a mostly empty room with a few people having a drink in the corner, talking amongst themselves. \n\nThe tavern keeper is behind the bar counter cleaning some glasses when you approach her."
 var deathText = "Why would you try that?"
 
 @export var npcAttackDial = []
@@ -77,77 +77,65 @@ func _process(_delta: float) -> void:
 		enemiesLeft = ["There are ", str(hPool.size() - 1)," ", groupName, " left."]
 
 func actionHandler(playerChoice):
-	var findAction = findTargetStab(playerChoice)
-	var action = findAction["action"]
-	targetNum = findAction["target"]
+	var action = playerChoice
+	player.instructText.text = "[color=white]What will you do?[/color]"
 	
 	if not actionMap.has(action):
-		npcScene.playText("You can't do that.")
+		player.instructText.text = "[color=orange]You can't do that action[/color]"
 		return
 
 	actionMap[action].call()
 
 func stabAction():
-	if targetNum == 0:
-		npcScene.playText("You thrust forwards stabbing, but no one is there...")
-		return
 	if targetNum < 0 or targetNum >= hPool.size():
-		npcScene.playText("There's no target there.")
-		return
-	if hPool[targetNum] <= 0:
-		npcScene.playText("That target is dead!")
+		npcScene.playText("There's no one to stab.")
 		return
 
 	if hPool[targetNum] - stabDmg <= 0:
-		takeDamage(SaveState.playerStab)
+		takeDamage("stab")
 		hPool.remove_at(targetNum)
-		print(hPool.size() -1)
 		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nThey fall to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
-		print(hPool)
+
 	elif hPool[targetNum] - stabDmg >= 0:
-		takeDamage(SaveState.playerStab)
-		print(hPool)
+		takeDamage("stab")
 		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue))
 
 func slashAction():
 	slashTargetFinder()
-	print(slashTargets)
 	if slashTargets.size() == 1:
-		var damageText = ["You slash in a large arc, hitting one of the ", groupName, " cutting them."]
+		var damageText = ["You slash in a large arc, hitting a ", npcName, " cutting them."]
+		takeDamage("slash")
 		if hPool[slashTargets[0]] - slashDmg < 0:
-			takeDamage(SaveState.playerSlash)
 			hPool.remove_at(slashTargets[0])
 			npcScene.playText("".join(damageText) + "\n\n" + "".join(takeDamageDialogue) + "\n\nOne falls to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
-			print(hPool)
 		else:
-			takeDamage(SaveState.playerSlash)
 			npcScene.playText("".join(damageText) + "\n\n" + "".join(takeDamageDialogue))
-			print(hPool)
+
 	elif hPool[slashTargets[0]] - slashDmg <= 0 and hPool[slashTargets[1]] - slashDmg <= 0:
-		takeDamage(SaveState.playerSlash)
+		takeDamage("slash")
 		hPool.remove_at(slashTargets[0])
 		hPool.remove_at(slashTargets[0])
 		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nThey both fall to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
-		print(hPool)
 	elif (hPool[slashTargets[0]] - slashDmg >= 0 and hPool[slashTargets[1]] - slashDmg <= 0) or (hPool[slashTargets[0]] - slashDmg <= 0 and hPool[slashTargets[1]] - slashDmg >= 0):
-		takeDamage(SaveState.playerSlash)
+		takeDamage("slash")
 		hPool.remove_at(slashTargets[0])
 		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nOne falls to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
 	elif hPool[slashTargets[0]] - slashDmg >=0:
-		takeDamage(SaveState.playerSlash)
+		takeDamage("slash")
 		npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue))
 
 func takeDamage(damage):
-	if damage == SaveState.playerStab:
+	stabDmg = SaveState.playerStab + 10 * aClass[targetNum]
+	slashDmg = SaveState.playerSlash - 10 * aClass[z]
+	if damage == "stab":
 		dealDamageDialogue = ["You stab the ", targetName[targetNum], npcName, " piercing straight through it's armor."]
 		takeDamageDialogue = ["The ", targetName[targetNum], npcName, " took ", str(stabDmg), " damage!"]
 		hPool[targetNum] -= stabDmg
-	if damage == SaveState.playerSlash:
+	if damage == "slash":
 		dealDamageDialogue = ["You slash in a large arc, hitting two of the ", groupName, " cutting them both."]
 		takeDamageDialogue = ["The ", groupName, " took ", str(slashDmg), " damage!"]
 		for z in slashTargets:
 			hPool[z] -= slashDmg
-			print(hPool)
 
 func dealDamage():
 	if not npcScene.interactTavernDone:
@@ -159,31 +147,24 @@ func dealDamage():
 	else:
 		pass
 
-func findTargetStab(playerChoice : String) -> Dictionary:
-	var x = 0
-	while x < len(playerChoice) and not playerChoice[x].is_valid_int():
-		x += 1
-	var action = playerChoice.substr(0, x)
-	var targetStr = playerChoice.substr(x)
-	var target = targetStr.to_int() if targetStr.is_valid_int() else -1
-	return {"action": action, "target": target}
+func findTargetStab():
+	if hPool.size() >= 2:
+		targetNum = 1
+	elif hPool.size() < 2:
+		targetNum = -1
 
 func slashTargetFinder():
 	slashTargets = []
-	var y = 1
-	if hPool.size() >= 2:
-		while y < 2 and hPool[y] > 0:
-			slashTargets.append(y)
-			y += 1
-		return slashTargets
-	elif hPool.size() == 1:
+	if hPool.size() > 2:
+		slashTargets = [1, 2]
+	elif hPool.size() == 2:
 		slashTargets = [1]
 
 func talkAction():
 	if npcScene.playerCombat == false:
 		var talkText = ["\"" + SaveState.playerName + 
-		", its you!\" she says after noticing you. Her eyes dart towards the door anxiously.\nNo one enters.\n\nYou explain everything that happened after you successfully repelled the siege at Eden." +
-		" \"I'm just glad someone is okay\" she's holding back tears. \"Just think of everyone you saved here. My daughter and I will always be grateful.\" The words echo in your mind and you can't help but think of your friends. You all promised to come back here together and share a drink when this was all over." ]
+		", its you!\" she says after noticing you. Her eyes dart towards the door anxiously, waiting for someone else to enter.\n\nYou explain everything that happened after you left Eden." +
+		" \"I'm just glad someone is okay.\" she's holding back tears. \"Just think of everyone you saved here. We will always be grateful.\" She says.\n\nYou can't help but think of your friends and how you all promised to return here to share a drink when this was all over." ]
 		npcScene.playText("".join(talkText))
 	else:
 		npcScene.playText("I think it's too late for talking now. Why would you attack the innocent tavern keeper?")
@@ -191,14 +172,14 @@ func talkAction():
 		player.updateMood()
 
 func recallAction():
-	var recallText = ["Your mind starts to doze off while you sit at the counter to the night you killed the Orc Commander.\n" +
+	var recallText = ["Your recall the night you killed the Orc Commander.\n" +
 	"You, " + SaveState.friendTwo + ", " + SaveState.friendThree + ", and " + SaveState.friendOne + 
-	" sat down in the tavern and shared a few drinks. You told stories of the siege and the memories of the fallen soldiers. " +
-	"When you all first arrived in the city you were just another group of adventurers who came through the mountain pass, but after the siege the people of Eden came to regard you as heroes. "]
+	" sat down in the tavern and shared a few drinks. You told stories of the siege and the memories of the fallen soldiers." +
+	"\n\nWhen you first arrived in Eden you were just another group of people offering to help, but after the siege the people of Eden came to regard you as heroes."]
 	if SaveState.playerJoy <= 15:
 		npcScene.playText("".join(recallText) + "\n\nNow you feel that couldn't be further from the truth. The real heroes are already gone.")
 	elif SaveState.playerJoy > 15:
-		npcScene.playText("".join(recallText) + "\n\nNow, regardless of a title, you long for home and the friends you miss dearly. They were the real heroes.")
+		npcScene.playText("".join(recallText) + "\n\nHero or not, you long for home and the friends you miss dearly. They were the real heroes.")
 		SaveState.playerJoy += 10
 
 func sneakAction():
@@ -210,9 +191,9 @@ func lookAction():
 	npcScene.playText("".join(lookText))
 
 func drinkAction():
-	var drinkText = ["You ask the tavern keeper for a drink. \"Don't you worry, this one is on me.\" she says, slamming a large mug of ale fit for a person thrice your size on the bar counter. After drinking, you feel a little nostalgic.",
-	"You tap the counter again, requesting another ale. \"Here you are sir.\" she looks a little suprised after you finished the last mug so quickly...",
-	"You tap the counter again, requesting another ale. \"Here you are sir.\" she is starting to look concerned.",
+	var drinkText = ["You ask the tavern keeper for a drink.\n\n\"Don't you worry, this one is on me.\" she says, placing a large mug of ale fit for someone thrice your size on the bar counter.\n\nThe taste makes you recall all the drinks you had with your friends.",
+	"You tap the counter again, requesting another ale.\n\n\"Here you are sir.\" she looks a little suprised after you finished the last mug so quickly...",
+	"You tap the counter again, requesting another ale.\n\n\"Here you are sir.\" she is starting to look concerned.",
 	"There is nothing else here you are probably an alcholic."]
 	drinks += 1
 	if drinks == 1:
@@ -227,7 +208,7 @@ func drinkAction():
 		npcScene.playText(drinkText[3])
 
 func eatAction():
-	var eatText = ["You ask the tavern keeper for some food and she brings out some ", SaveState.playerFood, " for you. \"Don't worry its on me.\" she says. You happily accept and begin eating.",
+	var eatText = ["You ask the tavern keeper for some food.\n\nShe brings out some ", SaveState.playerFood, " for you. \"Don't worry its on me.\" she says. You happily accept and begin eating.",
 	"You order some more food and she brings out even more this time. \"Don't worry about it.\" she says, she looks a little concerned, but you happily accept and begin eating.",
 	"You gained 10kg."]
 	food += 1
