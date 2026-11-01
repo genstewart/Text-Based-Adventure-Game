@@ -1,5 +1,7 @@
 extends Control
 
+@onready var item_sound: AudioStreamPlayer = $itemSound
+
 @export var npcScene : Node2D
 @export var player : Control
 
@@ -13,6 +15,8 @@ var solvedRiddle = false
 
 var introText = "You walk up to the stone."
 var deathText = "Why would you try that?"
+
+var talked = 0
 
 var actionMap = {
 	"stab": stabAction,
@@ -48,6 +52,7 @@ var actionMap = {
 	"friendships": riddleAnswer,
 	
 	"take": takeSword,
+	"loot": takeSword,
 	"sword": takeSword,
 	
 	"leave": exitAction,
@@ -75,10 +80,9 @@ func slashAction():
 	npcScene.playText("You slash your sword on the rock, nothing happens.")
 
 func talkAction():
-	var talkText = ["You can't talk to a rock.", "You tell the rock about all your adventures this far. What happened in The Valley, "]
-	var talked = 1
+	var talkText = ["You can't talk to a rock.", "You tell the rock about all your adventures this far. What happened in The Valley, your walk through Eden and how you ended up in The Cairn.\n\nIt doesn't say anything back."]
 	talked += 1
-	if talked == 1:
+	if talked <= 2:
 		npcScene.playText(talkText[0])
 	elif talked >= 3:
 		npcScene.playText(talkText[1])
@@ -121,6 +125,7 @@ func takeSword():
 	var takeSword = ["You approach the sword and take it from the stone table.\n\nThe sword shines bright blue in the sunlight, it doesn't look like anything smithed this millenia even. The sword still feels sharp to the touch despite its age.",
 	"\n\nYou put the sword in your sheath"]
 	if solvedRiddle:
+		item_sound.play()
 		SaveState.playerStab = 70
 		SaveState.playerSlash = 100
 		if SaveState.playerJoy >= 40:

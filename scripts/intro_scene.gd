@@ -4,6 +4,8 @@ extends Node2D
 @export var trans : Tween.TransitionType
 @onready var tween = create_tween()
 
+@onready var textSound: AudioStreamPlayer = $MarginContainer/textSound
+
 @onready var player = get_node("MarginContainer/player")
 @onready var continueButton = player.get_node("view/playerArea/continueButton")
 @onready var playerArea = player.get_node("view/playerArea")
@@ -29,6 +31,7 @@ signal cBON
 var restCount = 0
 
 func _ready() -> void:
+	textSound.play()
 	player.option1.text = "(1) Travel to The Gates of The Valley."
 	player.option2.text = "(2) Recall the events of the battle."
 	player.option3.text = "(3) Make a campfire and rest."
@@ -57,35 +60,43 @@ func playATBtext():
 	tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
 
 func _process(_delta: float) -> void:
+	if tween.is_running():
+		textSound.stream_paused = false
+	elif not tween.is_running():
+		textSound.stream_paused = true
+
 	if introOver == false and introNarration.visible_characters == len(introText1):
 		tween.pause()
 		await wait(.9)
 		tween.play()
-	if introOver == false and introNarration.visible_characters == len(introText1 + introText2 + " the " + SaveState.bossSlain + "'s" + "head from above, sliding your sword straight between its eyes."):
+	elif introOver == false and introNarration.visible_characters == len(introText1 + introText2 + " the " + SaveState.bossSlain + "'s" + "head from above, sliding your sword straight between its eyes."):
 		tween.pause()
 		await wait(0.7)
 		tween.play()
-	if introOver == false and introNarration.visible_characters == len(introText1 + introText2 + " the " + SaveState.bossSlain + "'s " + introText3 + SaveState.bossSlain + introText4 + introText5):
+	elif introOver == false and introNarration.visible_characters == len(introText1 + introText2 + " the " + SaveState.bossSlain + "'s " + introText3 + SaveState.bossSlain + introText4 + introText5):
 		tween.pause()
 		await wait(0.7)
 		tween.play()
-	if introNarration.visible_characters == len(introNarration.text) and introOver == false:
+	elif introNarration.visible_characters == len(introNarration.text) and introOver == false:
 		playerArea.show()
 		continueButton.show()
 		emit_signal("cBON")
+
 	if continueButton.button_pressed == true or Input.is_action_just_pressed("nextDialogue"):
 		if introNarration.visible_characters == len(introNarration.text) and introOver == false:
 			continue_button()
-		elif introNarration.visible_characters < len(introNarration.text) and introOver == true:
+		elif tween.is_running() and introOver == true:
 			dialogueSkip()
 	
 	if introNarration.visible_characters == len(introNarration.text) and introOver == true:
 		playerInfo.show()
 		continueButton.hide()
 		continueButton.disabled = true
+
 		if player.option1.button_pressed == true or Input.is_action_just_pressed("1"):
 			get_tree().change_scene_to_file("res://Scenes/the_gates.tscn")
-		if player.option1.button_pressed == true or Input.is_action_just_pressed("2"):
+
+		if player.option2.button_pressed == true or Input.is_action_just_pressed("2"):
 			introNarration.visible_characters = 0
 			introNarration.text = ("You recall the moments leading up to you killing the " + SaveState.bossSlain +
 			".\n\nThe two armies met in the center of The Valley. A long brutal battle resulted with the remaining goblins and orcs retreating to protect the " + SaveState.bossSlain + 
@@ -93,10 +104,10 @@ func _process(_delta: float) -> void:
 			tween = create_tween()
 			tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
 			player.option2.disabled = true
+
 		if player.option3.button_pressed == true or Input.is_action_just_pressed("3") and restCount < 3:
 			player.option3.disabled = true
 			restButton()
-			print(restCount)
 
 func continue_button():
 	continueButton.hide()
@@ -108,18 +119,18 @@ func restButton():
 	restCount += 1
 	introNarration.visible_characters = 0
 	if restCount == 1:
-		introNarration.text = "You spend some time digging two graves to bury the bodies of your lost friends. \n\nAfter, you rest by the fire and feel a sense of longing. You defeated the dragon, \n\nbut at what cost?"
+		introNarration.text = "You spend some time digging two graves to bury the bodies of your lost friends. \n\nAfter, you rest by the fire and feel a sense of longing. You defeated the " + SaveState.bossSlain + ", \n\nbut at what cost?"
 		tween = create_tween()
 		tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
 		player.option3.disabled = false
 		SaveState.playerJoy += 1
 		player.updateMood()
-	elif restCount == 3:
+	elif restCount >= 3:
 		introNarration.text = "After a day of resting, you feel its time to begin the journey home."
 		tween = create_tween()
 		tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
 		player.option3.disabled = true
-	elif restCount > 1 and restCount < 3:
+	elif restCount == 2:
 		introNarration.text = "You rest by the fire and feel a sense of longing. You defeated the " + SaveState.bossSlain + ", \n\nbut at what cost?"
 		tween = create_tween()
 		tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
@@ -128,9 +139,9 @@ func restButton():
 
 
 func dialogueSkip():
-		print("skip")
-		tween.kill()
-		introNarration.visible_characters = len(introNarration.text)
+	continueButton.disabled = true
+	tween.custom_step(60)
+	continueButton.disabled = false
 
 func _on_c_bon() -> void:
 	continueButton.disabled = false

@@ -60,6 +60,7 @@ var actionMap = {
 	
 	"trade": tradeAction,
 	"armor": tradeAction,
+	"buy": tradeAction,
 	
 	"leave": exitAction,
 	

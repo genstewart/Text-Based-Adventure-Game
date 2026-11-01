@@ -48,7 +48,7 @@ func _process(_delta: float) -> void:
 		elif introStage == 1 and introPlaying:
 			introStage += 1
 			introText(introStage)
-		elif playerTurn and (interactHouseDone or interactDogDone):
+		elif playerTurn and interactHouseDone and npc == get_node("dialogueScreen/house"):
 			npc.exitAction()
 	
 		elif playerCombat and not playerTurn:
@@ -104,7 +104,7 @@ func introText(introStage):
 			playerTurn = false
 
 func c1():
-	print("You begin the walk down the road to your home.")
+	get_tree().change_scene_to_file("res://Scenes/home.tscn")
 	playerChoosing = false
 
 func c2():

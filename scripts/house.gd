@@ -201,7 +201,7 @@ func talkAction():
 				npcScene.interactHouseDone = true
 		else:
 			npcScene.playText("You can't recall how " + SaveState.friendOne + " died.\n\n" + npcName + " bursts into tears and curses you for forgetting about her child.")
-			leaveText = ["Ashamed, you leave the house and think about your friends who died for you nearly a year ago now. How could you forget about their sacrafice?.\n\nYou stand at the crossroads in Haven."]
+			leaveText = ["Ashamed, you leave the house and think about your friends who died for you nearly a year ago now. How could you forget about their sacrafice?\n\nYou stand at the crossroads in Haven."]
 			SaveState.playerJoy -= 10
 			player.updateMood()
 			npcScene.interactHouseDone = true

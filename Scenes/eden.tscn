@@ -76,5 +76,5 @@ mouse_filter = 2
 script = ExtResource("5_gflqv")
 npcScene = NodePath("../..")
 player = NodePath("../player")
-hPool = [0, 999]
+hPool = [0, 999, null]
 aClass = [1, 1, 1]

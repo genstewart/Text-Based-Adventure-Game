@@ -46,7 +46,6 @@ var actionMap = {
 	"watch": lookAction,
 	"examine": lookAction,
 	"sack": lookAction,
-	"search": lookAction,
 	
 	"quest": questAction,
 	"footsteps": questAction,
@@ -57,6 +56,7 @@ var actionMap = {
 	"no": acceptAction,
 	
 	"key": findKey,
+	"search": findKey,
 	
 	"open": openCoffer,
 	"coffer": openCoffer,
@@ -100,6 +100,7 @@ func actionHandler(playerChoice):
 	actionMap[action].call()
 
 func stabAction():
+	stabDmg = SaveState.playerStab + 10 * aClass[targetNum]
 	if questActive:
 		if targetNum == 0:
 			npcScene.playText("You thrust forwards stabbing, but no one is there...")
@@ -112,13 +113,13 @@ func stabAction():
 			return
 
 		if hPool[targetNum] - stabDmg <= 0:
-			takeDamage(SaveState.playerStab)
+			takeDamage("stab")
 			hPool.remove_at(targetNum)
 			print(hPool.size() -1)
 			npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nThey fall to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
 			print(hPool)
 		elif hPool[targetNum] - stabDmg >= 0:
-			takeDamage(SaveState.playerStab)
+			takeDamage("stab")
 			print(hPool)
 			npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue))
 	elif not questActive:
@@ -126,40 +127,41 @@ func stabAction():
 		npcScene.playerCombat = false
 
 func slashAction():
+	slashDmg = SaveState.playerSlash - 10 * aClass[z]
 	if questActive:
 		slashTargetFinder()
 		if slashTargets.size() == 1:
 			var damageText = ["You slash in a large arc, hitting one of the ", groupName, " cutting them."]
 			if hPool[slashTargets[0]] - slashDmg < 0:
-				takeDamage(SaveState.playerSlash)
+				takeDamage("slash")
 				hPool.remove_at(slashTargets[0])
 				npcScene.playText("".join(damageText) + "\n\n" + "".join(takeDamageDialogue) + "\n\nOne falls to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
 			else:
-				takeDamage(SaveState.playerSlash)
+				takeDamage("slash")
 				npcScene.playText("".join(damageText) + "\n\n" + "".join(takeDamageDialogue))
 		elif hPool[slashTargets[0]] - slashDmg <= 0 and hPool[slashTargets[1]] - slashDmg <= 0:
-			takeDamage(SaveState.playerSlash)
+			takeDamage("slash")
 			hPool.remove_at(slashTargets[0])
 			hPool.remove_at(slashTargets[0])
 			npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nThey both fall to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
 		elif (hPool[slashTargets[0]] - slashDmg >= 0 and hPool[slashTargets[1]] - slashDmg <= 0) or (hPool[slashTargets[0]] - slashDmg <= 0 and hPool[slashTargets[1]] - slashDmg >= 0):
-			takeDamage(SaveState.playerSlash)
+			takeDamage("slash")
 			hPool.remove_at(slashTargets[0])
 			npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nOne falls to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
 		elif hPool[slashTargets[0]] - slashDmg >=0:
-			takeDamage(SaveState.playerSlash)
+			takeDamage("slash")
 			npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue))
 	elif not questActive:
 		npcScene.playText("You slash the rock wall beside you with your sword and carve a few scratches into it. Pretty cool.")
 		npcScene.playerCombat = false
 
 func takeDamage(damage):
-	if damage == SaveState.playerStab:
+	if damage == "stab":
 		stabDmg = SaveState.playerStab + 10 * aClass[targetNum]
 		dealDamageDialogue = ["You stab the ", targetName[targetNum], npcName, " piercing straight through it's armor."]
 		takeDamageDialogue = ["The ", targetName[targetNum], npcName, " took ", str(stabDmg), " damage!"]
 		hPool[targetNum] -= stabDmg
-	if damage == SaveState.playerSlash:
+	if damage == "slash":
 		slashDmg = SaveState.playerSlash - 10 * aClass[z]
 		dealDamageDialogue = ["You slash in a large arc, hitting two of the ", groupName, " cutting them both."]
 		takeDamageDialogue = ["The ", groupName, " took ", str(slashDmg), " damage!"]

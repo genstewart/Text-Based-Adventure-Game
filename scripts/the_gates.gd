@@ -8,9 +8,12 @@ extends Node2D
 @onready var playerArea = player.get_node("view/playerArea")
 @onready var playerInfo = player.get_node("view/playerArea/playerInfo")
 
+@onready var textSound: AudioStreamPlayer = $dialogueScreen/textSound
+
 var gatesIntro = ["You arrive at a large opened steel gate with towering watchtowers made of basalt on either side. You stormed these gates after marching for a month with the northern armies. Now all that remains is the casualties of the bloody siege.",
 "\n\nComing from the forest through the gates, you spot four hooded people walk through the gate and begin rummaging through the corpses.
-\nThey begin pocketing smaller trinkets and grabbing the swords of the fallen knights and commanders."]
+\nThey begin pocketing smaller trinkets and grabbing the swords of the fallen knights and commanders.", "You are standing at the gates. The young boys are still looking for their father.",
+"You are standing at the gates. The young boys lie with the other corpses on the ground.", "You are standing at the gates at night. You can here the scavengers talking inside the watchtower."]
 
 var recallMemory = ["Staring into the forest through the gates, you recall the night of the siege. After marching for a month, the armies had waited and made camp in the forest outside the gates. The plan of attack was simple.",
 " In the dead of night, ", SaveState.friendOne,
@@ -31,6 +34,7 @@ var memoryPlaying = false
 var restCount = 0
 
 func _ready() -> void:
+	textSound.play()
 	player.option1.text = "(1) Walk by the scavengers and through the gate, into the forest."
 	player.option2.text = "(2) Approach the four scavengers."
 	player.option3.text = "(3) Recall what happened during the siege."
@@ -38,17 +42,28 @@ func _ready() -> void:
 	player.option5.hide()
 	playerHide()
 	continueButton.show()
-	playText(gatesIntro[0] + gatesIntro[1])
+	if not SaveState.scavengersDone:
+		playText(gatesIntro[0] + gatesIntro[1])
+	elif SaveState.scavengersDone:
+		player.option2.disabled = true
+		if SaveState.boysTalked:
+			playText(gatesIntro[2])
+		elif SaveState.boysKilled:
+			playText(gatesIntro[3])
+		else:
+			playText(gatesIntro[4])
 
 func _process(_delta: float) -> void:
+	if tween.is_running():
+		textSound.stream_paused = false
+	elif not tween.is_running():
+		textSound.stream_paused = true
+
 	if introPlaying and textBox.visible_characters == len(gatesIntro[0]):
 		tween.pause()
 		await wait(0.3)
 		tween.play()
-	#if introPlaying and textBox.visible_characters == len(gatesIntro[0] + gatesIntro[1]):
-		#introPlaying = false
-		#playerPlaying = true
-	if Input.is_action_just_pressed("nextDialogue") or continueButton.button_pressed == true:
+	if Input.is_action_just_pressed("nextDialogue") or continueButton.button_pressed:
 		if introPlaying:
 			skipDialogue()
 			playerInfo.show()
@@ -64,22 +79,23 @@ func _process(_delta: float) -> void:
 				c3(2)
 			else:
 				skipDialogue()
-	
-	if Input.is_action_just_pressed("1") and playerPlaying or player.option1.button_pressed == true and playerPlaying:
-		c1()
-	if Input.is_action_just_pressed("2") and playerPlaying or player.option1.button_pressed == true and playerPlaying:
-		c2()
-	if Input.is_action_just_pressed("3") and playerPlaying or player.option1.button_pressed == true and playerPlaying:
-		playerHide()
-		memoryPlaying = true
-		playerPlaying = false
-		continueButton.show()
-		c3(1)
-	if Input.is_action_just_pressed("4") and playerPlaying or player.option1.button_pressed == true and playerPlaying:
-		restButton()
+
+	if playerPlaying:
+		if Input.is_action_just_pressed("1") or player.option1.button_pressed:
+			c1()
+		if Input.is_action_just_pressed("2") or player.option2.button_pressed:
+			c2()
+		if Input.is_action_just_pressed("3") or player.option3.button_pressed:
+			playerHide()
+			memoryPlaying = true
+			playerPlaying = false
+			continueButton.show()
+			c3(1)
+		if Input.is_action_just_pressed("4") or player.option4.button_pressed:
+			restButton()
 
 func c1():
-	if not SaveState.boysKilled or not SaveState.boysTalked:
+	if not SaveState.scavengersDone:
 		playText("The scavengers are in your way.")
 	else:
 		get_tree().change_scene_to_file("res://Scenes/eden.tscn")

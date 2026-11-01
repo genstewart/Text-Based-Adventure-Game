@@ -219,8 +219,8 @@ func slashTargetFinder():
 func talkAction():
 	if not questActive:
 		if npcScene.playerCombat == false:
-			var talkText = ["You give news to the guards about the slain Dragon and the fate of the army. \"Wow, I can't believe they're all gone... I'm just thankful you killed the dragon at last.\"",
-			"You give news to the guards about the slain Dragon and the fate of the army and your friends. You avoid all topics about the boys you killed at the gates."]
+			var talkText = ["You give news to the guards about the slain ",SaveState.bossSlain, " and the fate of the army. \"Wow, I can't believe they're all gone... I'm just thankful you killed the ",SaveState.bossSlain, " at last.\"",
+			"You give news to the guards about the slain ",SaveState.bossSlain, " and the fate of the army and your friends. You avoid all topics about the boys you killed at the gates."]
 			if not SaveState.boysKilled:
 				npcScene.playText(talkText[0])
 			elif SaveState.boysKilled:
@@ -236,7 +236,7 @@ func talkAction():
 			npcScene.playText("It's far too late to try talking with them.")
 
 func questAction():
-	var questText = ["You ask the Guards about what has happend and glance at the map.",
+	var questText = ["You ask the Guards about what has happend and glance at the map. ",
 	"\"There's been a report that some Orcs are camping by the road leading into town and killing the townspeople. We were just deciding whether we should investigate.\"",
 	"\n\nDo you want to offer your help?"]
 	var questDone = ["\"",SaveState.playerName, "! you're back!\"",
@@ -264,7 +264,7 @@ func acceptAction():
 			npcScene.playText("".join(questAcceptText))
 			hPool[0] = 0
 			hPool[1] = 100
-			hPool.append(100)
+			hPool[2] = 100
 			aClass[1] = 3
 			aClass[2] = 3
 			print(aClass[1])
@@ -302,7 +302,7 @@ func lookAction():
 		npcScene.playText(lookText[1])
 
 func drinkAction():
-	var drinkText = ["\"Go to the taven to drink.\"", "\"We have important business to do.\"", "\"You are an alchoholic\""]
+	var drinkText = ["\"Go to the tavern to drink.\"", "\"We have important business to do.\"", "\"You are an alchoholic\""]
 	if not questActive:
 		drinks += 1
 		if drinks == 1:
@@ -315,7 +315,7 @@ func drinkAction():
 		doNothing()
 
 func eatAction():
-	var eatText = ["\"Go to the taven if your hungry.\"", "\"We have important business to do.\"", "\"I think you're fat.\""]
+	var eatText = ["\"Go to the tavern if your hungry.\"", "\"We have important business to do.\"", "\"I think you're fat.\""]
 	if not questActive:
 		food += 1
 		if food == 1:
@@ -361,9 +361,11 @@ func exitAction():
 	elif questActive and SaveState.orcsKilled:
 		npcScene.introText(4)
 	elif questActive:
-		npcScene.playText("You duck behind a tree and decide to turn back to the city. You're not built for this kind of battle anymore. The Guards are sure to be dissapointed.")
+		npcScene.playText("You duck behind a tree and decide to turn back to the city. You're not built for this kind of battle anymore. The Guards are sure to be dissapointed.\n\nYou return back to the city")
 		SaveState.playerJoy -= 5
 		player.updateMood()
+		npcScene.interactGuardsDone = true
+		npcScene.interactOver(3)
 
 func doNothing():
 	pass

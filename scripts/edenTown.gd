@@ -46,7 +46,6 @@ func _ready() -> void:
 	continueButton.show()
 
 func _process(_delta: float) -> void:
-	turnHandler()
 	
 	if Input.is_action_just_pressed("nextDialogue") and interactGuardsDone and npc == get_node("dialogueScreen/guardHouse"):
 		interactOver(3)
@@ -62,6 +61,7 @@ func _process(_delta: float) -> void:
 			if npc.hPool.size() > 1:
 				npc.dealDamage()
 				playerTurn = true
+				player.instructText.text = "[color=white]What will you do?[/color]"
 			elif npc.hPool.size() <=1:
 				npc.death()
 		elif playerTurn == true:
@@ -69,29 +69,31 @@ func _process(_delta: float) -> void:
 			if (SaveState.prevInput.begins_with("stab") or SaveState.prevInput.begins_with("slash")):
 				playerCombat = true
 				playerTurn = false
+				player.instructText.text = "[color=red]Not your turn[/color]"
 
-	if (Input.is_action_just_pressed("1") or player.option1.button_pressed == true) and playerChoosing:
-		c1()
-	
-	if (Input.is_action_just_pressed("2") or player.option2.button_pressed == true) and playerChoosing:
-		if interactTavernDone:
-			pass
-		elif not interactTavernDone:
-			c2()
-	
-	if (Input.is_action_just_pressed("3") or player.option3.button_pressed == true)  and playerChoosing:
-		if interactSmithDone:
-			pass
-		elif not interactSmithDone:
-			c3()
+	if playerChoosing:
+		if Input.is_action_just_pressed("1") or player.option1.button_pressed == true:
+			c1()
+		
+		if Input.is_action_just_pressed("2") or player.option2.button_pressed == true:
+			if interactTavernDone:
+				pass
+			elif not interactTavernDone:
+				c2()
+		
+		if Input.is_action_just_pressed("3") or player.option3.button_pressed == true:
+			if interactSmithDone:
+				pass
+			elif not interactSmithDone:
+				c3()
 
-	if (Input.is_action_just_pressed("4") or player.option4.button_pressed == true)  and playerChoosing:
-		if interactGuardsDone:
-			pass
-		elif not interactGuardsDone:
-			c4()
+		if Input.is_action_just_pressed("4") or player.option4.button_pressed == true:
+			if interactGuardsDone:
+				pass
+			elif not interactGuardsDone:
+				c4()
 
-	if (Input.is_action_just_pressed("5") or player.option5.button_pressed == true) and playerChoosing:
+	if Input.is_action_just_pressed("5") or player.option5.button_pressed == true:
 		restButton()
 
 func introText(introStage):
@@ -203,9 +205,3 @@ func interactOver(choice):
 			playerTurn = false
 			playerChoosing = true
 			player.option4.disabled = true
-
-func turnHandler():
-	if not playerTurn:
-		player.instructText.text = "[color=red]Not your turn[/color]"
-	if playerTurn:
-		player.instructText.text = "[color=white]What will you do?[/color]"

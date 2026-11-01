@@ -4,6 +4,11 @@ extends Control
 
 @export var playerArea : MarginContainer
 
+#player sounds
+@onready var heal: AudioStreamPlayer = $playerSoundEffects/heal
+@onready var attack: AudioStreamPlayer = $playerSoundEffects/attack
+@onready var input: AudioStreamPlayer = $playerSoundEffects/input
+
 #player's stats view
 @export var nameTag : Label
 @export var healthBar : TextureProgressBar
@@ -77,10 +82,13 @@ func inputCon(state : bool):
 func _on_player_action_text_changed() -> void:
 	if Input.is_action_just_pressed("nextDialogue"):
 		SaveState.prevInput = playerInput.text.replace(" ", "")
+		if SaveState.prevInput.begins_with("stab") or SaveState.prevInput  == "slash":
+			attack.play()
+		else:
+			input.play()
 		playerInput.clear()
 
 func playerDeath():
-	print("died")
 	if SaveState.playerJoy <= 0:
 		dText = ["You died a bitter hero, unable to move on from the past."]
 	elif SaveState.playerJoy <= 25:
@@ -88,7 +96,7 @@ func playerDeath():
 	elif SaveState.playerJoy <= 50:
 		dText = ["You died a hero still trying to help and protect others.\nThose you knew personally will remember you."]
 	elif SaveState.playerJoy <= 75:
-		dText = ["You died, as more than a hero but a good person,\nwho will be remembered by all for generations to come."]
+		dText = ["You died, as more than a hero but a good person,\nwho will be remembered by some for years to come."]
 	elif SaveState.playerJoy > 75:
 		dText = ["You died, as more than a hero but a good person,\nwho will be remembered by all for generations to come."]
 	dContainer.show()
@@ -125,13 +133,15 @@ func updateMood():
 	Status.text = SaveState.playerStatus
 
 func healPlayer():
-	if SaveState.healthPotion >= 0:
+	if SaveState.healthPotion > 0:
+		heal.play()
 		potionButton.disabled = true
-		print("healing")
-		healthBar.value += 50
+		SaveState.health += 50
 		SaveState.healthPotion -= 1
 		potionButton.text = str(SaveState.healthPotion)
 		potionButton.disabled = false
-		print(healthBar.value)
 	else:
 		pass
+
+func wrongInput():
+	instructText.text = "[color=orange]You can't do that action[/color]"

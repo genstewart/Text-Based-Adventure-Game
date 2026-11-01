@@ -16,7 +16,6 @@ extends Node2D
 
 var playerTurn = true
 var playerCombat = false
-var interactDone = false
 
 func _ready() -> void:
 	player.showButtons(false)
@@ -25,26 +24,25 @@ func _ready() -> void:
 	playText(npc.introText)
 
 func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("nextDialogue") and interactDone == true and textBox.visible_ratio == 1.0:
-		print("nextScene")
+	if Input.is_action_just_pressed("nextDialogue") and SaveState.scavengersDone and not tween.is_running():
 		loadNextScene()
-	if Input.is_action_just_pressed("nextDialogue") and textBox.visible_ratio < 1.0:
+	if Input.is_action_just_pressed("nextDialogue") and tween.is_running():
 		skipDialogue()
+
 	elif Input.is_action_just_pressed("nextDialogue") and playerCombat and not playerTurn and textBox.visible_ratio == 1.0:
 		if npc.hPool.size() > 1:
 			npc.dealDamage()
 			playerTurn = true
+			player.instructText.text = "[color=white]What will you do?[/color]"
 		elif npc.hPool.size() <=1:
 			npc.death()
+
 	elif Input.is_action_just_pressed("nextDialogue") and textBox.visible_ratio == 1.0 and playerTurn == true:
 		npc.actionHandler(SaveState.prevInput)
 		if SaveState.prevInput.begins_with("stab") or SaveState.prevInput.begins_with("slash"):
 			playerCombat = true
 			playerTurn = false
-	if not playerTurn:
-		player.instructText.text = "[color=red]Not your turn[/color]"
-	if playerTurn:
-		player.instructText.text = "[color=white]What will you do?[/color]"
+			player.instructText.text = "[color=red]Not your turn[/color]"
 
 func playText(nextText : String):
 	if tween:

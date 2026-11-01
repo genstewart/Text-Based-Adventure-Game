@@ -4,6 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://b4mwvqqyg4ji5" path="res://Sprites/healthBar3.png" id="2_fkybt"]
 [ext_resource type="Texture2D" uid="uid://7ec6ln7kyae4" path="res://Sprites/healthBar2.png" id="3_x3wgy"]
 [ext_resource type="Texture2D" uid="uid://cjbp72ibh57gt" path="res://Sprites/healthBar1.png" id="4_3smsa"]
+[ext_resource type="AudioStream" uid="uid://csmecgnt31ysx" path="res://soundEffects/healSound2.wav" id="5_3smsa"]
+[ext_resource type="AudioStream" uid="uid://4mdirl6c6jdk" path="res://soundEffects/attackSound.wav" id="6_x3wgy"]
+[ext_resource type="AudioStream" uid="uid://ddb58icwvcjhn" path="res://soundEffects/inputSound.wav" id="7_3smsa"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vgqql"]
 bg_color = Color(0, 0, 0, 1)
@@ -63,12 +66,6 @@ load_path = "res://.godot/imported/healthPotion.png-2cb8bda79a1e61cdf37c9e2e629c
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2pnq3"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_otxxp"]
-
-[sub_resource type="InputEventAction" id="InputEventAction_fkybt"]
-action = &"1"
-
-[sub_resource type="Shortcut" id="Shortcut_x3wgy"]
-events = [SubResource("InputEventAction_fkybt")]
 
 [node name="player" type="Control" unique_id=135934462 node_paths=PackedStringArray("continueB", "playerArea", "nameTag", "healthBar", "potionButton", "Status", "optContainer", "option1", "option2", "option3", "option4", "option5", "iContainer", "instructText", "playerInput", "dContainer", "deathText", "restartButton")]
 layout_mode = 3
@@ -214,8 +211,10 @@ texture_progress = ExtResource("4_3smsa")
 
 [node name="healthPotion" type="Button" parent="view/playerArea/playerInfo/playerStats" unique_id=1038074993]
 texture_filter = 1
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(65, 38)
 layout_mode = 2
+size_flags_horizontal = 0
+focus_mode = 1
 focus_behavior_recursive = 2
 mouse_behavior_recursive = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -281,7 +280,6 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_3qdye")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_qd6eu")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_2pnq3")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_otxxp")
-shortcut = SubResource("Shortcut_x3wgy")
 text = "(1) Travel to the Gates for the Valley of Doom"
 alignment = 0
 autowrap_mode = 3
@@ -357,6 +355,24 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_otxxp")
 text = "(5)"
 alignment = 0
 autowrap_mode = 3
+
+[node name="playerSoundEffects" type="Control" parent="." unique_id=1241212816]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+mouse_behavior_recursive = 2
+
+[node name="heal" type="AudioStreamPlayer" parent="playerSoundEffects" unique_id=1188386627]
+stream = ExtResource("5_3smsa")
+
+[node name="attack" type="AudioStreamPlayer" parent="playerSoundEffects" unique_id=745866949]
+stream = ExtResource("6_x3wgy")
+
+[node name="input" type="AudioStreamPlayer" parent="playerSoundEffects" unique_id=247990836]
+stream = ExtResource("7_3smsa")
+volume_db = -26.427
+pitch_scale = 2.16
 
 [connection signal="pressed" from="view/deathScreen/dtextCon/dVCon/restartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="view/playerArea/playerInfo/playerStats/healthPotion" to="." method="_on_health_potion_pressed"]

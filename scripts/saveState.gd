@@ -22,6 +22,9 @@ var bossSlain = "Griffin"
 #text input for npc interaction
 var prevInput = ""
 
+#for the gates
+var scavengersDone = false
+
 #player events to effect story
 #Events with a comment effect the final dialogue.
 var daveDeath = false

@@ -5,6 +5,10 @@ extends Control
 @export var eBox : RichTextLabel
 @export var gBox : RichTextLabel
 
+@onready var error: AudioStreamPlayer = $error
+@onready var input: AudioStreamPlayer = $input
+@onready var textSound: AudioStreamPlayer = $textSound
+
 var badWords = ["the ", "The ", "a ", "A "]
 
 var qArray = ["What is your name?"
@@ -26,6 +30,7 @@ var currQ = 0
 @onready var tween = create_tween()
 
 func _ready() -> void:
+	textSound.playing = true
 	SaveState.savePlayerStart()
 	currQ = 0
 	qBox.visible_characters = 0
@@ -37,18 +42,27 @@ func _ready() -> void:
 	tween.tween_property(qBox, "visible_characters", len(qArray[currQ]), len(qArray[currQ]) * textspeed)
 
 func _process(_delta: float) -> void:
+	if tween.is_running():
+		textSound.stream_paused = false
+	elif tween.finished:
+		textSound.stream_paused = true
+
+	if pInput.text.begins_with(" "):
+		pInput.clear()
+
 	if 1 < len(pInput.text) and len(pInput.text) <= 15:
 		iGood = true
 		eBox.text = ""
 	if len(pInput.text) <= 1 or len(pInput.text) > 15:
 		iGood = false
 	if Input.is_action_just_pressed("nextDialogue") and iGood == false:
+		error.play()
 		eBox.text = "Your input is too long or too short"
 	if Input.is_action_just_pressed("nextDialogue") and iGood == true:
+		input.play()
 		if currQ <= 5:
 			aArray[currQ] = pInput.text
 			aArray[currQ] = aArray[currQ].remove_chars(" ,./;'<>?:}[{]=-+_)(*&^%$#@!)")
-			print(aArray)
 			pInput.clear()
 			nextQ()
 		if len(aArray[5]) > 0:
@@ -58,15 +72,13 @@ func _process(_delta: float) -> void:
 func nextQ():
 	currQ = currQ + 1
 	qBox.visible_characters = 0
-	##if currQ > 6:
 	if currQ <= 5:
 		qBox.text = qArray[currQ]
 		gBox.text = gArray[currQ]
-		print(currQ)
 		tween = create_tween()
 		tween.set_trans(Tween.TRANS_LINEAR)
 		tween.tween_property(qBox, "visible_characters", len(qArray[currQ]), len(qArray[currQ]) * textspeed)
-
+		textSound.play()
 
 func saveEnd():
 	SaveState.playerName = aArray[0]
@@ -74,9 +86,5 @@ func saveEnd():
 	SaveState.friendOne = aArray[2]
 	SaveState.friendTwo = aArray[3]
 	SaveState.friendThree = aArray[4]
-	##SaveState.bossName = aArray[5]
 	SaveState.bossSlain = aArray[5]
-	load("res://Scenes/introScene.tscn")
 	get_tree().change_scene_to_file("res://Scenes/introScene.tscn")
-	print("loading next scene")
-	print(SaveState.playerName + SaveState.playerFood + SaveState.friendOne + SaveState.friendTwo + SaveState.friendThree + SaveState.bossSlain)

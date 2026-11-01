@@ -23,7 +23,7 @@ var enemiesLeft
 
 var introText = "You approach the dog.\n\nIt's wagging its tail."
 var deathText = "The dog lies dead in the mud at the crossroads."
-var leaveText = "You turn around and walk back.\n\nYou stand at the crossroads."
+var leaveText = ["You turn around and walk back.\n\nYou stand at the crossroads."]
 
 var acceptDog = false
 var pets = 0
@@ -47,7 +47,7 @@ var actionMap = {
 	"watch": lookAction,
 	
 	"pet": petAction,
-	"scratch": playAction,
+	"scratch": petAction,
 	
 	"play": playAction,
 	"fetch": playAction,
@@ -244,7 +244,7 @@ func acceptAction():
 
 func exitAction():
 	npcScene.playText("".join(leaveText))
-	npcScene.interactHouseDone = true
+	npcScene.interactDogDone = true
 	npcScene.interactOver(2)
 
 func doNothing():
@@ -255,6 +255,6 @@ func death():
 		npcScene.playerTurn = true
 		npcScene.playerCombat = false
 		npcScene.playText(deathText)
-		npcScene.interactHouseDone = true
+		npcScene.interactDogDone = true
 		SaveState.playerJoy -= 10
 		player.updateMood()
