@@ -214,13 +214,13 @@ func talkAction():
 			npcScene.playText("It's too late to speak with the guards now.")
 			player.playerJoy -= 10
 			player.updateMood()
-	if questActive:
+	elif questActive:
 		if npcScene.playerCombat == false:
 			if not SaveState.orcsKilled and npcName == "orc":
 				npcScene.playText("The shout out and greet the orcs. They turn around and charge towards you.")
 				npcScene.playerCombat = true
 				npcScene.playerTurn = false
-			elif SaveState.orcsKilled and npcName == "guard":
+			elif npcName == "guard":
 				questAction()
 		elif npcScene.playerCombat:
 			npcScene.playText("They won't talk to you now.")
@@ -231,7 +231,7 @@ func questAction():
 	"\n\nDo you want to offer your help?"]
 	var questDone = ["\"",SaveState.playerName, "! you're back!\"",
 	" You tell the guards about the orcs you killed. They thank you, and give you two health potions for your help.",
-	"\n\nYour adventure may be over, but helping people is in your blood."]
+	"\n\nYour quest may be over, but helping people is in your blood."]
 	if not questActive:
 		npcScene.playText("".join(questText))
 		questAccept = true
@@ -241,10 +241,12 @@ func questAction():
 		npcScene.playText("".join(questDone))
 		SaveState.healthPotion += 2
 		SaveState.playerJoy += 5
+		player.hPotAnim()
 	elif questActive and not SaveState.orcsKilled:
 		questActive = false
 		npcScene.playText("You tell the Guards you found where the orcs camped but didn't deal with them. They're still happy for your help locating them and send you on your way.")
 		SaveState.playerJoy -= 5
+		npcScene.interactOver(3)
 
 func acceptAction():
 	var questAcceptText = ["You decide to check out the reports for the guards and leave the city while the sun is still setting.",
@@ -280,19 +282,19 @@ func sneakAction():
 	var sneakText = ["You're not sure why but you decide to crawl under the map table in the center of the room. The guards all silently watch as you crawl under.\n\n\"",
 	SaveState.playerName, "? what are you doing...\"\n\nBoom, one of your classic pranks. (The guards are all shocked and in tears)",
 	"You decide to sneak up on the orcs. Creeping up through the bushes, you grab one of the orcs from behind and stab your sword through his back. He falls to the ground lifeless.\n\nThe other jumps up in response ready to avenge his friend."]
-	if not questActive:
+	if npcName == "guard":
 		npcScene.playText(sneakText[0]+sneakText[1]+sneakText[2])
 	elif questActive and not npcScene.playerCombat and not SaveState.orcsKilled:
 		npcScene.playText(sneakText[3])
 		hPool.remove_at(1)
-		audioManager.hurtSound.play()
+		player.attack.play()
 
 func lookAction():
 	var lookText = ["The three guards are standing beside a map table. On the map there is a large red X in the forest you traveled through to enter the city.",
 	 "Two orcs stand by a fire speaking in tongues to eachother. It sounds like they might be having an argument."]
-	if not questActive:
+	if npcName == "guard":
 		npcScene.playText(lookText[0])
-	if questActive:
+	if questActive and npcName == "orc":
 		if not SaveState.orcsKilled:
 			npcScene.playText(lookText[1])
 		elif SaveState.orcsKilled:
@@ -360,14 +362,18 @@ func exitAction():
 		npcScene.interactOver(3)
 	elif questActive and SaveState.orcsKilled:
 		npcScene.introText(4)
+		npcName = "guard"
+		groupName = "guards"
 	elif questActive:
 		npcScene.playText("You duck behind a tree and decide to turn back to the city. You're not built for this kind of battle anymore. The Guards are sure to be dissapointed.\n\nYou return back to the city")
 		SaveState.playerJoy -= 5
 		player.updateMood()
-		npcScene.interactGuardsDone = true
 		npcName = "guard"
 		groupName = "guards"
-		npcScene.interactOver(3)
+		player.showButtons(true)
+		player.inputCon(false)
+		npcScene.playerTurn = false
+		npcScene.playerChoosing = true
 
 func doNothing():
 	pass
@@ -380,6 +386,4 @@ func death():
 			npcScene.playText(deathText)
 			SaveState.playerJoy += 5
 			SaveState.orcsKilled = true
-			npcName = "guard"
-			groupName = "guards"
 			player.updateMood()

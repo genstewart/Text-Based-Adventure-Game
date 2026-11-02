@@ -13,7 +13,8 @@ config_version=5
 config/name="A Hero's End"
 run/main_scene="uid://yvo36p6ei8vy"
 config/features=PackedStringArray("4.6", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://0w5jj8okggy1"
+config/windows_native_icon="res://AHEicon.ico"
 
 [autoload]
 
@@ -22,7 +23,7 @@ DialogueLoader="*uid://b6bcwd3breh5n"
 
 [display]
 
-window/size/initial_position_type=0
+window/size/mode=1
 window/stretch/mode="viewport"
 
 [gui]

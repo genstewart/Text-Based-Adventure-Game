@@ -13,6 +13,7 @@ extends Control
 @export var nameTag : Label
 @export var healthBar : TextureProgressBar
 @export var potionButton : Button
+@onready var potionSprite: Sprite2D = $view/playerArea/playerInfo/playerStats/healthPotion/potionSprite
 @export var Status : RichTextLabel
 
 #player's options
@@ -140,8 +141,25 @@ func healPlayer():
 		SaveState.healthPotion -= 1
 		potionButton.text = str(SaveState.healthPotion)
 		potionButton.disabled = false
+		hPotAnim()
 	else:
 		pass
 
-func wrongInput():
-	instructText.text = "[color=orange]You can't do that action[/color]"
+func hPotAnim():
+	match SaveState.healthPotion:
+		0:
+			potionSprite.frame = 5
+		1:
+			potionSprite.frame = 4
+		2:
+			potionSprite.frame = 3
+		3:
+			potionSprite.frame = 2
+		4:
+			potionSprite.frame = 1
+		5:
+			potionSprite.frame = 0
+		6:
+			potionSprite.frame = 6
+		7:
+			potionSprite.frame = 6

@@ -54,8 +54,8 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_otxxp"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_sioq2"]
-load_path = "res://.godot/imported/healthPotion.png-2cb8bda79a1e61cdf37c9e2e629c7142.ctex"
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_3smsa"]
+load_path = "res://.godot/imported/healthPotionStates.png-25223190a52b95bc37020664b55a35bf.ctex"
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qmd0d"]
 
@@ -211,7 +211,7 @@ texture_progress = ExtResource("4_3smsa")
 
 [node name="healthPotion" type="Button" parent="view/playerArea/playerInfo/playerStats" unique_id=1038074993]
 texture_filter = 1
-custom_minimum_size = Vector2(65, 38)
+custom_minimum_size = Vector2(55, 38)
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 1
@@ -222,9 +222,16 @@ theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_2pnq3")
 theme_override_styles/hover = SubResource("StyleBoxFlat_otxxp")
 text = "5"
-icon = SubResource("CompressedTexture2D_sioq2")
-alignment = 0
-expand_icon = true
+flat = true
+alignment = 2
+
+[node name="potionSprite" type="Sprite2D" parent="view/playerArea/playerInfo/playerStats/healthPotion" unique_id=1849942680]
+position = Vector2(13.75, 21)
+scale = Vector2(1.2, 1.2)
+texture = SubResource("CompressedTexture2D_3smsa")
+hframes = 7
+region_enabled = true
+region_rect = Rect2(0, 0, 224, 32)
 
 [node name="playerStatus" type="RichTextLabel" parent="view/playerArea/playerInfo/playerStats" unique_id=2069221531]
 texture_filter = 1
