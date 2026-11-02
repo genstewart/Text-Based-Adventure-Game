@@ -11,6 +11,9 @@ extends Node2D
 @onready var playerArea = player.get_node("view/playerArea")
 @onready var playerInfo = player.get_node("view/playerArea/playerInfo")
 
+@onready var audioManager: Control = $MarginContainer/audioManager
+@onready var textLoop: AudioStreamPlayer = $MarginContainer/textLoop
+
 var introText1 = ""
 var introText2 = ""
 var introText3 = ""
@@ -31,7 +34,7 @@ signal cBON
 var restCount = 0
 
 func _ready() -> void:
-	textSound.play()
+	textLoop.play()
 	player.option1.text = "(1) Travel to The Gates of The Valley."
 	player.option2.text = "(2) Recall the events of the battle."
 	player.option3.text = "(3) Make a campfire and rest."
@@ -54,33 +57,35 @@ func playintrotext():
 	tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
 
 func playATBtext():
+	audioManager.textSound.play()
 	tween.kill()
 	introNarration.text = atb1 + SaveState.bossSlain + atb2 + SaveState.friendThree + " and " + SaveState.friendTwo + atb3 + SaveState.bossSlain + atb4
 	tween = create_tween()
 	tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
 
 func _process(_delta: float) -> void:
-	if tween.is_running():
-		textSound.stream_paused = false
-	elif not tween.is_running():
-		textSound.stream_paused = true
-
-	if introOver == false and introNarration.visible_characters == len(introText1):
-		tween.pause()
-		await wait(.9)
-		tween.play()
-	elif introOver == false and introNarration.visible_characters == len(introText1 + introText2 + " the " + SaveState.bossSlain + "'s" + "head from above, sliding your sword straight between its eyes."):
-		tween.pause()
-		await wait(0.7)
-		tween.play()
-	elif introOver == false and introNarration.visible_characters == len(introText1 + introText2 + " the " + SaveState.bossSlain + "'s " + introText3 + SaveState.bossSlain + introText4 + introText5):
-		tween.pause()
-		await wait(0.7)
-		tween.play()
-	elif introNarration.visible_characters == len(introNarration.text) and introOver == false:
-		playerArea.show()
-		continueButton.show()
-		emit_signal("cBON")
+	if not introOver:
+		if not tween.is_running():
+			textLoop.stream_paused = true
+		elif tween.is_running():
+			textLoop.stream_paused = false
+		
+		if introNarration.visible_characters == len(introText1):
+			tween.pause()
+			await wait(.9)
+			tween.play()
+		elif introNarration.visible_characters == len(introText1 + introText2 + " the " + SaveState.bossSlain + "'s" + "head from above, sliding your sword straight between its eyes."):
+			tween.pause()
+			await wait(0.7)
+			tween.play()
+		elif introNarration.visible_characters == len(introText1 + introText2 + " the " + SaveState.bossSlain + "'s " + introText3 + SaveState.bossSlain + introText4 + introText5):
+			tween.pause()
+			await wait(0.7)
+			tween.play()
+		elif introNarration.visible_characters == len(introNarration.text):
+			playerArea.show()
+			continueButton.show()
+			emit_signal("cBON")
 
 	if continueButton.button_pressed == true or Input.is_action_just_pressed("nextDialogue"):
 		if introNarration.visible_characters == len(introNarration.text) and introOver == false:
@@ -97,6 +102,7 @@ func _process(_delta: float) -> void:
 			get_tree().change_scene_to_file("res://Scenes/the_gates.tscn")
 
 		if player.option2.button_pressed == true or Input.is_action_just_pressed("2"):
+			audioManager.textSound.play()
 			introNarration.visible_characters = 0
 			introNarration.text = ("You recall the moments leading up to you killing the " + SaveState.bossSlain +
 			".\n\nThe two armies met in the center of The Valley. A grueling battle resulted with the remaining enemy forces retreating to protect the " + SaveState.bossSlain + 
@@ -106,6 +112,7 @@ func _process(_delta: float) -> void:
 			player.option2.disabled = true
 
 		if player.option3.button_pressed == true or Input.is_action_just_pressed("3") and restCount < 3:
+			audioManager.textSound.play()
 			player.option3.disabled = true
 			restButton()
 
@@ -139,6 +146,7 @@ func restButton():
 
 
 func dialogueSkip():
+	audioManager.textSound.stop()
 	continueButton.disabled = true
 	tween.custom_step(60)
 	continueButton.disabled = false

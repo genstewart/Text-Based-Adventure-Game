@@ -8,6 +8,8 @@ extends Node2D
 @onready var playerArea = player.get_node("view/playerArea")
 @onready var playerInfo = player.get_node("view/playerArea/playerInfo")
 
+@onready var audioManager: Control = $dialogueScreen/audioManager
+
 @export var npc = ""
 
 var edenIntro1 = ["After a month of walking through the forest you see a clearing appear in the trail.\nThe city of Eden.\n\nYou left here nearly four months ago with " + SaveState.friendTwo + ", " + SaveState.friendOne + ", " + SaveState.friendThree + 
@@ -162,11 +164,13 @@ func restButton():
 		player.option5.disabled = true
 
 func skipDialogue():
+	audioManager.textSound.stop()
 	continueButton.disabled = true
 	tween.custom_step(60)
 	continueButton.disabled = false
 
 func playText(nextText: String):
+	audioManager.textSound.play()
 	if tween:
 		tween.kill()
 	textBox.text = nextText

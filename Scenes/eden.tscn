@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://cuu5y2ro7832v" path="res://scripts/tavern_keeper.gd" id="4_fbeqm"]
 [ext_resource type="Script" uid="uid://bt66nwogqh1c1" path="res://scripts/blacksmith.gd" id="4_gflqv"]
 [ext_resource type="Script" uid="uid://bmfp4p18pxfol" path="res://scripts/guard_house.gd" id="5_gflqv"]
+[ext_resource type="PackedScene" uid="uid://bod73rxgkevsl" path="res://Scenes/audio_manager.tscn" id="6_kh824"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fbeqm"]
 bg_color = Color(0, 0, 0, 1)
@@ -78,3 +79,6 @@ npcScene = NodePath("../..")
 player = NodePath("../player")
 hPool = [0, 999, null]
 aClass = [1, 1, 1]
+
+[node name="audioManager" parent="dialogueScreen" unique_id=1289939422 instance=ExtResource("6_kh824")]
+layout_mode = 2

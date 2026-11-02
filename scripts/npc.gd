@@ -3,6 +3,8 @@ extends Control
 @export var npcScene : Node2D
 @export var player : Control
 
+@onready var audioManager: Control = $"../audioManager"
+
 @export var npcName = ""
 @export var groupName = ""
 @export var hPool = [0,0,0,0,0]
@@ -56,7 +58,7 @@ func actionHandler(playerChoice):
 	player.instructText.text = "[color=white]What will you do?[/color]"
 	
 	if not actionMap.has(action):
-		player.instructText.text = "[color=orange]You can't do that action[/color]"
+		player.instructText.text = "[color=red]You can't do that action[/color]"
 		return
 
 	actionMap[action].call()
@@ -114,7 +116,8 @@ func takeDamage(damage : String):
 
 func dealDamage():
 	if not SaveState.scavengersDone:
-		var attackDialogue = ["The ", groupName, " lunge at you with their knives. Some of their blades getting past your armor."]
+		audioManager.hurtSound.play()
+		var attackDialogue = ["The ", groupName, " lunge at you with their knives. Some of their blades slip past your armor."]
 		npcTotalDamage = (npcDamage * (hPool.size()-1))
 		dealDamageDialogue = ["The ", groupName, " dealt ", str(npcTotalDamage), " damage!"]
 		npcScene.playText("".join(attackDialogue) + "\n\n" +"".join(dealDamageDialogue))

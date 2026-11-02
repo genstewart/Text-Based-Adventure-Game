@@ -3,6 +3,8 @@ extends Control
 @export var npcScene : Node2D
 @export var player : Control
 
+@onready var audioManager: Control = $"../audioManager"
+
 @export var npcName = ""
 @export var groupName = ""
 @export var hPool = [0,0,0,0,0]
@@ -103,13 +105,13 @@ func actionHandler(playerChoice):
 	player.instructText.text = "[color=white]What will you do?[/color]"
 	
 	if not actionMap.has(action):
-		player.instructText.text = "[color=orange]You can't do that action[/color]"
+		player.instructText.text = "[color=red]You can't do that action[/color]"
 		return
 
 	actionMap[action].call()
 
 func stabAction():
-	if questActive:
+	if questActive and not SaveState.orcsKilled:
 		if targetNum < 0 or targetNum >= hPool.size():
 			npcScene.playText("There's no one to stab.")
 			return
@@ -127,7 +129,7 @@ func stabAction():
 		npcScene.playerCombat = false
 
 func slashAction():
-	if questActive:
+	if questActive and not SaveState.orcsKilled:
 		slashTargetFinder()
 		if slashTargets.size() == 1:
 			var damageText = ["You slash in a large arc, hitting a ", npcName, " cutting them."]
@@ -169,6 +171,7 @@ func takeDamage(damage):
 
 func dealDamage():
 		if not npcScene.interactGuardsDone and questActive:
+			audioManager.hurtSound.play()
 			var attackDialogue = ["The ", groupName, " slash you with their scimtars."]
 			if hPool.size() > 2:
 				attackDialogue = ["The ", groupName, " slash you with their scimtars."]
@@ -233,6 +236,7 @@ func questAction():
 		npcScene.playText("".join(questText))
 		questAccept = true
 	elif questActive and SaveState.orcsKilled:
+		audioManager.itemSound.play()
 		questActive = false
 		npcScene.playText("".join(questDone))
 		SaveState.healthPotion += 2
@@ -243,9 +247,9 @@ func questAction():
 		SaveState.playerJoy -= 5
 
 func acceptAction():
-	var questAcceptText = ["You decide to check out the reports for the guards and leave the city while the sun is still setting",
-	" By the time you are nearby, it's late at night. Through the trees you can see the light of a campfire and hear some muffled voices.",
-	" As you approach you see two orcs standing by the fire clad in heavy armor.\n\nThey look like soldiers that ran during the siege."]
+	var questAcceptText = ["You decide to check out the reports for the guards and leave the city while the sun is still setting.",
+	"\n\nBy the time you are nearby, it's late at night. Through the trees you can see the light of a campfire and hear some muffled voices.",
+	" As you approach you see two orcs standing by the fire, clad in heavy armor.\n\nThey look like soldiers that ran during the siege."]
 	if not questActive and questAccept:
 		if SaveState.prevInput == "yes":
 			npcScene.playText("".join(questAcceptText))
@@ -254,7 +258,6 @@ func acceptAction():
 			hPool[2] = 100
 			aClass[1] = 3
 			aClass[2] = 3
-			print(aClass[1])
 			npcDamage = 40
 			groupName = "orcs"
 			npcName = "orc"
@@ -266,9 +269,12 @@ func acceptAction():
 		doNothing()
 
 func recallAction():
-	var recallText = ["You recall the moments after you killed the orc commander.\n\nYou stood in the guard house with your friends and the armies commanders. After the bloody siege you all knew there was only one way to end this war for sure, to kill the ",
-	 SaveState.bossSlain, " at last.\n\nThen you began planning the siege of The Gates with the other commanders."]
-	npcScene.playText(recallText)
+	if not questActive:
+		var recallText = ["You recall the moments after you killed the orc commander.\n\nYou stood in the guard house with your friends and the armies commanders. After the bloody siege you all knew there was only one way to end this war for sure, to kill the ",
+		 SaveState.bossSlain, " at last.\n\nThen you began planning the siege of The Gates with the other commanders."]
+		npcScene.playText(recallText)
+	else:
+		doNothing()
 
 func sneakAction():
 	var sneakText = ["You're not sure why but you decide to crawl under the map table in the center of the room. The guards all silently watch as you crawl under.\n\n\"",
@@ -276,9 +282,10 @@ func sneakAction():
 	"You decide to sneak up on the orcs. Creeping up through the bushes, you grab one of the orcs from behind and stab your sword through his back. He falls to the ground lifeless.\n\nThe other jumps up in response ready to avenge his friend."]
 	if not questActive:
 		npcScene.playText(sneakText[0]+sneakText[1]+sneakText[2])
-	elif questActive and not npcScene.playerCombat:
+	elif questActive and not npcScene.playerCombat and not SaveState.orcsKilled:
 		npcScene.playText(sneakText[3])
 		hPool.remove_at(1)
+		audioManager.hurtSound.play()
 
 func lookAction():
 	var lookText = ["The three guards are standing beside a map table. On the map there is a large red X in the forest you traveled through to enter the city.",
@@ -286,7 +293,10 @@ func lookAction():
 	if not questActive:
 		npcScene.playText(lookText[0])
 	if questActive:
-		npcScene.playText(lookText[1])
+		if not SaveState.orcsKilled:
+			npcScene.playText(lookText[1])
+		elif SaveState.orcsKilled:
+			npcScene.playText("Both orcs lie dead by the fire.\n\nThe assorted belongings of the people they robbed are behind them. It looks too heavy to take anything.")
 
 func drinkAction():
 	var drinkText = ["\"Go to the tavern to drink.\"", "\"We have important business to do.\"", "\"You are an alchoholic\""]
@@ -315,19 +325,22 @@ func eatAction():
 		doNothing()
 
 func boysQ():
-	SaveState.boysKilled = true
-	if not SaveState.boysKilled and SaveState.boysTalked:
-		npcScene.playText("You tell the guards about the boys you met at the gates.\n\n\"Oh! Those boys from the east side, eh? Thank god their safe, thanks for looking out for our next generation of adventurers.\"")
-		SaveState.playerJoy += 10
-		player.updateMood()
-	elif SaveState.boysKilled:
-		npcScene.playText("You confess to killing the three boys who were at the gates.\n\n\"You killed those boys... They were just looking for their Dad after the battle, there was no need for violence. Just get out " + SaveState.playerName + ". Leave Eden.\"\n\nAshamed, you turn around and leave. You are in the town square.")
-		SaveState.playerJoy -= 10
-		SaveState.toldGuards = true
-		player.updateMood()
-		npcScene.interactGuardsDone = true
-	elif not SaveState.boysTalked:
-		npcScene.playText("You tell the guards about some suspected looters you saw at the gates. \"Looters? that might be the boys from the east side, they told us they would go out looking for their dad. We had no way to stop them from going, glad they're okay out there.\"\n\nYou're relieved you didn't resort to violence.")
+	if not questActive:
+		SaveState.boysKilled = true
+		if not SaveState.boysKilled and SaveState.boysTalked:
+			npcScene.playText("You tell the guards about the boys you met at the gates.\n\n\"Oh! Those boys from the east side, eh? Thank god their safe, thanks for looking out for our next generation of adventurers.\"")
+			SaveState.playerJoy += 10
+			player.updateMood()
+		elif SaveState.boysKilled:
+			npcScene.playText("You confess to killing the three boys who were at the gates.\n\n\"You killed those boys... They were just looking for their Dad after the battle, there was no need for violence. Just get out " + SaveState.playerName + ". Leave Eden.\"\n\nAshamed, you turn around and leave. You are in the town square.")
+			SaveState.playerJoy -= 10
+			SaveState.toldGuards = true
+			player.updateMood()
+			npcScene.interactGuardsDone = true
+		elif not SaveState.boysTalked:
+			npcScene.playText("You tell the guards about some suspected looters you saw at the gates. \"Looters? that might be the boys from the east side, they told us they would go out looking for their dad. We had no way to stop them from going, glad they're okay out there.\"\n\nYou're relieved you didn't resort to violence.")
+	else:
+		doNothing()
 
 func tradeAction():
 	if not questActive:

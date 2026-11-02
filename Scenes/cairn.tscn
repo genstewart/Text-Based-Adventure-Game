@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="1_pe47h"]
 [ext_resource type="Script" uid="uid://vtfg5ipc33dj" path="res://scripts/cairn.gd" id="1_wqt34"]
 [ext_resource type="Script" uid="uid://bsrhg3fejcisn" path="res://scripts/thecairn.gd" id="3_8n0no"]
-[ext_resource type="AudioStream" uid="uid://crn4ys4jq6hks" path="res://soundEffects/itemSound.mp3" id="4_2vb2h"]
 [ext_resource type="Script" uid="uid://bwu7544fblj66" path="res://scripts/footsteps.gd" id="4_5e7nb"]
+[ext_resource type="PackedScene" uid="uid://bod73rxgkevsl" path="res://Scenes/audio_manager.tscn" id="6_2vb2h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wqt34"]
 bg_color = Color(0, 0, 0, 1)
@@ -57,9 +57,6 @@ player = NodePath("../player")
 hPool = [0, 9999]
 aClass = [1, 50]
 
-[node name="itemSound" type="AudioStreamPlayer" parent="dialogueScreen/thecairn" unique_id=1911601525]
-stream = ExtResource("4_2vb2h")
-
 [node name="footsteps" type="Control" parent="dialogueScreen" unique_id=1724012775 node_paths=PackedStringArray("npcScene", "player")]
 layout_mode = 2
 mouse_filter = 2
@@ -71,3 +68,6 @@ groupName = "goblins"
 hPool = [0, 80, 80, 80]
 aClass = [1, 2, 2, 2]
 npcDamage = 30
+
+[node name="audioManager" parent="dialogueScreen" unique_id=1289939422 instance=ExtResource("6_2vb2h")]
+layout_mode = 2

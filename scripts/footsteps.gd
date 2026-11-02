@@ -1,5 +1,7 @@
 extends Control
 
+@onready var audioManager: Control = $"../audioManager"
+
 @export var npcScene : Node2D
 @export var player : Control
 
@@ -93,7 +95,7 @@ func actionHandler(playerChoice):
 	player.instructText.text = "[color=white]What will you do?[/color]"
 	
 	if not actionMap.has(action):
-		player.instructText.text = "[color=orange]You can't do that action[/color]"
+		player.instructText.text = "[color=red]You can't do that action[/color]"
 		return
 
 	actionMap[action].call()
@@ -162,6 +164,7 @@ func takeDamage(damage : String):
 
 func dealDamage():
 		if not npcScene.interactFootstepsDone and questActive:
+			audioManager.hurtSound.play()
 			var attackDialogue = ["The ", groupName, " attack you with their clubs"]
 			npcTotalDamage = (npcDamage * (hPool.size()-1))
 			if hPool.size() > 2:

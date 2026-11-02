@@ -1,5 +1,7 @@
 extends Node2D
 
+@onready var audioManager: Control = $dialogueScreen/audioManager
+
 @export var textBox : RichTextLabel
 @onready var tween = create_tween()
 
@@ -73,11 +75,13 @@ func c1():
 	playText(npc.introText)
 
 func skipDialogue():
+	audioManager.textSound.stop()
 	continueButton.disabled = true
 	tween.custom_step(60)
 	continueButton.disabled = false
 
 func playText(nextText: String):
+	audioManager.textSound.play()
 	if tween:
 		tween.kill()
 	textBox.text = nextText

@@ -1,6 +1,6 @@
 extends Control
 
-@onready var item_sound: AudioStreamPlayer = $itemSound
+@onready var audioManager: Control = $"../audioManager"
 
 @export var npcScene : Node2D
 @export var player : Control
@@ -66,9 +66,10 @@ func _ready() -> void:
 
 func actionHandler(playerChoice):
 	var action = playerChoice
+	player.instructText.text = "[color=white]What will you do?[/color]"
 	
 	if not actionMap.has(action):
-		npcScene.playText("You can't do that.")
+		player.instructText.text = "[color=red]You can't do that action[/color]"
 		return
 
 	actionMap[action].call()
@@ -125,7 +126,7 @@ func takeSword():
 	var swordText = ["You approach the sword and take it from the stone table.\n\nThe sword shines bright blue in the sunlight, it doesn't look like anything smithed this millenia even. The sword still feels sharp to the touch despite its age.",
 	"\n\nYou put the sword in your sheath"]
 	if solvedRiddle:
-		item_sound.play()
+		audioManager.itemSound.play()
 		SaveState.playerStab = 70
 		SaveState.playerSlash = 100
 		if SaveState.playerJoy >= 40:

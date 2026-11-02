@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dgtvjkxgvdwao" path="res://scripts/npc_scene.gd" id="1_gnhme"]
 [ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="2_qqtv6"]
 [ext_resource type="PackedScene" uid="uid://bgxkmlwf3r0et" path="res://Scenes/npc.tscn" id="4_kohbg"]
+[ext_resource type="PackedScene" uid="uid://bod73rxgkevsl" path="res://Scenes/audio_manager.tscn" id="4_t7kix"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qqtv6"]
 bg_color = Color(0, 0, 0, 1)
@@ -56,3 +57,6 @@ npcName = "scavenger"
 groupName = "scavengers"
 hPool = [-160, 60, 60, 60, 60]
 npcDamage = 8
+
+[node name="audioManager" parent="dialogueScreen" unique_id=1289939422 instance=ExtResource("4_t7kix")]
+layout_mode = 2

@@ -3,6 +3,8 @@ extends Control
 @export var npcScene : Node2D
 @export var player : Control
 
+@onready var audioManager: Control = $"../audioManager"
+
 @export var npcName = ""
 @export var groupName = ""
 @export var hPool = [0,0,0,0,0]
@@ -23,7 +25,7 @@ var enemiesLeft
 var drinks = 0
 var food = 0
 
-var introText = "You walk across the town square and arrive in front of the blacksmith. There is a large open forge and slanted roof over a large work area. The blacksmith is busy at work and hasn't looked up for some time."
+var introText = "You walk across the town square and arrive in front of the blacksmith.\n\nThere is a large open forge and slanted roof over a large work area. The blacksmith is busy at work and hasn't looked up for some time."
 var deathText = "Why would you try that?"
 
 @export var npcAttackDial = []
@@ -82,7 +84,7 @@ func actionHandler(playerChoice):
 	player.instructText.text = "[color=white]What will you do?[/color]"
 	
 	if not actionMap.has(action):
-		player.instructText.text = "[color=orange]You can't do that action[/color]"
+		player.instructText.text = "[color=red]You can't do that action[/color]"
 		return
 
 	actionMap[action].call()
@@ -140,6 +142,7 @@ func takeDamage(damage):
 
 func dealDamage():
 	if not npcScene.interactSmithDone:
+		audioManager.hurtSound.play()
 		var attackDialogue = ["The blacksmith hits you across the face with his hammer. You go flying to the side."]
 		npcTotalDamage = (npcDamage * (hPool.size()-1))
 		dealDamageDialogue = ["The blacksmith dealt ", str(npcTotalDamage), " damage!"]
@@ -220,6 +223,7 @@ func tradeAction():
 	"\n\nThe mail shirt glitters in the sun and is made with unmatched expertise. You wear the mail shirt under your coat and thank the blacksmith.\n\n"]
 	var trades = 0
 	if trades == 0:
+		audioManager.itemSound.play()
 		npcScene.playText("".join(tradeText))
 		player.healthBar.max_value = 175
 		SaveState.maxHealth = 175

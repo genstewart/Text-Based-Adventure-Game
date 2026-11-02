@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://eflhgfd1nugi" path="res://scripts/home.gd" id="1_dt112"]
 [ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="1_uq2cn"]
 [ext_resource type="Script" uid="uid://b3v8w1u22w7nb" path="res://scripts/ending.gd" id="3_ibywg"]
+[ext_resource type="PackedScene" uid="uid://bod73rxgkevsl" path="res://Scenes/audio_manager.tscn" id="4_12ycv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dt112"]
 bg_color = Color(0, 0, 0, 1)
@@ -70,3 +71,6 @@ mouse_behavior_recursive = 1
 script = ExtResource("3_ibywg")
 npcScene = NodePath("../..")
 player = NodePath("../player")
+
+[node name="audioManager" parent="dialogueScreen" unique_id=1289939422 instance=ExtResource("4_12ycv")]
+layout_mode = 2

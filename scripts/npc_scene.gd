@@ -10,6 +10,8 @@ extends Node2D
 @onready var playerInput = player.playerInput
 @onready var playerChoice = player.playerChoice
 
+@onready var audioManager: Control = $dialogueScreen/audioManager
+
 @export var npc : Control
 
 @export var returnScene = ""
@@ -45,6 +47,7 @@ func _process(_delta: float) -> void:
 			player.instructText.text = "[color=red]Not your turn[/color]"
 
 func playText(nextText : String):
+	audioManager.textSound.play()
 	if tween:
 		tween.kill()
 	textBox.text = nextText
@@ -56,6 +59,7 @@ func loadNextScene():
 	get_tree().change_scene_to_file(returnScene)
 
 func skipDialogue():
+	audioManager.textSound.stop()
 	continueButton.disabled = true
 	tween.custom_step(60)
 	continueButton.disabled = false

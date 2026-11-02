@@ -8,7 +8,7 @@ extends Node2D
 @onready var playerArea = player.get_node("view/playerArea")
 @onready var playerInfo = player.get_node("view/playerArea/playerInfo")
 
-@onready var textSound: AudioStreamPlayer = $dialogueScreen/textSound
+@onready var audioManager: Control = $dialogueScreen/audioManager
 
 var gatesIntro = ["You arrive at a large opened steel gate with towering watchtowers made of basalt on either side. You stormed these gates after marching for a month with the army of Eden. Now all that remains is the casualties of the bloody siege.",
 "\n\nComing from the forest through the gates, four hooded people walk through and begin searching through the corpses.
@@ -34,7 +34,6 @@ var memoryPlaying = false
 var restCount = 0
 
 func _ready() -> void:
-	textSound.play()
 	player.option1.text = "(1) Walk by the scavengers and through the gate, into the forest."
 	player.option2.text = "(2) Approach the four scavengers."
 	player.option3.text = "(3) Recall what happened during the siege."
@@ -59,9 +58,9 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if tween.is_running():
-		textSound.stream_paused = false
+		audioManager.textSound.stream_paused = false
 	elif not tween.is_running():
-		textSound.stream_paused = true
+		audioManager.textSound.stream_paused = true
 
 	if introPlaying and textBox.visible_characters == len(gatesIntro[0]):
 		tween.pause()
@@ -90,11 +89,14 @@ func _process(_delta: float) -> void:
 		if Input.is_action_just_pressed("2") or player.option2.button_pressed:
 			c2()
 		if Input.is_action_just_pressed("3") or player.option3.button_pressed:
-			playerHide()
-			memoryPlaying = true
-			playerPlaying = false
-			continueButton.show()
-			c3(1)
+			if player.option3.disabled:
+				pass
+			else:
+				playerHide()
+				memoryPlaying = true
+				playerPlaying = false
+				continueButton.show()
+				c3(1)    
 		if Input.is_action_just_pressed("4") or player.option4.button_pressed:
 			restButton()
 
@@ -109,16 +111,16 @@ func c2():
 	get_tree().change_scene_to_file("res://Scenes/npc_scene.tscn")
 
 func c3(memoryPart):
-	if memoryPart == 1:
-		playText(recallMemory[0] + recallMemory[1] + recallMemory[2] + recallMemory[3] + recallMemory[4])
-	elif memoryPart == 2:
-		playText(recallMemory[5] + recallMemory[6] + recallMemory[7] + recallMemory[8] + recallMemory[9])
-		SaveState.daveDeath = true
-		SaveState.playerJoy += 10
-		player.updateMood()
-		memoryPlaying = false
-		playerPlaying = true
-		player.option3.disabled = true
+		if memoryPart == 1:
+			playText(recallMemory[0] + recallMemory[1] + recallMemory[2] + recallMemory[3] + recallMemory[4])
+		elif memoryPart == 2:
+			playText(recallMemory[5] + recallMemory[6] + recallMemory[7] + recallMemory[8] + recallMemory[9])
+			SaveState.daveDeath = true
+			SaveState.playerJoy += 10
+			player.updateMood()
+			memoryPlaying = false
+			playerPlaying = true
+			player.option3.disabled = true
 
 func restButton():
 	restCount += 1
@@ -141,12 +143,14 @@ func restButton():
 		player.updateMood()
 
 func skipDialogue():
+	audioManager.textSound.stop()
 	continueButton.disabled = true
 	tween.kill()
 	textBox.visible_ratio = 1.0
 	continueButton.disabled = false
 
 func playText(nextText: String):
+	audioManager.textSound.play()
 	if tween:
 		tween.kill()
 	textBox.text = nextText
