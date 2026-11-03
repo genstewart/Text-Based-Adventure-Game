@@ -67,6 +67,8 @@ var actionMap = {
 	"no": acceptAction,
 	
 	"leave": exitAction,
+	"goodbye": exitAction,
+	"bye": exitAction,
 	
 	"": doNothing,
 }

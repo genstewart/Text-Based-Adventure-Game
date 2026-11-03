@@ -73,6 +73,8 @@ var actionMap = {
 	"help": questAction,
 	
 	"leave": exitAction,
+	"goodbye": exitAction,
+	"bye": exitAction,
 	
 	"": doNothing,
 }
@@ -177,12 +179,14 @@ func talkAction():
 				npcScene.playText("".join(talkText) + "\n\nHe died a hero, and the world is safer for it.\n\n" + npcName + " pauses for a moment and thanks you for coming all this way to tell her. She's glad " + SaveState.friendOne + " died for the greater good of everybody.")
 				SaveState.playerJoy += 10
 				player.updateMood()
+				SaveState.toldMom = true
 			elif SaveState.playerJoy < 70:
 				npcScene.playText("".join(talkText) + "\n\nHe died in vain, anybody could have gone in to open the gate. You should have never put your friend at risk.\n\n" + npcName + " breaks down into tears, and curses you for not going with your friend.")
 				SaveState.playerJoy -= 10
 				player.updateMood()
 				leaveText = ["Ashamed, you turn around and walk out of the house. " + SaveState.friendOne + " was your friend.\n\nHow can you call yourself a hero, if you can't even save those closest to you?\n\nYou stand at the crossroads in Haven."]
 				npcScene.interactHouseDone = true
+				SaveState.toldMom = true
 		else:
 			npcScene.playText("You can't recall how " + SaveState.friendOne + " died.\n\n" + npcName + " bursts into tears and curses you for forgetting about her child.")
 			leaveText = ["Ashamed, you leave the house and think about your friends who died for you nearly a year ago now. How could you forget about their sacrafice?\n\nYou stand at the crossroads in Haven."]
@@ -195,7 +199,6 @@ func talkAction():
 		player.updateMood()
 
 func recallAction():
-	SaveState.playerJoy = 100
 	var recallText = ["You recall the day you decided to embark on this quest.\n\nYou and your friends just finished defending Haven from a small group of goblins and orcs. You all sat quietly inside the house afterwards. After seeing the destruction and aftermath, the four of you decided to travel to Eden and join the defence there."]
 	if SaveState.playerJoy < 85:
 		npcScene.playText("".join(recallText) + "\n\nStanding here now, you're not sure if you ever should have gone. The people here needed you too. They needed their family too.")

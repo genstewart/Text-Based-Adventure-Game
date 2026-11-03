@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://q8775xjg8ps4" path="res://scripts/intro_scene.gd" id="1_prosp"]
 [ext_resource type="PackedScene" uid="uid://bod73rxgkevsl" path="res://Scenes/audio_manager.tscn" id="3_aky6l"]
 [ext_resource type="PackedScene" uid="uid://bpv6mj4vwpsp6" path="res://Scenes/player.tscn" id="3_prosp"]
-[ext_resource type="AudioStream" uid="uid://bl1qkyqc05e0p" path="res://soundEffects/textSound.ogg" id="4_aky6l"]
+[ext_resource type="AudioStream" uid="uid://c3tbjg5x68vhd" path="res://soundEffects/textSound.wav" id="4_aky6l"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y564o"]
 bg_color = Color(0, 0, 0, 1)
@@ -51,7 +51,7 @@ layout_mode = 2
 
 [node name="textLoop" type="AudioStreamPlayer" parent="MarginContainer" unique_id=2129909296]
 stream = ExtResource("4_aky6l")
-volume_db = -13.0
+volume_db = -8.0
 pitch_scale = 0.97
 
 [connection signal="cBON" from="." to="." method="_on_c_bon"]

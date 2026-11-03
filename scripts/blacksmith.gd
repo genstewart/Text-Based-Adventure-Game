@@ -65,6 +65,8 @@ var actionMap = {
 	"buy": tradeAction,
 	
 	"leave": exitAction,
+	"goodbye": exitAction,
+	"bye": exitAction,
 	
 	"": doNothing,
 }

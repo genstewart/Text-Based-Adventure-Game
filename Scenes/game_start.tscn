@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dg63gg8e5dicm" path="res://scripts/game_start.gd" id="1_ym6pf"]
 [ext_resource type="AudioStream" uid="uid://cf2rq71fvfekn" path="res://soundEffects/gameStartInput.wav" id="2_oveg5"]
 [ext_resource type="AudioStream" uid="uid://ct6nxjw4vva4k" path="res://soundEffects/hurtSound.mp3" id="3_k0t7x"]
-[ext_resource type="AudioStream" uid="uid://bl1qkyqc05e0p" path="res://soundEffects/textSound.ogg" id="4_k0t7x"]
+[ext_resource type="PackedScene" uid="uid://bod73rxgkevsl" path="res://Scenes/audio_manager.tscn" id="5_m7e4r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3jwdi"]
 bg_color = Color(0, 0, 0, 1)
@@ -93,7 +93,5 @@ stream = ExtResource("3_k0t7x")
 volume_db = -20.0
 pitch_scale = 0.95
 
-[node name="textSound" type="AudioStreamPlayer" parent="." unique_id=2052706610]
-stream = ExtResource("4_k0t7x")
-volume_db = -13.0
-pitch_scale = 0.96
+[node name="audioManager" parent="." unique_id=1289939422 instance=ExtResource("5_m7e4r")]
+layout_mode = 1

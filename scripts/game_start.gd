@@ -7,7 +7,7 @@ extends Control
 
 @onready var error: AudioStreamPlayer = $error
 @onready var input: AudioStreamPlayer = $input
-@onready var textSound: AudioStreamPlayer = $textSound
+@onready var audioManager: Control = $audioManager
 
 var badWords = ["the ", "The ", "a ", "A "]
 
@@ -18,7 +18,7 @@ var qArray = ["What is your name?"
 , "Name another friend"
 , "What monster scares you the most?"] 
 
-var gArray = ["Any name works", "Any food, singular. For example : Hamburger", "Any name that is not your own", "Any name that is not your own or the previous","Any name that is not your own or the previous","Name any monster, singular without any indefinite or definite article. For example: use 'Dragon' not 'The Dragon'"]
+var gArray = ["Any name works", "Any food, singular. For example: Hamburger", "Any name that is not your own", "Any name that is not your own or the previous","Any name that is not your own or the previous","Name any monster, singular without any indefinite or definite article. For example: use 'Dragon' not 'The Dragon'"]
 
 var iGood = false
 
@@ -30,7 +30,7 @@ var currQ = 0
 @onready var tween = create_tween()
 
 func _ready() -> void:
-	textSound.playing = true
+	audioManager.introTextSound.playing = true
 	SaveState.savePlayerStart()
 	currQ = 0
 	qBox.visible_characters = 0
@@ -43,9 +43,9 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if tween.is_running():
-		textSound.stream_paused = false
+		audioManager.introTextSound.stream_paused = false
 	elif tween.finished:
-		textSound.stream_paused = true
+		audioManager.introTextSound.stream_paused = true
 
 	if pInput.text.begins_with(" "):
 		pInput.clear()
@@ -78,7 +78,6 @@ func nextQ():
 		tween = create_tween()
 		tween.set_trans(Tween.TRANS_LINEAR)
 		tween.tween_property(qBox, "visible_characters", len(qArray[currQ]), len(qArray[currQ]) * textspeed)
-		textSound.play()
 
 func saveEnd():
 	SaveState.playerName = aArray[0]

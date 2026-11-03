@@ -9,7 +9,7 @@ var restText = ["You sit down to finally rest after the long journey. You were o
 
 var mercifulText = ["But after you killed the ", SaveState.bossSlain ," you lost your way.", "Even after you finished your quest, you were an inspiration to others."]
 var merciful = ""
-var generousText = [" You let the past control you, and stopped helping others.", "You stayed true to your values and helped others in need."]
+var generousText = [" You let the past control you, and stopped helping others.", " You stayed true to your values and helped others in need."]
 var generous = ""
 var selflessText = [" Greed controlled your actions, and you let it corrupt you.", " You were selfless even when no one was watching."]
 var selfless = ""

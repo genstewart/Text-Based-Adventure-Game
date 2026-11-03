@@ -34,7 +34,6 @@ signal cBON
 var restCount = 0
 
 func _ready() -> void:
-	textLoop.play()
 	player.option1.text = "(1) Travel to The Gates of The Valley."
 	player.option2.text = "(2) Recall the events of the battle."
 	player.option3.text = "(3) Make a campfire and rest."
@@ -51,13 +50,14 @@ func playerHide():
 	playerArea.hide()
 
 func playintrotext():
+	audioManager.introTextSound.play()
 	tween = create_tween()
 	introNarration.text = introText1 + introText2 + "the " + SaveState.bossSlain + "'s " + introText3 + SaveState.bossSlain + introText4 + introText5 + introText6
 	tween.set_trans(Tween.TRANS_LINEAR)
 	tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
 
 func playATBtext():
-	audioManager.textSound.play()
+	audioManager.introtextSound.play()
 	tween.kill()
 	introNarration.text = atb1 + SaveState.bossSlain + atb2 + SaveState.friendThree + " and " + SaveState.friendTwo + atb3 + SaveState.bossSlain + atb4
 	tween = create_tween()
@@ -66,9 +66,9 @@ func playATBtext():
 func _process(_delta: float) -> void:
 	if not introOver:
 		if not tween.is_running():
-			textLoop.stream_paused = true
+			audioManager.introTextSound.stream_paused = true
 		elif tween.is_running():
-			textLoop.stream_paused = false
+			audioManager.introTextSound.stream_paused = false
 		
 		if introNarration.visible_characters == len(introText1):
 			tween.pause()

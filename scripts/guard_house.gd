@@ -84,8 +84,8 @@ var actionMap = {
 	"no": acceptAction,
 	
 	"leave": exitAction,
-	"back": exitAction,
-	"exit": exitAction,
+	"goodbye": exitAction,
+	"bye": exitAction,
 	
 	"": doNothing,
 }
@@ -233,8 +233,11 @@ func questAction():
 	" You tell the guards about the orcs you killed. They thank you, and give you two health potions for your help.",
 	"\n\nYour quest may be over, but helping people is in your blood."]
 	if not questActive:
-		npcScene.playText("".join(questText))
-		questAccept = true
+		if SaveState.orcsKilled:
+			npcScene.playText("We've got nothing else for you sorry.")
+		else:
+			npcScene.playText("".join(questText))
+			questAccept = true
 	elif questActive and SaveState.orcsKilled:
 		audioManager.itemSound.play()
 		questActive = false
@@ -242,6 +245,7 @@ func questAction():
 		SaveState.healthPotion += 2
 		SaveState.playerJoy += 5
 		player.hPotAnim()
+		npcScene.interactOver(3)
 	elif questActive and not SaveState.orcsKilled:
 		questActive = false
 		npcScene.playText("You tell the Guards you found where the orcs camped but didn't deal with them. They're still happy for your help locating them and send you on your way.")
@@ -252,21 +256,24 @@ func acceptAction():
 	var questAcceptText = ["You decide to check out the reports for the guards and leave the city while the sun is still setting.",
 	"\n\nBy the time you are nearby, it's late at night. Through the trees you can see the light of a campfire and hear some muffled voices.",
 	" As you approach you see two orcs standing by the fire, clad in heavy armor.\n\nThey look like soldiers that ran during the siege."]
-	if not questActive and questAccept:
-		if SaveState.prevInput == "yes":
-			npcScene.playText("".join(questAcceptText))
-			hPool[0] = 0
-			hPool[1] = 100
-			hPool[2] = 100
-			aClass[1] = 3
-			aClass[2] = 3
-			npcDamage = 40
-			groupName = "orcs"
-			npcName = "orc"
-			questActive = true
-		if SaveState.prevInput == "no":
-			npcScene.playText("You wish the guards the best of luck. That life of fighting is behind you.")
-			questAccept = false
+	if not SaveState.orcsKilled:
+		if not questActive and questAccept:
+			if SaveState.prevInput == "yes":
+				npcScene.playText("".join(questAcceptText))
+				hPool[0] = 0
+				hPool[1] = 100
+				hPool[2] = 100
+				aClass[1] = 3
+				aClass[2] = 3
+				npcDamage = 40
+				groupName = "orcs"
+				npcName = "orc"
+				questActive = true
+			if SaveState.prevInput == "no":
+				npcScene.playText("You wish the guards the best of luck. That life of fighting is behind you.")
+				questAccept = false
+		else:
+			doNothing()
 	else:
 		doNothing()
 
