@@ -29,7 +29,7 @@ var questAccept = false
 
 var introText = ["You enter the Guard House and see three guards at a table talking over a map. You overhear part of their conversation. \"Are you sure... We really can't spare any men now.\" \"I agree, our focus should be in the city.\" ",
 "One guard glances at the door and sees you.\n\n\"", SaveState.playerName,
- "? We never thought we'd see you again! Did you see any boys on your way here?\"\n\n\"Y'know they are taking about building statues for you and your friends in the town square.\"\n",]
+ "? We never thought we'd see you again! Did you see any boys on your way here?\"\n\"Y'know they're taking about building statues of you and your friends.\"\n\n",]
 var afterQuestText = ["The guards are gathered around the map talking about the city."]
 var deathText = "The two orcs lie dead on the ground. The job is finished and the city is safer for it."
 
@@ -245,7 +245,6 @@ func questAction():
 		SaveState.healthPotion += 2
 		SaveState.playerJoy += 5
 		player.hPotAnim()
-		npcScene.interactOver(3)
 	elif questActive and not SaveState.orcsKilled:
 		questActive = false
 		npcScene.playText("You tell the Guards you found where the orcs camped but didn't deal with them. They're still happy for your help locating them and send you on your way.")
@@ -281,7 +280,7 @@ func recallAction():
 	if not questActive:
 		var recallText = ["You recall the moments after you killed the orc commander.\n\nYou stood in the guard house with your friends and the armies commanders. After the bloody siege you all knew there was only one way to end this war for sure, to kill the ",
 		 SaveState.bossSlain, " at last.\n\nThen you began planning the siege of The Gates with the other commanders."]
-		npcScene.playText(recallText)
+		npcScene.playText("".join(recallText))
 	else:
 		doNothing()
 
@@ -335,7 +334,6 @@ func eatAction():
 
 func boysQ():
 	if not questActive:
-		SaveState.boysKilled = true
 		if not SaveState.boysKilled and SaveState.boysTalked:
 			npcScene.playText("You tell the guards about the boys you met at the gates.\n\n\"Oh! Those boys from the east side, eh? Thank god their safe, thanks for looking out for our next generation of adventurers.\"")
 			SaveState.playerJoy += 10
@@ -345,7 +343,7 @@ func boysQ():
 			SaveState.playerJoy -= 10
 			SaveState.toldGuards = true
 			player.updateMood()
-			npcScene.interactGuardsDone = true
+			npcScene.interactOver(3)
 		elif not SaveState.boysTalked:
 			npcScene.playText("You tell the guards about some suspected looters you saw at the gates. \"Looters? that might be the boys from the east side, they told us they would go out looking for their dad. We had no way to stop them from going, glad they're okay out there.\"\n\nYou're relieved you didn't resort to violence.")
 	else:
@@ -362,6 +360,7 @@ func tradeAction():
 		npcScene.playText("This is no time to be saying nonsense.")
 
 func exitAction():
+	SaveState.prevInput = ""
 	if not questActive:
 		var leaveText = ["You say goodbye to the guards and wish them well. You are back in the town square."]
 		npcScene.playText("".join(leaveText))
@@ -371,6 +370,7 @@ func exitAction():
 		npcScene.introText(4)
 		npcName = "guard"
 		groupName = "guards"
+		checkLeave()
 	elif questActive:
 		npcScene.playText("You duck behind a tree and decide to turn back to the city. You're not built for this kind of battle anymore. The Guards are sure to be dissapointed.\n\nYou return back to the city")
 		SaveState.playerJoy -= 5
@@ -381,9 +381,20 @@ func exitAction():
 		player.inputCon(false)
 		npcScene.playerTurn = false
 		npcScene.playerChoosing = true
+		checkLeave()
 
 func doNothing():
 	pass
+
+func checkLeave():
+	if npcScene.interactTavernDone:
+		player.option2.disabled = true
+	if npcScene.interactSmithDone:
+		player.option3.disabled = true
+	if npcScene.interactGuardsDone:
+		player.option4.disabled = true
+	if npcScene.restCount >=2:
+		player.option5.disabled = true
 
 func death():
 	if questActive:

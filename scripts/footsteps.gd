@@ -210,7 +210,7 @@ func questAction():
 		questAccept = true
 
 func acceptAction():
-	var questAcceptText = ["You decide to follow the footsteps down into the dark chasm.\n\nAfter climbing into the chasm you begin to hear the voices of goblins. After sneaking closer you see three goblins crouched over something. They are all turned away from you."]
+	var questAcceptText = ["You decide to follow the footsteps down into the dark chasm.\n\nAfter climbing into the chasm you begin to hear the voices of goblins. Sneaking closer, you see three goblins crouched over something. They are all turned away from you."]
 	if not questActive and questAccept:
 		if SaveState.prevInput == "yes":
 			npcScene.playText("".join(questAcceptText))

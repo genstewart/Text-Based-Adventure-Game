@@ -103,7 +103,7 @@ func creditsAction():
 	npcScene.playText("[color=orange]Thank you for playing!\n\nThis game was made entirely by Gen over the course of one month-ish, special thanks to Yukie for helping play-test it. If you enjoyed the game please send a screenshot of your ending text to Gen!\n\nType \"rest\" to see it again.[/color]")
 
 func easterEgg():
-	npcScene.playText("I just wanted a command in the game that was my name lol")
+	npcScene.playText("[color=orange]I just wanted a command in the game that was my name lol[/color]")
 
 func exitAction():
 	npcScene.playText("".join(leaveText))

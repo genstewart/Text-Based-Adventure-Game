@@ -176,12 +176,12 @@ func talkAction():
 		var talkText = ["You explain to her how ", SaveState.friendOne, " died at the siege of The Gates." ]
 		if SaveState.daveDeath:
 			if SaveState.playerJoy >= 70:
-				npcScene.playText("".join(talkText) + "\n\nHe died a hero, and the world is safer for it.\n\n" + npcName + " pauses for a moment and thanks you for coming all this way to tell her. She's glad " + SaveState.friendOne + " died for the greater good of everybody.")
+				npcScene.playText("".join(talkText) + "\n\nThey died a hero, and the world is safer for it.\n\n" + npcName + " pauses for a moment and thanks you for coming all this way to tell her. She's glad " + SaveState.friendOne + " died for the greater good of everybody.")
 				SaveState.playerJoy += 10
 				player.updateMood()
 				SaveState.toldMom = true
 			elif SaveState.playerJoy < 70:
-				npcScene.playText("".join(talkText) + "\n\nHe died in vain, anybody could have gone in to open the gate. You should have never put your friend at risk.\n\n" + npcName + " breaks down into tears, and curses you for not going with your friend.")
+				npcScene.playText("".join(talkText) + "\n\nThey died in vain, anybody could have gone in to open the gate. You should have never put your friend at risk.\n\n" + npcName + " breaks down into tears, and curses you for not going with your friend.")
 				SaveState.playerJoy -= 10
 				player.updateMood()
 				leaveText = ["Ashamed, you turn around and walk out of the house. " + SaveState.friendOne + " was your friend.\n\nHow can you call yourself a hero, if you can't even save those closest to you?\n\nYou stand at the crossroads in Haven."]
@@ -224,7 +224,7 @@ func lookAction():
 	npcScene.playText("".join(lookText))
 
 func drinkAction():
-	var drinkText = ["You ask for something to drink.\n\nShe brings your a nice hot cup of tea to drink. The taste is comforting and reminds you of home.",
+	var drinkText = ["You ask for something to drink.\n\nShe brings you a nice hot cup of tea to drink. The taste is comforting and reminds you of home.",
 	 "You ask for another cup of tea. She gives it to you but seems to be running out of things to talk to you about.",
 	"I think it's about time to leave"]
 	drinks += 1

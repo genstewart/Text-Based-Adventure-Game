@@ -4,8 +4,6 @@ extends Node2D
 @export var trans : Tween.TransitionType
 @onready var tween = create_tween()
 
-@onready var textSound: AudioStreamPlayer = $MarginContainer/textSound
-
 @onready var player = get_node("MarginContainer/player")
 @onready var continueButton = player.get_node("view/playerArea/continueButton")
 @onready var playerArea = player.get_node("view/playerArea")
@@ -57,7 +55,7 @@ func playintrotext():
 	tween.tween_property(introNarration, "visible_characters", len(introNarration.text), len(introNarration.text) * SaveState.textspeed)
 
 func playATBtext():
-	audioManager.introtextSound.play()
+	audioManager.textSound.play()
 	tween.kill()
 	introNarration.text = atb1 + SaveState.bossSlain + atb2 + SaveState.friendThree + " and " + SaveState.friendTwo + atb3 + SaveState.bossSlain + atb4
 	tween = create_tween()

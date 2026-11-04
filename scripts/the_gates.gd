@@ -49,18 +49,18 @@ func _ready() -> void:
 		playText(gatesIntro[0] + gatesIntro[1])
 	elif SaveState.scavengersDone:
 		player.option2.disabled = true
-		if SaveState.boysTalked:
-			playText(gatesIntro[2])
-		elif SaveState.boysKilled:
+		if SaveState.boysKilled:
 			playText(gatesIntro[3])
+		elif SaveState.boysTalked:
+			playText(gatesIntro[2])
 		else:
 			playText(gatesIntro[4])
 
 func _process(_delta: float) -> void:
-	if tween.is_running():
-		audioManager.textSound.stream_paused = false
-	elif not tween.is_running():
-		audioManager.textSound.stream_paused = true
+	#if tween.is_running():
+	#	audioManager.textSound.stream_paused = false
+	#elif not tween.is_running():
+	#	audioManager.textSound.stream_paused = true
 
 	if introPlaying and textBox.visible_characters == len(gatesIntro[0]):
 		tween.pause()

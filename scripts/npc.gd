@@ -57,11 +57,12 @@ func actionHandler(playerChoice):
 	var action = playerChoice
 	player.instructText.text = "[color=white]What will you do?[/color]"
 	
-	if not actionMap.has(action):
-		player.instructText.text = "[color=red]You can't do that action[/color]"
-		return
+	if not SaveState.scavengersDone:
+		if not actionMap.has(action):
+			player.instructText.text = "[color=red]You can't do that action[/color]"
+			return
 
-	actionMap[action].call()
+		actionMap[action].call()
 
 func stabAction():
 	if targetNum < 0 or targetNum >= hPool.size():

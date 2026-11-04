@@ -50,6 +50,7 @@ var actionMap = {
 	
 	"pet": petAction,
 	"scratch": petAction,
+	"rub": petAction,
 	
 	"play": playAction,
 	"fetch": playAction,
@@ -216,13 +217,13 @@ func eatAction():
 		npcScene.playText(eatText[4])
 
 func acceptAction():
-	var dogText = ["The dog eagerly walks behind you and begins to follow you.\n\nYou've made a new friend",
+	var dogText = ["The dog eagerly walks behind you and begins to follow you.\n\nYou've made a new friend.",
 	"You turn down the dog. You don't need anything else to die by your side.\n\nIt's best you go your seperate ways."]
 	if acceptDog:
 		if SaveState.prevInput == "yes":
 			acceptDog = false
 			SaveState.dogFriend = true
-			leaveText = "You and the dog walk back to the crossroads."
+			leaveText = ["You and the dog walk back to the crossroads."]
 			npcScene.playText(dogText[0])
 		elif SaveState.prevInput == "no":
 			acceptDog = false

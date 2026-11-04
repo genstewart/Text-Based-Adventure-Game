@@ -39,6 +39,8 @@ var actionMap = {
 	"reminisce": recallAction,
 	"recall": recallAction,
 	"remember": recallAction,
+	SaveState.friendOne: recallAction,
+	SaveState.friendOne.to_lower(): recallAction,
 	
 	"sneak": sneakAction,
 	"stalk": sneakAction,
@@ -63,6 +65,7 @@ var actionMap = {
 	"trade": tradeAction,
 	"armor": tradeAction,
 	"buy": tradeAction,
+	"sale": tradeAction,
 	
 	"leave": exitAction,
 	"goodbye": exitAction,
@@ -192,7 +195,7 @@ func sneakAction():
 
 func lookAction():
 	var lookText = ["The blacksmith is hard at work to help people repair their homes. Crates full of nails and some mallets are on display for cheap." +
-	"On the back wall of the shop there are some assorted weapons and armor for sale, it looks expensive."]
+	"\n\nOn the back wall of the shop you see some assorted weapons and armor for sale, it looks expensive."]
 	npcScene.playText("".join(lookText))
 
 func drinkAction():

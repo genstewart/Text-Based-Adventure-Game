@@ -206,7 +206,7 @@ func interactOver(choice):
 			playerChoosing = true
 			player.option4.disabled = true
 	if interactTavernDone:
-			player.option2.disabled = true
+		player.option2.disabled = true
 	if interactSmithDone:
 		player.option3.disabled = true
 	if interactGuardsDone:
