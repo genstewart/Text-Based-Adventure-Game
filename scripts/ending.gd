@@ -7,7 +7,7 @@ var introText = "You open the door to enter your home. Here it is, the place whe
 
 var restText = ["You sit down to finally rest after the long journey. You were one of the heros who helped save so many people.\n\n", merciful, generous, selfless, honest, friend, remembered]
 
-var mercifulText = ["But after you killed the ", SaveState.bossSlain ," you lost your way.", "Even after you finished your quest, you were an inspiration to others."]
+var mercifulText = ["But after you killed the ", SaveState.bossSlain ," you lost your way.", "Even after you finished your quest, you were an inspiration to others.", "But after you killed the ", SaveState.bossSlain ," you began avoiding others."]
 var merciful = ""
 var generousText = [" You let the past control you, and stopped helping others.", " You stayed true to your values and helped others in need."]
 var generous = ""
@@ -34,6 +34,8 @@ var actionMap = {
 	"allan": easterEgg,
 	"Allan": easterEgg,
 	
+	"gyoza": easterEgg2,
+	
 	"leave": exitAction,
 	
 	"": doNothing,
@@ -47,18 +49,20 @@ func _ready() -> void:
 
 	if SaveState.boysTalked:
 		merciful = mercifulText[3]
-	else:
+	elif SaveState.boysKilled:
 		merciful = mercifulText[0] + mercifulText[1] + mercifulText[2]
+	else:
+		merciful = mercifulText[4]
 
 	if SaveState.orcsKilled:
 		generous = generousText[1]
 	else:
 		generous = generousText[0]
 
-	if SaveState.traderBuried:
-		selfless = selflessText[1]
-	elif SaveState.goldTaken:
+	if SaveState.goldTaken:
 		selfless = selflessText[0]
+	elif SaveState.traderBuried:
+		selfless = selflessText[1]
 	else:
 		selfless = ""
 
@@ -104,6 +108,9 @@ func creditsAction():
 
 func easterEgg():
 	npcScene.playText("[color=orange]I just wanted a command in the game that was my name lol[/color]")
+
+func easterEgg2():
+	npcScene.playText("You eat some much deserved gyoza after your long journey.\n\nThe flavour of strong garlic, onions and steamed pork in a crispy shell are hard to resist. Over a bed of fluffy white rice, some might say this is heaven.")
 
 func exitAction():
 	npcScene.playText("".join(leaveText))

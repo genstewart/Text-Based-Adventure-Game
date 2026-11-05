@@ -50,6 +50,12 @@ var actionMap = {
 	"friends": riddleAnswer,
 	"friendship": riddleAnswer,
 	"friendships": riddleAnswer,
+	SaveState.friendOne: riddleAnswer,
+	SaveState.friendTwo: riddleAnswer,
+	SaveState.friendThree: riddleAnswer,
+	SaveState.friendOne.to_lower(): riddleAnswer,
+	SaveState.friendTwo.to_lower(): riddleAnswer,
+	SaveState.friendThree.to_lower(): riddleAnswer,
 	
 	"take": takeSword,
 	"loot": takeSword,
@@ -120,7 +126,7 @@ func riddleAnswer():
 		npcScene.playText(swordFound[0])
 		solvedRiddle = true
 	elif not foundRiddle:
-		npcScene.playText("You can't do that.")
+		doNothing()
 
 func takeSword():
 	var swordText = ["You approach the sword and take it from the stone table.\n\nThe sword shines bright blue in the sunlight, it doesn't look like anything smithed this millenia even. The sword still feels sharp to the touch despite its age.",
