@@ -54,8 +54,6 @@ mouse_filter = 2
 script = ExtResource("3_8n0no")
 npcScene = NodePath("../..")
 player = NodePath("../player")
-hPool = [0, 9999]
-aClass = [1, 50]
 
 [node name="footsteps" type="Control" parent="dialogueScreen" unique_id=1724012775 node_paths=PackedStringArray("npcScene", "player")]
 layout_mode = 2

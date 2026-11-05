@@ -7,14 +7,11 @@ extends Control
 
 @export var npcName = ""
 @export var groupName = ""
-@export var hPool = [0,0,0,0,0]
-@export var aClass = [1,1,1,1,1]
 
 var foundRiddle = false
 var solvedRiddle = false
 
 var introText = "You walk up to the stone."
-var deathText = "Why would you try that?"
 
 var talked = 0
 
