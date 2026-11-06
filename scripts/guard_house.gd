@@ -360,7 +360,7 @@ func tradeAction():
 	if not questActive:
 		var tradeText = ["Maybe go talk to the smith, he might have something for you."]
 		if SaveState.health > 100:
-			npcScene.playText("They guards gather around you to admire the mail shirt you recieved.\n\n\"Is that... an admantium mail shirt... with golden rivets and diamond crusted collar... It's beautiful.\"\n\nThey are salivating.")
+			npcScene.playText("They guards gather around you to admire the mail shirt you recieved.\n\n\"Is that... an admantium mail shirt... with golden rivets and a diamond crusted collar... It's beautiful.\"\n\nThey are salivating.")
 		elif SaveState.health <= 100:
 			npcScene.playText("".join(tradeText))
 	elif questActive:

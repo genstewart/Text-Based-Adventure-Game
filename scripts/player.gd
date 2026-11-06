@@ -45,6 +45,7 @@ func _ready() -> void:
 	healthBar.value = SaveState.health
 	potionButton.text = str(SaveState.healthPotion)
 	Status.text = SaveState.playerStatus
+	hPotAnim()
 	playerArea.show()
 	dContainer.hide()
 
