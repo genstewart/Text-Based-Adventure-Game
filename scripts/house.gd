@@ -24,6 +24,8 @@ var enemiesLeft
 
 var drinks = 0
 var food = 0
+var talked = false
+var recalled = false
 
 var introText = "You knock on the door of the house. After hearing a few pots fall on the ground and some footsteps approaching the door, " + npcName + " opens the door and invites you in.\n\n\"" + SaveState.playerName + "!\" she says excitedly. \"Where is " + SaveState.friendOne + "?\""
 var deathText = [npcName, " lies dead on the floor, blood pools up under her. What have you done?"]
@@ -71,6 +73,10 @@ var actionMap = {
 	"quest": questAction,
 	"work": questAction,
 	"help": questAction,
+	
+	"give": goldAction,
+	"gold": goldAction,
+	"money": goldAction,
 	
 	"leave": exitAction,
 	"goodbye": exitAction,
@@ -175,15 +181,18 @@ func talkAction():
 	if npcScene.playerCombat == false:
 		var talkText = ["You explain to her how ", SaveState.friendOne, " died at the siege of The Gates." ]
 		if SaveState.daveDeath:
+			if not talked:
+				if SaveState.playerJoy >= 70:
+					SaveState.playerJoy += 10
+				elif SaveState.playerJoy < 70:
+					SaveState.playerJoy -= 10
+				player.updateMood()
+
 			if SaveState.playerJoy >= 70:
 				npcScene.playText("".join(talkText) + "\n\nThey died a hero, and the world is safer for it.\n\n" + npcName + " pauses for a moment and thanks you for coming all this way to tell her. She's glad " + SaveState.friendOne + " died for the greater good of everybody.")
-				SaveState.playerJoy += 10
-				player.updateMood()
 				SaveState.toldMom = true
 			elif SaveState.playerJoy < 70:
 				npcScene.playText("".join(talkText) + "\n\nThey died in vain, anybody could have gone in to open the gate. You should have never put your friend at risk.\n\n" + npcName + " breaks down into tears, and curses you for not going with your friend.")
-				SaveState.playerJoy -= 10
-				player.updateMood()
 				leaveText = ["Ashamed, you turn around and walk out of the house. " + SaveState.friendOne + " was your friend.\n\nHow can you call yourself a hero, if you can't even save those closest to you?\n\nYou stand at the crossroads in Haven."]
 				npcScene.interactHouseDone = true
 				SaveState.toldMom = true
@@ -200,13 +209,18 @@ func talkAction():
 
 func recallAction():
 	var recallText = ["You recall the day you decided to embark on this quest.\n\nYou and your friends just finished defending Haven from a small group of goblins and orcs. You all sat quietly inside the house afterwards. After seeing the destruction and aftermath, the four of you decided to travel to Eden and join the defence there."]
+	
+	if not recalled:
+		recalled = true
+		if SaveState.playerJoy >= 85:
+			SaveState.playerJoy += 10
+			player.updateMood()
+
 	if SaveState.playerJoy < 85:
 		npcScene.playText("".join(recallText) + "\n\nStanding here now, you're not sure if you ever should have gone. The people here needed you too. They needed their family too.")
 	elif SaveState.playerJoy >= 85:
 		npcScene.playText("".join(recallText) + "\n\nNow you know that if you didn't go you would have never been there to save Eden. And the siege at The Gates would have failed without "
 		 + SaveState.friendOne + "'s sacrifice. And if " + SaveState.friendTwo + " and " + SaveState.friendThree + " never went, no one would have survived to kill the " + SaveState.bossSlain + " and end the war.")
-		SaveState.playerJoy += 10
-		player.updateMood()
 
 func recallMeeting():
 	var recallMeetingText = ["You recall the day you and your friends met. The four of you came from the surrounding towns and met in Haven.\n\n",
@@ -256,6 +270,14 @@ func questAction():
 	var questText = ["You ask her if she needs any help around the house.\n\n\"Oh no don't bother, I am doing just fine by myself. I could use some help with that dog however. He won't leave me alone after I gave him some food last week.\""]
 	npcScene.playText("".join(questText))
 
+func goldAction():
+	var goldText = ["You try and give ", npcName, " the gold you found at The Cairn.\n\n\"", SaveState.playerName, "! where did you get all of this? I don't need any of this, you can keep it for yourself.\"
+	\nShe looks suspicious as to how you acquired so much gold and if you came by it honestly."]
+	if SaveState.goldTaken:
+		npcScene.playText("".join(goldText))
+	else:
+		player.instructText.text = "[color=red]You can't do that action[/color]"
+
 func exitAction():
 	npcScene.playText("".join(leaveText))
 	npcScene.interactHouseDone = true
@@ -270,5 +292,6 @@ func death():
 		npcScene.playerCombat = false
 		npcScene.playText("".join(deathText))
 		npcScene.interactHouseDone = true
+		SaveState.evil = true
 		SaveState.playerJoy -= 10
 		player.updateMood()

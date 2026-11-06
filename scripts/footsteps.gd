@@ -26,6 +26,7 @@ var questActive = false
 var questAccept = false
 var sackSearched = false
 var keyFound = false
+var goldBuried = false
 
 var introText = "You stand over some footprints in the ground."
 var deathText = "The three goblins lie dead on the ground. Behind them is a burlap sack, something is inside."
@@ -137,7 +138,6 @@ func slashAction():
 			hPool.remove_at(slashTargets[0])
 			hPool.remove_at(slashTargets[0])
 			npcScene.playText("".join(dealDamageDialogue) + "\n\n" + "".join(takeDamageDialogue) + "\n\nThey both fall to the ground, dead.\n\n" + "There are " + str(hPool.size() - 1) + " " + groupName + " left.")
-			print(hPool)
 		elif (hPool[slashTargets[0]] - slashDmg >= 0 and hPool[slashTargets[1]] - slashDmg <= 0) or (hPool[slashTargets[0]] - slashDmg <= 0 and hPool[slashTargets[1]] - slashDmg >= 0):
 			takeDamage("slash")
 			hPool.remove_at(slashTargets[0])
@@ -232,27 +232,41 @@ func findKey():
 		doNothing()
 
 func openCoffer():
-	if questActive and keyFound:
-		npcScene.playText("You turn around and pick up the coffer.\n\nUsing the key you found you open the coffer and find that it is full of gold and assorted gemstones.")
-		SaveState.cofferOpen = true
-	elif questActive and SaveState.goblinsKilled:
-		npcScene.playText("The coffer is a fairly small chest made of decorative wood. It looks like it unlocks with a key.")
+	if not goldBuried:
+		if questActive and keyFound:
+			npcScene.playText("You turn around and pick up the coffer.\n\nUsing the key you found you open the coffer and find that it is full of gold and assorted gemstones.")
+			SaveState.cofferOpen = true
+		elif questActive and SaveState.goblinsKilled:
+			npcScene.playText("The coffer is a fairly small chest made of decorative wood. It looks like it unlocks with a key.")
 	else:
 		doNothing()
 
 func takeGold():
-	if SaveState.cofferOpen:
-		npcScene.playText("You take the gold and put it in your backpack.\n\nThe man won't be using it anymore and you deserve it for killing the goblins anyway.")
+	if SaveState.cofferOpen and not SaveState.goldTaken and not goldBuried:
+		npcScene.playText("You take the gold and put it in your backpack.\n\nThe man won't be missing it anymore and you deserve it for killing the goblins anyway. The world owes you so much after you saved it.")
 		SaveState.goldTaken = true
 		SaveState.playerJoy -= 10
+	elif SaveState.goldTaken or goldBuried:
+		doNothing()
 	else:
 		doNothing()
 
 func buryTrader():
-	if sackSearched:
-		npcScene.playText("You decide to bury the dead man you found nearby. He deserves a peaceful place to rest, we all do.")
-		SaveState.traderBuried = true
-		SaveState.playerJoy += 10
+	if sackSearched and not SaveState.traderBuried:
+		if SaveState.cofferOpen and not SaveState.goldTaken:
+			npcScene.playText("You decide to bury the dead man you found nearby with his treasures. His things aren't yours to take and he deserves a peaceful place to rest, we all do.")
+			SaveState.traderBuried = true
+			SaveState.playerJoy += 10
+			goldBuried = true
+		elif SaveState.goldTaken:
+			npcScene.playText("You decide to bury the man and take the rest of his things, he won't be needing them anymore. May he rest peacefully.")
+			SaveState.traderBuried = true
+		elif not SaveState.cofferOpen:
+			npcScene.playText("You decide to bury the dead man you found nearby with his coffer. His things aren't yours to take and he deserves a peaceful place to rest, we all do.")
+			SaveState.traderBuried = true
+			SaveState.playerJoy += 10
+			SaveState.traderBuried = true
+			goldBuried = true
 	else:
 		doNothing()
 
@@ -266,6 +280,7 @@ func sneakAction():
 	if not questActive:
 		npcScene.playText(sneakText[0])
 	elif questActive and not npcScene.playerCombat:
+		player.attack.play()
 		npcScene.playerCombat = true
 		npcScene.playText(sneakText[1])
 		hPool.remove_at(1)

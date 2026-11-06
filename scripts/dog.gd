@@ -185,10 +185,12 @@ func petAction():
 		npcScene.playText(petText[0])
 	elif pets == 2:
 		npcScene.playText(petText[1])
-	elif pets >= 3:
+	elif pets == 3:
 		npcScene.playText(petText[2])
 		SaveState.playerJoy += 5
 		player.updateMood()
+	elif pets > 3:
+		npcScene.playText(petText[2])
 
 func playAction():
 	var playText = ["You pick up a small stick on the ground and throw it down the road. The dog runs to retrieve the stick and brings it back to you.\n\nIt wants to play again.",
@@ -200,10 +202,12 @@ func playAction():
 		npcScene.playText(playText[0])
 	elif plays == 2:
 		npcScene.playText(playText[1])
-	elif plays >= 3:
+	elif plays == 3:
 		npcScene.playText(playText[2])
 		SaveState.playerJoy += 5
 		player.updateMood()
+	elif plays > 3:
+		npcScene.playText(playText[2])
 
 func eatAction():
 	var eatText = ["You give the dog the food you got from ", SaveState.friendOne, "'s mom and the dog wags its tail and eats happily.","\n\nAfterwards, he looks up at you. He wants to follow you, do you let him?",
@@ -242,6 +246,7 @@ func death():
 		npcScene.playerTurn = true
 		npcScene.playerCombat = false
 		npcScene.playText(deathText)
-		npcScene.interactDogDone = true
-		SaveState.playerJoy -= 10
+		npcScene.interactOver(2)
+		SaveState.evil = true
+		SaveState.playerJoy -= 100
 		player.updateMood()

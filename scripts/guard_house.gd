@@ -12,6 +12,8 @@ extends Control
 @export var npcDamage : int
 var npcTotalDamage = (npcDamage * (hPool.size()-1))
 
+var dead = false
+
 var targetNum = 1
 var slashTargets = []
 var z = 1
@@ -26,6 +28,7 @@ var drinks = 0
 var food = 0
 var questActive = false
 var questAccept = false
+var boysTalk = false
 
 var introText = ["You enter the Guard House and see three guards at a table talking over a map. You overhear part of their conversation. \"Are you sure... We really can't spare any men now.\" \"I agree, our focus should be in the city.\" ",
 "One guard glances at the door and sees you.\n\n\"", SaveState.playerName,
@@ -76,6 +79,9 @@ var actionMap = {
 	"work": questAction,
 	"map": questAction,
 	"help": questAction,
+	"ask": questAction,
+	"X": questAction,
+	"x": questAction,
 	
 	"trade": tradeAction,
 	"armor": tradeAction,
@@ -227,7 +233,7 @@ func talkAction():
 
 func questAction():
 	var questText = ["You ask the Guards about what has happend and glance at the map. ",
-	"\"There's been a report that some Orcs are camping by the road leading into town and killing the townspeople. We were just deciding whether we should investigate.\"",
+	"\n\n\"There's been a report that some Orcs are camping by the road leading into town and killing the townspeople. We were just deciding whether we should investigate.\"",
 	"\n\nDo you want to offer your help?"]
 	var questDone = ["\"",SaveState.playerName, "! you're back!\"",
 	" You tell the guards about the orcs you killed. They thank you, and give you two health potions for your help.",
@@ -333,7 +339,8 @@ func eatAction():
 		doNothing()
 
 func boysQ():
-	if not questActive:
+	if not questActive and not boysTalk:
+		boysTalk = true
 		if not SaveState.boysKilled and SaveState.boysTalked:
 			npcScene.playText("You tell the guards about the boys you met at the gates.\n\n\"Oh! Those boys from the east side, eh? Thank god their safe, thanks for looking out for our next generation of adventurers.\"")
 			SaveState.playerJoy += 10
@@ -404,4 +411,5 @@ func death():
 			npcScene.playText(deathText)
 			SaveState.playerJoy += 5
 			SaveState.orcsKilled = true
+			dead = true
 			player.updateMood()

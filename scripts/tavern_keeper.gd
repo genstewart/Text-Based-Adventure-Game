@@ -10,6 +10,7 @@ extends Control
 @export var aClass = [1,1,1,1,1]
 @export var npcDamage : int
 var npcTotalDamage = (npcDamage * (hPool.size()-1))
+var dead = false
 
 var targetNum = 1
 var slashTargets = []
@@ -23,6 +24,7 @@ var enemiesLeft
 
 var drinks = 0
 var food = 0
+var recalled = false
 
 var introText = "You enter the tavern to see a mostly empty room with a few people having a drink in the corner, talking amongst themselves. \n\nThe tavern keeper is behind the bar counter cleaning some glasses when you approach her."
 var deathText = "Why would you try that?"
@@ -188,11 +190,19 @@ func recallAction():
 	"You, " + SaveState.friendTwo + ", " + SaveState.friendThree + ", and " + SaveState.friendOne + 
 	" sat down in the tavern and shared a few drinks. You told stories of the siege and the memories of the fallen soldiers." +
 	"\n\nWhen you first arrived in Eden you were just another group of people offering to help, but after the siege the people of Eden came to regard you as heroes."]
-	if SaveState.playerJoy <= 15:
-		npcScene.playText("".join(recallText) + "\n\nNow you feel that couldn't be further from the truth. The real heroes are already gone.")
-	elif SaveState.playerJoy > 15:
-		npcScene.playText("".join(recallText) + "\n\nHero or not, you long for home and the friends you miss dearly. They were the real heroes.")
-		SaveState.playerJoy += 10
+	if not recalled:
+		recalled = true
+		if SaveState.playerJoy <= 15:
+			npcScene.playText("".join(recallText) + "\n\nNow you feel that couldn't be further from the truth. The real heroes are already gone.")
+		elif SaveState.playerJoy > 15:
+			npcScene.playText("".join(recallText) + "\n\nHero or not, you long for home and the friends you miss dearly. They were the real heroes.")
+			SaveState.playerJoy += 10
+			player.updateMood()
+	else:
+		if SaveState.playerJoy <= 15:
+			npcScene.playText("".join(recallText) + "\n\nNow you feel that couldn't be further from the truth. The real heroes are already gone.")
+		elif SaveState.playerJoy > 15:
+			npcScene.playText("".join(recallText) + "\n\nHero or not, you long for home and the friends you miss dearly. They were the real heroes.")
 
 func sneakAction():
 	var sneakText = ["You duck behind some stools and begin crouching around the tavern floor.\n\n\"" + SaveState.playerName + "? what are you doing...\"\n\nYou stand back up."]
@@ -254,6 +264,8 @@ func death():
 		npcScene.playerTurn = true
 		npcScene.playerCombat = false
 		npcScene.playText(deathText)
-		npcScene.interactDone = true
+		npcScene.interactTavernDone = true
+		dead = true
+		SaveState.evil = true
 		SaveState.playerJoy -= 10
 		player.updateMood()

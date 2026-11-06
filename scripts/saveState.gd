@@ -28,6 +28,8 @@ var scavengersDone = false
 
 #player events to effect story
 #Events with a comment effect the final dialogue.
+var evil = false
+
 var daveDeath = false
 var boysKilled = false #
 var boysTalked = false #

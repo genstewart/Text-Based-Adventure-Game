@@ -35,55 +35,65 @@ var actionMap = {
 	"Allan": easterEgg,
 	
 	"gyoza": easterEgg2,
+	"Gyoza": easterEgg2,
 	
 	"leave": exitAction,
 	
 	"": doNothing,
 }
 
-func _ready() -> void:
+func _ready() -> void: 
+	
 	if SaveState.dogFriend:
 		introText = "You open the door to enter your home with your dog. Here it is, the place where your quest began nearly one year ago.\n\nNow you can finally rest."
 	elif not SaveState.dogFriend:
 		introText = "You open the door to enter your home. Here it is, the place where your quest began nearly one year ago.\n\nNow you can finally rest."
 
-	if SaveState.boysTalked:
-		merciful = mercifulText[3]
-	elif SaveState.boysKilled:
-		merciful = mercifulText[0] + mercifulText[1] + mercifulText[2]
-	else:
-		merciful = mercifulText[4]
-
-	if SaveState.orcsKilled:
-		generous = generousText[1]
-	else:
-		generous = generousText[0]
-
-	if SaveState.goldTaken:
-		selfless = selflessText[0]
-	elif SaveState.traderBuried:
-		selfless = selflessText[1]
-	else:
+	if SaveState.evil:
+		merciful = "But you lost your way after slaying the " + SaveState.bossSlain + " and slayed the innocents as well."
+		generous = " The past overcame you and you were defined by your mistakes."
 		selfless = ""
-
-	if SaveState.toldMom or SaveState.toldGuards:
-		honest = honestText[1]
+		honest = ""
+		friend = " Your friends would all be dissapointed in you now."
+		remembered = "\n\nYou will go down in great infamy. The world will remember you, but only for your [hint=type \"credits\"]failures.[/hint]"
 	else:
-		honest = honestText[0]
-	
-	if SaveState.recalledMeeting or SaveState.dogFriend:
-		friend = friendText[1]
-	else:
-		friend = friendText[0]
+		if SaveState.boysTalked:
+			merciful = mercifulText[3]
+		elif SaveState.boysKilled:
+			merciful = mercifulText[0] + mercifulText[1] + mercifulText[2]
+		else:
+			merciful = mercifulText[4] + mercifulText[5] + mercifulText[6]
 
-	if SaveState.playerJoy <= 40:
-		remembered = "\n\nYou weren't remembered by many, and your story slowly stopped being [hint=type \"credits\"]told.[/hint]"
-	elif SaveState.playerJoy <= 90 and SaveState.playerJoy > 40:
-		remembered = "\n\nThose you personally knew will remember you, but your story will end with [hint=type \"credits\"]them.[/hint]"
-	elif SaveState.playerJoy <= 130 and SaveState.playerJoy > 90:
-		remembered = "\n\nThose you personally knew will remember you, and you live in their memories [hint=type \"credits\"]forever.[/hint]"
-	elif SaveState.playerJoy > 130:
-		remembered = "\n\nYou will go down in history as not only the hero to save the world but a truly kind and admirable person. You will be an inspiration for many people to [hint=type \"credits\"]come.[/hint]"
+		if SaveState.orcsKilled:
+			generous = generousText[1]
+		else:
+			generous = generousText[0]
+
+		if SaveState.goldTaken:
+			selfless = selflessText[0]
+		elif SaveState.traderBuried:
+			selfless = selflessText[1]
+		else:
+			selfless = ""
+
+		if SaveState.toldMom or SaveState.toldGuards:
+			honest = honestText[1]
+		else:
+			honest = honestText[0]
+		
+		if SaveState.recalledMeeting or SaveState.dogFriend:
+			friend = friendText[1]
+		else:
+			friend = friendText[0]
+
+		if SaveState.playerJoy <= 40:
+			remembered = "\n\nYou weren't remembered by many, and your story slowly stopped being [hint=type \"credits\"]told.[/hint]"
+		elif SaveState.playerJoy <= 90 and SaveState.playerJoy > 40:
+			remembered = "\n\nThose you personally knew will remember you, but your story will end with [hint=type \"credits\"]them.[/hint]"
+		elif SaveState.playerJoy <= 130 and SaveState.playerJoy > 90:
+			remembered = "\n\nThose you personally knew will remember you, and you live in their memories [hint=type \"credits\"]forever.[/hint]"
+		elif SaveState.playerJoy > 130:
+			remembered = "\n\nYou will go down in history as not only the hero to save the world but a truly kind and admirable person. You will be an inspiration for many people to [hint=type \"credits\"]come.[/hint]"
 
 	restText = ["You sit down to rest after the long journey. You were one of the heros who saved so many.\n\n", merciful, generous, selfless, honest, friend, remembered]
 

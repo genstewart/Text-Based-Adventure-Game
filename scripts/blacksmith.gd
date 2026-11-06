@@ -11,6 +11,7 @@ extends Control
 @export var aClass = [1,1,1,1,1]
 @export var npcDamage : int
 var npcTotalDamage = (npcDamage * (hPool.size()-1))
+var dead = false
 
 var targetNum = 1
 var slashTargets = []
@@ -24,6 +25,7 @@ var enemiesLeft
 
 var drinks = 0
 var food = 0
+var trades = 0
 
 var introText = "You walk across the town square and arrive in front of the blacksmith.\n\nThere is a large open forge and slanted roof over a large work area. The blacksmith is busy at work and hasn't looked up for some time."
 var deathText = "Why would you try that?"
@@ -226,7 +228,6 @@ func questAction():
 func tradeAction():
 	var tradeText = ["You ask the blacksmith to trade.\n\n\"I heard what you did for Eden when it was under siege, so I made something for you.\" He walks to the back of his store and pulls out a mail shirt.",
 	"\n\nThe mail shirt glitters in the sun and is made with unmatched expertise. You wear the mail shirt under your coat and thank the blacksmith.\n\n"]
-	var trades = 0
 	if trades == 0:
 		audioManager.itemSound.play()
 		npcScene.playText("".join(tradeText))
@@ -253,6 +254,8 @@ func death():
 		npcScene.playerTurn = true
 		npcScene.playerCombat = false
 		npcScene.playText(deathText)
-		npcScene.interactDone = true
+		npcScene.interactSmithDone = true
+		dead = true
+		SaveState.evil = true
 		SaveState.playerJoy -= 10
 		player.updateMood()

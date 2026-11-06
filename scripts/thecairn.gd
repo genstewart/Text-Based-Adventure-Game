@@ -14,6 +14,7 @@ var solvedRiddle = false
 var introText = "You walk up to the stone."
 
 var talked = 0
+var recalled = false
 
 var actionMap = {
 	"stab": stabAction,
@@ -96,11 +97,18 @@ func recallAction():
 	" were all sitting at the Cairn.\n\nYou just set out from Haven weeks before, where the four of you began your quest.",
 	" You all looked out at The Valley ahead of you and the small towns of the rolling hills behind you.",
 	" You knew you had a long way to go, and were ready for the adventures to come."]
-	if SaveState.playerJoy <= 50:
-		npcScene.playText("".join(recallText) + "\n\nWho knew the adventure would become such a lonely one.")
-	elif SaveState.playerJoy > 50:
-		npcScene.playText("".join(recallText) + "\n\nLooking back, none of you would have regret a thing. Including you.")
-		SaveState.playerJoy += 10
+	if not recalled:
+		recalled = true
+		if SaveState.playerJoy <= 50:
+			npcScene.playText("".join(recallText) + "\n\nWho knew the adventure would become such a lonely one.")
+		elif SaveState.playerJoy > 50:
+			npcScene.playText("".join(recallText) + "\n\nLooking back, none of you would have regret a thing. Including you.")
+			SaveState.playerJoy += 10
+	elif recalled:
+		if SaveState.playerJoy <= 50:
+			npcScene.playText("".join(recallText) + "\n\nWho knew the adventure would become such a lonely one.")
+		elif SaveState.playerJoy > 50:
+			npcScene.playText("".join(recallText) + "\n\nLooking back, none of you would have regret a thing. Including you.")
 
 func sneakAction():
 	var sneakText = ["You tip-toe around The Cairn, no one is around to interrupt your sneaking here."]
@@ -112,7 +120,7 @@ func lookAction():
 
 func questAction():
 	var questText = ["You take a closer look at the letters carved into the stone, but some moss covers what they say. You clean it off to reveal what is written.",
-	"\n\n\"I stand by rain or shine,\nreflect your love in mine\nand I'm always there when you say \'hi\'\"",
+	"\n\n\"I'll stand by, rain or shine,\nto show you, a parting sky.\nThe world may turn but I won't budge,\nAs you and I see eye to eye.\"",
 	"\n\nSpeak my name and enter."]
 	foundRiddle = true
 	npcScene.playText("".join(questText))
@@ -128,16 +136,18 @@ func riddleAnswer():
 func takeSword():
 	var swordText = ["You approach the sword and take it from the stone table.\n\nThe sword shines bright blue in the sunlight, it doesn't look like anything smithed this millenia even. The sword still feels sharp to the touch despite its age.",
 	"\n\nYou put the sword in your sheath"]
-	if solvedRiddle:
+	if solvedRiddle and SaveState.playerStab < 70:
 		audioManager.itemSound.play()
 		SaveState.playerStab = 70
 		SaveState.playerSlash = 100
 		if SaveState.playerJoy >= 40:
 			npcScene.playText("".join(swordText) + " and vow to use it in the name of helping others.")
 			SaveState.playerJoy += 10
-			SaveState.updateMood()
+			player.updateMood()
 		elif SaveState.playerJoy < 40:
 			npcScene.playText("".join(swordText) + ", it hardly feels earned, but you can't just leave it lying around.")
+	elif solvedRiddle and SaveState.playerStab == 70:
+		npcScene.playText("There is nothing else to take.")
 	else:
 		npcScene.playText("You can't do that.")
 

@@ -15,7 +15,7 @@ var qArray = ["What is your name?"
 , "What is your favourite food?"
 , "What is the name of one of your friends?"
 , "Name another friend."
-, "Name another friend"
+, "Name another friend."
 , "What monster scares you the most?"] 
 
 var gArray = ["Any name works", "Any food, singular. For example: Hamburger", "Any name that is not your own", "Any name that is not your own or the previous","Any name that is not your own or the previous","Name any monster, singular without any indefinite or definite article. For example: use 'Dragon' not 'The Dragon'"]

@@ -63,11 +63,11 @@ func _process(_delta: float) -> void:
 				npc.dealDamage()
 				playerTurn = true
 				player.instructText.text = "[color=white]What will you do?[/color]"
-			elif npc.hPool.size() <=1:
+			elif npc.hPool.size() <= 1:
 				npc.death()
 		elif playerTurn == true:
 			npc.actionHandler(SaveState.prevInput)
-			if (SaveState.prevInput.begins_with("stab") or SaveState.prevInput.begins_with("slash")):
+			if (SaveState.prevInput.begins_with("stab") or SaveState.prevInput.begins_with("slash")) and not npc.dead:
 				playerCombat = true
 				playerTurn = false
 				player.instructText.text = "[color=red]Not your turn[/color]"
